@@ -1,5 +1,3 @@
-//브랜치 테스트
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import React, { useState } from 'react';
 import HomeComponent from "./pages/HomeComponent";
@@ -7,6 +5,7 @@ import ProductComponent from "./pages/ProductComponent";
 import ProductComponent2 from "./pages/ProductComponent2";
 import ProductComponent3 from "./pages/ProductComponent3";
 import RefrigeratorComponent from "./pages/RefrigeratorComponent";
+import OrderHistoryComponent from "./pages/OrderHistoryComponent";
 import Cart from "./pages/Cart";
 import SignupComponent, { action as signUpAction } from "./pages/SignupComponent";
 import LoginComponent, { action as authAction } from "./pages/LoginComponent";
@@ -24,6 +23,7 @@ import UpdateTodoComponent, { loader as updateTodoLoader, action as updateTodoAc
 const App = () => {
   const [cartItems, setCartItems] = useState([]);
   const [refrigeratorItems, setRefrigeratorItems] = useState([]);
+  const [orders, setOrders] = useState([]); // OrderHistoryComponent를 위한 상태 추가
 
   const addToCart = (product) => {
     setCartItems((prevItems) => {
@@ -99,6 +99,7 @@ const App = () => {
         { path: '/product2', element: <ProductComponent2 addToCart={addToCart} /> },
         { path: '/product3', element: <ProductComponent3 addToCart={addToCart} /> },
         { path: '/refrigerator', element: <RefrigeratorComponent products={refrigeratorItems} /> },
+        { path: '/orderhistory', element: <OrderHistoryComponent orders={orders} /> }, // orders 전달
         { path: '/cart', element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} handleCheckout={handleCheckout} /> },
         { path: '/logout', action: logoutAction },
         { path: '/todos', element: <ListTodosComponent />, loader: todosLoader },
