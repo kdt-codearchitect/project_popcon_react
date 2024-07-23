@@ -1,0 +1,63 @@
+
+.group-47 {
+  position: absolute;
+  width: 302px;
+  height: 32.36px;
+}
+
+
+.footer-container {
+  background-color: black;
+  position: relative;
+  padding: 10px;
+  text-align: right;
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box;
+  flex-shrink: 0; /* 푸터가 항상 페이지 맨 아래에 위치 */
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.footer-info {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  margin-bottom: 10px;
+}
+
+.footer-social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.footer-social-icons img {
+  background: url('../image/SmithLogo.png');
+  background-size: cover;
+  width: 24px;
+  height: 24px;
+}
+

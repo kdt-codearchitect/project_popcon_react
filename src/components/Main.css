@@ -1,0 +1,7 @@
+main {
+    flex: 1;
+    padding: 20px;
+    overflow: auto; /* 내용이 많을 경우 스크롤 발생 */
+    vertical-align: middle;
+   border: none; 
+  }

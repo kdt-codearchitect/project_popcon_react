@@ -1,0 +1,45 @@
+.product-grid__wrapper {
+  width: auto;
+  height: auto;
+  margin: 1.5rem;
+  display: block;
+}
+
+.product-grid__wrap {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  max-width: 100rem;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+.product-grid__container {
+  grid-gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  list-style: none;
+  display: -ms-grid;
+  display: grid;
+  width: 100%;
+  grid-gap: 1rem;
+  margin: 0;
+  padding: 0;
+  max-width: 100rem;
+  
+}
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 23.125rem;
+  margin: 0;
+  -ms-flex: none;
+  flex: none;
+}
+
+
+.product-card-image img{
+ width: 100%;
+ height: 100%;
+ background-image: url('../image/products/MTc0NDA2.png') 
+}
+
+

@@ -1,0 +1,57 @@
+.refrigerator {
+  padding: 20px;
+  background-color: white;
+}
+
+.refrigerator-header {
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+}
+
+.refrigerator-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.refrigerator-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: yellow;
+}
+
+.refrigerator-header p {
+  margin: 0;
+  font-size: 12px;
+  color: #ccc;
+}
+
+.refrigerator-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.refrigerator-table th, .refrigerator-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.refrigerator-table th {
+  background-color: #f2f2f2;
+}
+
+.refrigerator-table img {
+  width: 50px;
+  height: 50px;
+}
+
+.pickup-button {
+  background-color: yellow;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
