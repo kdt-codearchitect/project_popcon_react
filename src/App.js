@@ -6,7 +6,9 @@ import ProductComponent2 from "./pages/ProductComponent2";
 import ProductComponent3 from "./pages/ProductComponent3";
 import RefrigeratorComponent from "./pages/RefrigeratorComponent";
 import OrderHistoryComponent from "./pages/OrderHistoryComponent";
+import MyInfo from "./pages/MyInfo";
 import Cart from "./pages/Cart";
+import MyPage from "./pages/MyPage";
 import FavoriteComponent from "./pages/FavoriteComponent";
 import SignupComponent, { action as signUpAction } from "./pages/SignupComponent";
 import LoginComponent, { action as authAction } from "./pages/LoginComponent";
@@ -22,6 +24,24 @@ import AddTodoComponent, { action as addTodoAction } from "./pages/AddTodoCompon
 import UpdateTodoComponent, { loader as updateTodoLoader, action as updateTodoAction } from "./pages/UpdateTodoComponent";
 
 const App = () => {
+  const [userInfo, setUserInfo] = useState({
+    name: '크리스범스테드',
+    password: '',
+    confirmPassword: '',
+    phone: {
+      part1: '010',
+      part2: '9391',
+      part3: '4767'
+    },
+    email: 'example@naver.com',
+    address: ''
+  });
+
+  const updateUserInfo = (newInfo) => {
+    setUserInfo(newInfo);
+  };
+
+
   const [cartItems, setCartItems] = useState([]);
   const [refrigeratorItems, setRefrigeratorItems] = useState([
     { id: 1, name: "Product 1", image: "https://via.placeholder.com/50", quantity: 2 },
@@ -134,6 +154,8 @@ const App = () => {
         { path: '/product2', element: <ProductComponent2 addToCart={addToCart}  addToFavorites={addToFavorites}/> },
         { path: '/product3', element: <ProductComponent3 addToCart={addToCart}  addToFavorites={addToFavorites} /> },
         { path: '/refrigerator', element: <RefrigeratorComponent products={refrigeratorItems} /> },
+        { path: '/MyInfo', element: <MyInfo userInfo={userInfo} updateUserInfo={updateUserInfo} /> },
+        { path: '/MyPage', element: <MyPage userInfo={userInfo} /> },
         { path: '/orderhistory', element: <OrderHistoryComponent  /> },
         { path: '/favorites', element: <FavoriteComponent favoriteItems={favoriteItems} removeFromFavorites={removeFromFavorites} /> },
         { path: '/cart', element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} handleCheckout={handleCheckout} /> },

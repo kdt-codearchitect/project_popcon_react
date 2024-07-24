@@ -31,6 +31,7 @@ function Header() {
                             <li><Link to="/product3">할인</Link></li>
                             <li><Link to="/usersAdd">덤증정</Link></li>
                             <li><Link to="/usersAdd">이벤트</Link></li>
+                            <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
                             <li><Link to="/cart">장바구니</Link></li>
                         </ul>
                     </nav>

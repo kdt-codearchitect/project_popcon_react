@@ -34,7 +34,7 @@
 }
 
 .mypage-title {
-  color: white;
+  color: yellow;
   transform: rotate(-10deg); /* 텍스트 기울이기 */
   transform-origin: bottom left; /* 회전 기준점을 왼쪽 아래로 설정 */
   margin-left: 10px;
@@ -124,7 +124,7 @@
   cursor: pointer;
 }
 
-.nav-links {
+.nav-links-side{
   font-size: 2vw;
   font-size: clamp(14px, 2vw, 24px);
   text-decoration: none;

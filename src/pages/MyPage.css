@@ -60,7 +60,6 @@
   display: block; /* 링크를 블록 요소로 설정 */
 }
 
-/* 냉장고 및 즐겨찾기 공통 스타일 */
 .section-container {
   flex: 1;
   display: flex;
@@ -94,44 +93,26 @@
   text-align: horizontal;
 }
 
-.section-table {
-  width: 100%;
-  border-collapse: collapse;
+.mypage-info {
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   text-align: center;
 }
 
-.section-table th, .section-table td {
-  border: none; /* 테이블 선 제거 */
-  padding: 8px;
-  text-align: left;
+.mypage-info p {
+  margin: 10px 0;
+  font-size: 16px;
 }
 
-.section-table th {
-  background-color: #f2f2f2;
-}
-
-.section-table img {
-  width: 50px;
-  height: 50px;
-}
-
-.pickup-button, .remove-button {
+.update-button {
   background-color: yellow;
   border: none;
-  padding: 5px 10px;
+  padding: 10px 20px;
   cursor: pointer;
-}
-
-.delete-icon {
-  width: 20px;
-  height: 20px;
-}
-
-.nav-links-side {
-  font-size: 2vw;
-  font-size: clamp(14px, 2vw, 24px);
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 20px;
 }

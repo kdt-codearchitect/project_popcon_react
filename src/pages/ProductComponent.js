@@ -40,6 +40,42 @@ function ProductComponent({ addToCart, addToFavorites }) {
       price: 117000,
       image: "https://i.namu.wiki/i/phJJ4yav60AY8ao5brb4JDnoqP0ZFJk3zaqLnE9l760V5ubk2b67VUnQzz73oeVaJRm49I_Fr32QqU36RyddNw.webp"
     },
+    {
+      id: 7,
+      name: "난 마카오",
+      price: 117000,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQtg5CsXcBWxl7aSa0sGZuDOwpSSFb4eKIPw&s.jpg"
+    },
+    {
+      id: 8,
+      name: "난 조마",
+      price: 117000,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBJ1I4Me580mSBEctbU7oIbSGOz9Q27lE5Ig&s.jpg"
+    },
+    {
+      id: 9,
+      name: "우리 사이 좋게 지내요",
+      price: 117000,
+      image: "https://i.namu.wiki/i/phJJ4yav60AY8ao5brb4JDnoqP0ZFJk3zaqLnE9l760V5ubk2b67VUnQzz73oeVaJRm49I_Fr32QqU36RyddNw.webp"
+    },
+    {
+      id: 10,
+      name: "난 마카오",
+      price: 117000,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQtg5CsXcBWxl7aSa0sGZuDOwpSSFb4eKIPw&s.jpg"
+    },
+    {
+      id: 11,
+      name: "난 조마",
+      price: 117000,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBJ1I4Me580mSBEctbU7oIbSGOz9Q27lE5Ig&s.jpg"
+    },
+    {
+      id: 12,
+      name: "우리 사이 좋게 지내요",
+      price: 117000,
+      image: "https://i.namu.wiki/i/phJJ4yav60AY8ao5brb4JDnoqP0ZFJk3zaqLnE9l760V5ubk2b67VUnQzz73oeVaJRm49I_Fr32QqU36RyddNw.webp"
+    },
     // 다른 제품 정보들 추가
   ]);
 
