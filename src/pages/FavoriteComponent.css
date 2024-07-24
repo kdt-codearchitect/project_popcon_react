@@ -1,0 +1,59 @@
+.favorites-container {
+  padding: 20px;
+  background-color: white;
+}
+
+.favorites-header {
+  background-color: #000;
+  background: linear-gradient(115deg, #000000 65%, #00000000 65%, #ffffff 65%, #ffffff 65%);
+  color: #fff;
+  padding: 20px;
+  text-align: left;
+}
+
+.favorites-font {
+  color: yellow;
+  text-align: horizontal;
+}
+
+.favorites-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.favorites-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.favorites-table th, .favorites-table td {
+  border: none; /* 테이블 선 제거 */
+  padding: 8px;
+  text-align: left;
+}
+
+.favorites-table th {
+  background-color: #f2f2f2;
+}
+
+.favorites-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.remove-button {
+  background: none;
+  border: none;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+}
+
+.delete-icon {
+  width: 20px;
+  height: 20px;
+}

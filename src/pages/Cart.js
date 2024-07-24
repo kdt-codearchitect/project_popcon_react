@@ -1,5 +1,7 @@
 import React from 'react';
 import './Cart.css';
+import deleteIcon from '../image/Delete.png'; // Delete.png 파일 경로
+
 
 const Cart = ({ cartItems, removeFromCart, updateQuantity }) => {
   const calculateTotal = () => {
@@ -39,9 +41,9 @@ const Cart = ({ cartItems, removeFromCart, updateQuantity }) => {
                 />
               </td>
               <td>
-                <button className="remove-button" onClick={() => removeFromCart(item.id)}>
-                  X
-                </button>
+              <button className="remove-button" onClick={() => removeFromCart(item.id)}>
+                    <img src={deleteIcon} alt="삭제" className="delete-icon" />
+                  </button>
               </td>
               <td>{item.price}</td>
               <td>{(item.price * item.quantity).toLocaleString()}원</td>

@@ -26,12 +26,9 @@ function Header() {
                     <nav className="header-bottom-nav">
                         <ul className="nav-links">
                             <li><Link to="/MyPage">마이페이지</Link></li>
-                            <li><Link to="/usersSearch">Search</Link></li>
                             <li><Link to="/product">1 + 1</Link></li>
                             <li><Link to="/product2">2 + 1</Link></li>
                             <li><Link to="/product3">할인</Link></li>
-                            <li><Link to="/refrigerator">냉장고</Link></li>
-                            <li><Link to="/orderhistory">구매내역</Link></li>
                             <li><Link to="/usersAdd">덤증정</Link></li>
                             <li><Link to="/usersAdd">이벤트</Link></li>
                             <li><Link to="/cart">장바구니</Link></li>

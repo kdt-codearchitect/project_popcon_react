@@ -1,31 +1,61 @@
-import React from 'react';
-
+// src/pages/ProductComponent.js
+import React, { useState } from 'react';
 import './ProductComponent.css';
 
-const products = [
-  { id: 1, name: '후드집업', price: 117000, imageUrl: 'https://sfgroup.centracdn.net/client/dynamic/images/443_c9425ec032-220862999_1_better.jpg' },
-  { id: 2, name: '후드집업', price: 117000, imageUrl: 'https://sfgroup.centracdn.net/client/dynamic/images/443_c9425ec032-220862999_1_better.jpg' },
-  { id: 3, name: '후드집업', price: 117000, imageUrl: 'https://sfgroup.centracdn.net/client/dynamic/images/443_c9425ec032-220862999_1_better.jpg' },
-  { id: 4, name: '후드집업', price: 117000, imageUrl: 'https://sfgroup.centracdn.net/client/dynamic/images/443_c9425ec032-220862999_1_better.jpg' },
-  { id: 5, name: '후드집업', price: 117000, imageUrl: 'https://sfgroup.centracdn.net/client/dynamic/images/443_c9425ec032-220862999_1_better.jpg' },
-  { id: 6, name: '후드집업', price: 117000, imageUrl: 'https://sfgroup.centracdn.net/client/dynamic/images/443_c9425ec032-220862999_1_better.jpg' }
-];
+function ProductComponent({ addToCart, addToFavorites }) {
+  const [products] = useState([
+    {
+      id: 1,
+      name: "난 마카오",
+      price: 117000,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQtg5CsXcBWxl7aSa0sGZuDOwpSSFb4eKIPw&s.jpg"
+    },
+    {
+      id: 2,
+      name: "난 조마",
+      price: 117000,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBJ1I4Me580mSBEctbU7oIbSGOz9Q27lE5Ig&s.jpg"
+    },
+    {
+      id: 3,
+      name: "우리 사이 좋게 지내요",
+      price: 117000,
+      image: "https://i.namu.wiki/i/phJJ4yav60AY8ao5brb4JDnoqP0ZFJk3zaqLnE9l760V5ubk2b67VUnQzz73oeVaJRm49I_Fr32QqU36RyddNw.webp"
+    },
+    {
+      id: 4,
+      name: "난 마카오",
+      price: 117000,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQtg5CsXcBWxl7aSa0sGZuDOwpSSFb4eKIPw&s.jpg"
+    },
+    {
+      id: 5,
+      name: "난 조마",
+      price: 117000,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBJ1I4Me580mSBEctbU7oIbSGOz9Q27lE5Ig&s.jpg"
+    },
+    {
+      id: 6,
+      name: "우리 사이 좋게 지내요",
+      price: 117000,
+      image: "https://i.namu.wiki/i/phJJ4yav60AY8ao5brb4JDnoqP0ZFJk3zaqLnE9l760V5ubk2b67VUnQzz73oeVaJRm49I_Fr32QqU36RyddNw.webp"
+    },
+    // 다른 제품 정보들 추가
+  ]);
 
-const ProductComponent = ({ addToCart}) => {
-  console.log("addToCart function:", addToCart);
-  
-  return (
+   return (
     <div className="product-grid__wrapper">
       <div className="product-grid__wrap">
         <div className="product-grid__container">
-          {products.map((product) => (
+          {products.map(product => (
             <article key={product.id} className="card">
               <div className="product-card-image">
-                <img src={product.imageUrl} alt="Product" />
+                <img src={product.image} alt="Product" />
                 <div className="product-card-content">
                   <h3 className="product-card-title">
                     <div className='product-buttons'>
-                      <button className="product-button">구매하기</button>
+                <button className="product-button" onClick={() => addToFavorites(product)}>★</button>
+                      <button className="product-button" onClick={() => addToCart(product)}>구매하기</button>
                       <button className="product-button" onClick={() => addToCart(product)}>장바구니</button>
                     </div>
                     <span className="product-name">{product.name}</span>

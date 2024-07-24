@@ -40,6 +40,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
+  background: linear-gradient(115deg, #ffcc00 65%, #ffcc00 65%, #333 65%, #333 65%);
   background-color: #ffcc00;
   border-top: 1px solid #ddd;
 }
