@@ -1,9 +1,29 @@
-import React from 'react';
-import './MyPage.css'; // MyPage.css 파일을 import
-import { Link , useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import './MyPage.css';
+import { Link, useNavigate } from "react-router-dom";
 
-const MyPage = ({ userInfo }) => {
+const MyPage = () => {
   const navigate = useNavigate();
+  const [userList, setUserList] = useState([]);
+
+  useEffect(() => {
+    
+    const fetchMembers = async () => {
+      try {
+        const response = await fetch('http://localhost:8090/app/MyPage');  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const json = await response.json();
+        setUserList(json);
+      } catch (error) {
+        console.error("There was an error fetching the members!", error);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
   return (
     <div className="page-container">
       <div className="mypage-container">
@@ -27,12 +47,15 @@ const MyPage = ({ userInfo }) => {
         </div>
         <div className="section-content">
           <div className="mypage-info">
-            <p><strong>이름</strong>: {userInfo.name}</p>
-            <p><strong>비밀번호</strong>: <button className="update-button">비밀번호 변경</button></p>
-            <p><strong>연락처</strong>: {userInfo.phone.part1} - {userInfo.phone.part2} - {userInfo.phone.part3}</p>
-            <p><strong>E-mail</strong>: {userInfo.email}</p>
-            <p><strong>주소</strong>: {userInfo.address}</p>
-             <button type="button" className="update-button" onClick={() => navigate('/MyInfo')}>개인정보수정</button>
+            
+            <h2>All Members</h2>
+            <ul>
+              {userList.map(member => (
+                <li key={member.id}>
+                  {member.name} ({member.email})
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

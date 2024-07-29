@@ -5,7 +5,7 @@ function HomeComponent() {
   return (
     <div className="home">
       <header className="header">
-        <h1>OnePirate</h1>
+    
       </header>
       <main className="main-content">
         <section className="content-section">

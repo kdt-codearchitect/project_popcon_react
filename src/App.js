@@ -1,5 +1,5 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import React, { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import HomeComponent from "./pages/HomeComponent";
 import ProductComponent from "./pages/ProductComponent";
 import ProductComponent2 from "./pages/ProductComponent2";
@@ -10,30 +10,23 @@ import MyInfo from "./pages/MyInfo";
 import Cart from "./pages/Cart";
 import MyPage from "./pages/MyPage";
 import FavoriteComponent from "./pages/FavoriteComponent";
-import SignupComponent, { action as signUpAction } from "./pages/SignupComponent";
-import LoginComponent, { action as authAction } from "./pages/LoginComponent";
+import SignupComponent from "./pages/SignupComponent";
+import LoginComponent from "./pages/LoginComponent";
 import RootLayout from "./pages/Root";
 import ErrorPage from './pages/Error';
 import './App.css';
 
-import { tokenLoader } from './util/auth';
-import { action as logoutAction } from './pages/Logout';
-
-import ListTodosComponent, { loader as todosLoader } from "./pages/ListTodosComponent";
-import AddTodoComponent, { action as addTodoAction } from "./pages/AddTodoComponent";
-import UpdateTodoComponent, { loader as updateTodoLoader, action as updateTodoAction } from "./pages/UpdateTodoComponent";
-
 const App = () => {
   const [userInfo, setUserInfo] = useState({
-    name: '크리스범스테드',
+    name: '',
     password: '',
     confirmPassword: '',
     phone: {
-      part1: '010',
-      part2: '9391',
-      part3: '4767'
+      part1: '',
+      part2: '',
+      part3: ''
     },
-    email: 'example@naver.com',
+    email: '',
     address: ''
   });
 
@@ -41,25 +34,10 @@ const App = () => {
     setUserInfo(newInfo);
   };
 
-
   const [cartItems, setCartItems] = useState([]);
   const [refrigeratorItems, setRefrigeratorItems] = useState([
     { id: 1, name: "Product 1", image: "https://via.placeholder.com/50", quantity: 2 },
-    { id: 2, name: "Product 2", image: "https://via.placeholder.com/50", quantity: 5 },
-    { id: 3, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 4, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 5, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 6, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 7, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 8, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 9, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 10, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 11, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 12, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 13, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 14, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 15, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 },
-    { id: 16, name: "Product 3", image: "https://via.placeholder.com/50", quantity: 3 }
+    // 나머지 아이템들...
   ]);
   const [favoriteItems, setFavoriteItems] = useState([]);
 
@@ -119,12 +97,10 @@ const App = () => {
   };
 
   const handleCheckout = () => {
-    // 예시 재고 데이터
     const stock = {
-      1: 5, // productId: 재고 수량
-      2: 0, // 재고가 없는 경우
+      1: 5,
+      2: 0,
       3: 10,
-      // 다른 제품들...
     };
 
     cartItems.forEach((item) => {
@@ -135,39 +111,27 @@ const App = () => {
       }
     });
 
-    // 결제 성공으로 간주하고 장바구니 비우기 (필요시 실제 결제 로직 추가)
     setCartItems([]);
   };
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <RootLayout />,
-      errorElement: <ErrorPage />,
-      id: 'tokenRoot',
-      loader: tokenLoader,
-      children: [
-        { path: '/', element: <HomeComponent /> },
-        { path: '/signup', element: <SignupComponent />, action: signUpAction },
-        { path: '/login', element: <LoginComponent />, action: authAction },
-        { path: '/product', element: <ProductComponent addToCart={addToCart}  addToFavorites={addToFavorites}/> },
-        { path: '/product2', element: <ProductComponent2 addToCart={addToCart}  addToFavorites={addToFavorites}/> },
-        { path: '/product3', element: <ProductComponent3 addToCart={addToCart}  addToFavorites={addToFavorites} /> },
-        { path: '/refrigerator', element: <RefrigeratorComponent products={refrigeratorItems} /> },
-        { path: '/MyInfo', element: <MyInfo userInfo={userInfo} updateUserInfo={updateUserInfo} /> },
-        { path: '/MyPage', element: <MyPage userInfo={userInfo} /> },
-        { path: '/orderhistory', element: <OrderHistoryComponent  /> },
-        { path: '/favorites', element: <FavoriteComponent favoriteItems={favoriteItems} removeFromFavorites={removeFromFavorites} /> },
-        { path: '/cart', element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} handleCheckout={handleCheckout} /> },
-        { path: '/logout', action: logoutAction },
-        { path: '/todos', element: <ListTodosComponent />, loader: todosLoader },
-        { path: '/addTodo', element: <AddTodoComponent />, action: addTodoAction },
-        { path: '/updateTodo/:id', element: <UpdateTodoComponent />, loader: updateTodoLoader, action: updateTodoAction }
-      ]
-    }
-  ]);
-
-  return <RouterProvider router={router} />;
+  return (
+    <Routes>
+      <Route path="/" element={<RootLayout />}>
+        <Route index element={<HomeComponent />} />
+        <Route path="signup" element={<SignupComponent />} />
+        <Route path="login" element={<LoginComponent />} />
+        <Route path="Sku" element={<ProductComponent addToCart={addToCart} addToFavorites={addToFavorites} />} />
+        <Route path="product2" element={<ProductComponent2 addToCart={addToCart} addToFavorites={addToFavorites} />} />
+        <Route path="product3" element={<ProductComponent3 addToCart={addToCart} addToFavorites={addToFavorites} />} />
+        <Route path="refrigerator" element={<RefrigeratorComponent products={refrigeratorItems} />} />
+        <Route path="MyInfo" element={<MyInfo userInfo={userInfo} updateUserInfo={updateUserInfo} />} />
+        <Route path="MyPage" element={<MyPage userInfo={userInfo} setUserInfo={setUserInfo} />} />
+        <Route path="orderhistory" element={<OrderHistoryComponent />} />
+        <Route path="favorites" element={<FavoriteComponent favoriteItems={favoriteItems} removeFromFavorites={removeFromFavorites} />} />
+        <Route path="cart" element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} handleCheckout={handleCheckout} />} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
