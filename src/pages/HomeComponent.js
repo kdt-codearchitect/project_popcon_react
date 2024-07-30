@@ -3,10 +3,7 @@ import './HomeComponent.css';
 
 function HomeComponent() {
   return (
-    <div className="home">
-      <header className="header">
-    
-      </header>
+    <div className="home-container">
       <main className="main-content">
         <section className="content-section">
           <h2>Section 1</h2>
@@ -29,9 +26,6 @@ function HomeComponent() {
           <p>Content for section 5...</p>
         </section>
       </main>
-      <footer className="footer">
-        <p>Footer content goes here...</p>
-      </footer>
     </div>
   );
 }

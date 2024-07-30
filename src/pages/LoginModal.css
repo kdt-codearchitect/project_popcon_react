@@ -1,0 +1,57 @@
+.modal-login-box{
+  width: 350px;
+  height: 450px;
+  border: 1px solid black;
+  border-radius: 20px;
+}
+
+.modal-login-form{
+  width: 220px;
+  height: 130px;
+  margin-bottom: 20px;
+}
+
+.modal-login-form div{
+  width: 200px;
+}
+
+.modal-login-form div:first-of-type{
+  height: 80px;
+}
+
+.modal-login-form input{
+  width: 180px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #F2F2F2;
+  font-weight: bold;
+}
+.modal-login-img {
+  height: 220px;
+}
+
+.modal-login-img img:nth-child(1){
+  width: 170px;
+  height: 170px;
+}
+
+.modal-login-img img:nth-child(2){
+  width: 170px;
+  height: 30px;
+}
+
+.modal-login-text-box{
+  width: 100px;
+}
+
+.modal-login-text-box span{
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+.modal-login-botton-box button{
+  width: 97px;
+  height: 35px;
+  border-radius: 4px;
+  font-weight: bold;
+}

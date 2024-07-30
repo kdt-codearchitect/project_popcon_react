@@ -1,45 +1,49 @@
 import { Link } from "react-router-dom";
 import './Header.css';
 import React from "react";
+import LoginModal from "../pages/LoginModal";
+import {useRef} from 'react'
 
 function Header() {
-    return (
-        <header className="header">
-            <div className="header-container">
-                <div className="header-top">
-                    <div className="header-logo">
-                        <Link to="/">
-                            <img src={'../image/PopConB.png'} alt="PopConB.png" />
-                        </Link>
-                        <span className="brand">POP<span className="highlight">CON</span></span>
-                    </div>
-                    <nav className="header-mymenu">
-                        <Link to="/login" className="nav-link">로그인</Link>
-                        <Link to="/customer" className="nav-link">고객센터</Link>
-                    </nav>
-                </div>
-                <div className="header-bottom-box">
-                    <div className="header-search-box">
-                        <input type="text" placeholder="Search" />
-                        <button type="submit">Q</button>
-                    </div>
-                    <nav className="header-bottom-nav">
-                        <ul className="nav-links">
-                            <li><Link to="/MyPage">마이페이지</Link></li>
-                            <li><Link to="/Sku">1 + 1</Link></li>
-                            <li><Link to="/product2">2 + 1</Link></li>
-                            <li><Link to="/product3">할인</Link></li>
-                            <li><Link to="/usersAdd">덤증정</Link></li>
-                            <li><Link to="/usersAdd">이벤트</Link></li>
-                            <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
-                            <li><Link to="/cart">장바구니</Link></li>
-                            <li><Link to="/signup">회원가입</Link></li>
 
-                        </ul>
-                    </nav>
+    const xxx = useRef(null)
+
+    function show_modal(){
+    xxx.current.modal_open();
+  }
+
+    return (
+
+        <header>
+        <div class="header-container">
+            <div class="header-top-box flex-sb">
+                <Link to="/">
+                    <div class="header-logo flex-c">
+                        <img src="./images/store_image/PopconB.png" alt=""/>
+                        <img src="./images/store_image/popcon_logo3.png" alt=""/>
+                    </div>
+                </Link>
+                <div class="header-mymenu flex-sa">
+                    <a href="#" onClick={show_modal}>로그인</a>
+                    <a href="#">고객센터</a>
+                    <LoginModal ref={xxx}/>
                 </div>
             </div>
-        </header>
+            <div class="header-bottom-box">
+                <div class="header-search-box flex-c">
+                    <input type="text"/>
+                </div>
+                <nav>
+                    <ul class="flex-sa">
+                        <li><Link to="/MyPage">마이페이지</Link></li>
+                        <li><Link to="/Sku">1 + 1</Link></li>
+                        <li><Link to="/product2">2 + 1</Link></li>
+                        <li><Link to="/usersAdd">이벤트</Link></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
     );
 }
 
