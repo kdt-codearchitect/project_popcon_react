@@ -1,55 +1,87 @@
-.modal-login-box{
-  width: 350px;
-  height: 450px;
-  border: 1px solid black;
-  border-radius: 20px;
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+  80% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-.modal-login-form{
+dialog {
+  width: 350px;
+  height: 450px;
+  border: none;
+  border-radius: 20px;
+  opacity: 1; /* 항상 보이도록 설정 */
+  animation: popIn 0.35s forwards;
+}
+
+.modal-content {
+  height: 100%;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #4b4b4b;
+  font-size: 2rem;
+}
+
+.modal-login-form {
   width: 220px;
   height: 130px;
   margin-bottom: 20px;
 }
 
-.modal-login-form div{
+.modal-login-form div {
   width: 200px;
 }
 
-.modal-login-form div:first-of-type{
-  height: 80px;
+.modal-login-form div:first-of-type {
+  height: 90px;
 }
 
-.modal-login-form input{
-  width: 180px;
-  padding: 10px;
+.modal-login-form input {
+  width: 200px;
+  padding: 8px;
   border-radius: 4px;
   background-color: #F2F2F2;
   font-weight: bold;
 }
+
 .modal-login-img {
   height: 220px;
 }
 
-.modal-login-img img:nth-child(1){
+.modal-login-img img:nth-child(1) {
   width: 170px;
   height: 170px;
 }
 
-.modal-login-img img:nth-child(2){
+.modal-login-img img:nth-child(2) {
   width: 170px;
   height: 30px;
 }
 
-.modal-login-text-box{
+.modal-login-text-box {
   width: 100px;
 }
 
-.modal-login-text-box span{
+.modal-login-text-box span {
   font-size: 3rem;
   font-weight: 900;
 }
 
-.modal-login-botton-box button{
+.modal-login-botton-box button {
   width: 97px;
   height: 35px;
   border-radius: 4px;

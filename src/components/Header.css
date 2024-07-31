@@ -4,7 +4,10 @@ main{
 
 .header-container{
   width: 100%;
-  
+}
+
+.header-container a{
+  text-decoration: none;
 }
 
 .header-logo{
@@ -44,6 +47,9 @@ main{
 
 .header-bottom-box > nav {
   width: 30%;
+}
+.header-bottom-box ul {
+  margin: 0;
 }
 
 .header-bottom-box > nav li {

@@ -9,6 +9,7 @@ footer a,
 footer p {
   font-size: 0.6rem;
   margin: 0;
+  text-decoration: none;
 }
 
 footer span {
@@ -37,4 +38,9 @@ footer span {
 
 .footer-social-icons{
   width: 15%;
+}
+.footer-social-icons svg{
+  width: 20px;
+  height: 20px;
+  color: white;
 }

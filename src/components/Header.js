@@ -3,6 +3,8 @@ import './Header.css';
 import React from "react";
 import LoginModal from "../pages/LoginModal";
 import {useRef} from 'react'
+import PopconB from '../image/store_image/PopconB.png';
+import popcon_logo3 from '../image/store_image/popcon_logo3.png';
 
 function Header() {
 
@@ -15,26 +17,26 @@ function Header() {
     return (
 
         <header>
-        <div class="header-container">
-            <div class="header-top-box flex-sb">
+        <div className="header-container">
+            <div className="header-top-box flex-sb">
                 <Link to="/">
-                    <div class="header-logo flex-c">
-                        <img src="./images/store_image/PopconB.png" alt=""/>
-                        <img src="./images/store_image/popcon_logo3.png" alt=""/>
+                    <div className="header-logo flex-c">
+                        <img src={PopconB} alt=""/>
+                        <img src={popcon_logo3} alt=""/>
                     </div>
                 </Link>
-                <div class="header-mymenu flex-sa">
+                <div className="header-mymenu flex-sa">
                     <a href="#" onClick={show_modal}>로그인</a>
                     <a href="#">고객센터</a>
                     <LoginModal ref={xxx}/>
                 </div>
             </div>
-            <div class="header-bottom-box">
-                <div class="header-search-box flex-c">
+            <div className="header-bottom-box">
+                <div className="header-search-box flex-c">
                     <input type="text"/>
                 </div>
                 <nav>
-                    <ul class="flex-sa">
+                    <ul className="flex-sa">
                         <li><Link to="/MyPage">마이페이지</Link></li>
                         <li><Link to="/Sku">1 + 1</Link></li>
                         <li><Link to="/product2">2 + 1</Link></li>

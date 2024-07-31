@@ -1,6 +1,9 @@
 
 import './Footer.css';
 import React from "react";
+import ca_logo from "../image/store_image/ca_logo.png"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebookSquare, faInstagram, faLinkedin, faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 function Footer(){
     return(
@@ -8,7 +11,7 @@ function Footer(){
         <div className="footer-container flex-sa">
             <div className="footer-info flex-c">
                 <div className="footer-img">
-                    <img src="./images/store_image/ca_logo.png"/>
+                    <img src={ca_logo}/>
                 </div>
                 <div>
                     <p>©Pop-Con Korea Corporation All Rights Reserved.</p>
@@ -28,10 +31,10 @@ function Footer(){
               <a href="#">사이트맵</a>
             </div>
           <div className="footer-social-icons flex-sa">
-            <i className="fab fa-facebook-square"></i>
-            <i className="fab fa-instagram-square"></i>
-            <i className="fab fa-fab fa-linkedin"></i>
-            <i className="fab fa-youtube"></i>
+            <FontAwesomeIcon icon={faFacebookSquare}/>
+            <FontAwesomeIcon icon={faInstagram}/>
+            <FontAwesomeIcon icon={faLinkedin}/>
+            <FontAwesomeIcon icon={faYoutube}/>
           </div>
         </div>
     </footer>

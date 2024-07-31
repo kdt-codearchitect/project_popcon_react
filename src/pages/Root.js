@@ -7,13 +7,9 @@ export default function RootLayout(){
 
     return(
       <div className="app">
-      <body>
         <Header />
-        <main>
-          <Outlet />
-        </main>
-          <Footer/>
-        </body>
+        <Outlet />
+        <Footer/>
       </div>
     )
   }
