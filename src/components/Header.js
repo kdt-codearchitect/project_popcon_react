@@ -39,7 +39,7 @@ function Header() {
                                 </Form>
                         }
 
-                        <a href="#">고객센터</a>
+                        <Link to="/faq">고객센터</Link>
                         <LoginModal ref={xxx}/>
                     </div>
                 </div>
