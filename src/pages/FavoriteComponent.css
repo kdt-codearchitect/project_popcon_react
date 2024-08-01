@@ -1,0 +1,137 @@
+/* 전체 컨테이너 */
+.page-container {
+  display: flex;
+  height: 100vh; /* 전체 화면 높이로 설정 */
+}
+
+/* 마이페이지 컨테이너 */
+.mypage-container {
+  width: 250px;
+  background-color: yellow;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden; /* 스크롤 영향 받지 않도록 설정 */
+}
+
+/* 상단 사선 검은색 배경 */
+.mypage-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 125px; /* 높이를 조절해서 사선 영역 조절 */
+  background-color: black;
+  clip-path: polygon(0 0, 0 100%, 100% 60%, 100% 0);
+  z-index: 1;
+}
+
+.mypage-content {
+  position: relative;
+  z-index: 2; /* 사선 배경 위에 표시되도록 설정 */
+  padding-top: 60px; /* 사선 배경 높이만큼 내리기 */
+}
+
+.mypage-title {
+  color: yellow;
+  transform: rotate(-10deg); /* 텍스트 기울이기 */
+  transform-origin: bottom left; /* 회전 기준점을 왼쪽 아래로 설정 */
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.mypage-content ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px; /* 리스트를 아래로 내리기 */
+}
+
+.mypage-content ul li {
+  margin: 10px 0;
+  color: black;
+  font-size: 14px;
+  display: block; /* 리스트 아이템을 블록 요소로 설정 */
+}
+
+.mypage-content ul li a {
+  color: black;
+  text-decoration: none;
+  display: block; /* 링크를 블록 요소로 설정 */
+}
+
+/* 냉장고 및 즐겨찾기 공통 스타일 */
+.section-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  overflow: hidden; /* 스크롤 영향 받지 않도록 설정 */
+}
+
+.section-header {
+  background-color: #000;
+  background: linear-gradient(115deg, #000000 65%, #00000000 65%, #ffffff 65%, #ffffff 65%);
+  color: #fff;
+  padding: 20px;
+  text-align: left;
+  flex: 0 0 auto; /* 고정 위치 설정 */
+}
+
+.section-content {
+  flex: 1;
+  text-align: center;
+  overflow-y: auto; /* 스크롤 가능하게 설정 */
+  margin-top: 20px;
+}
+
+.section-header h1, .section-header h2, .section-header p {
+  margin: 0;
+}
+
+.section-font {
+  color: yellow;
+  text-align: horizontal;
+}
+
+.section-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.section-table th, .section-table td {
+  border: none; /* 테이블 선 제거 */
+  padding: 8px;
+  text-align: left;
+}
+
+.section-table th {
+  background-color: #f2f2f2;
+}
+
+.section-table img {
+  width: 50px;
+  height: 50px;
+}
+
+.pickup-button, .remove-button {
+  background-color: yellow;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.delete-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-links-side {
+  font-size: 2vw;
+  font-size: clamp(14px, 2vw, 24px);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}

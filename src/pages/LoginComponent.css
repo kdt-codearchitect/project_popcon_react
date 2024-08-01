@@ -1,0 +1,37 @@
+.login {
+  text-align: center;
+  font-size: 20px;
+  background-image: url('../image/PopcornIcon.PNG');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain; /* 이미지 크기를 조정할 수 있습니다. 필요에 따라 조정하세요 */
+  padding-top: 300px; 
+}
+
+  label, input, button {
+  margin: 10px;
+  padding: 5px;
+  }
+
+  .footer-info {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .footer-social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .footer-social-icons img {
+    background: url('../image/SmithLogo.png');
+    background-size: cover;
+    width: 24px;
+    height: 24px;
+  }

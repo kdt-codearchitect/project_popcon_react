@@ -1,0 +1,57 @@
+.order-history {
+  padding: 20px;
+  background-color: white;
+}
+
+.order-history-header {
+  display: flex;
+  align-items: center;
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+}
+
+.order-history-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.order-history-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: yellow;
+}
+
+.order-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.order-history-table th, .order-history-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.order-history-table th {
+  background-color: #f2f2f2;
+}
+
+.order-history-table img {
+  width: 50px;
+  height: 50px;
+}
+
+.return-button, .review-button {
+  background-color: yellow;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.return-button:hover, .review-button:hover {
+  background-color: #ffcc00;
+}
