@@ -51,7 +51,7 @@ dialog {
 }
 
 .modal-login-form input {
-  width: 200px;
+  width: 184px;
   padding: 8px;
   border-radius: 4px;
   background-color: #F2F2F2;
@@ -86,4 +86,11 @@ dialog {
   height: 35px;
   border-radius: 4px;
   font-weight: bold;
+  padding: 0;
+}
+.modal-login-botton-box a {
+  color: #D9D9D9;
+  border-radius: 4px;
+  width: 97px;
+  height: 35px;
 }
