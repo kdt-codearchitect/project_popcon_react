@@ -1,88 +1,111 @@
-import React, { useState } from 'react';
-import axios from 'axios';
 import './SignupComponent.css';
+import {
+  Form,
+  redirect,
+  json,
+  useActionData
+} from 'react-router-dom';
+import sign_up from '../image/store_image/sign_up.png'
 
-const SignupComponent = () => {
-  const [formData, setFormData] = useState({
-    customerId: '',
-    customerPw: '',
-    customerName: '',
-    customerPhone1: '010',
-    customerPhone2: '',
-    customerPhone3: '',
-    customerDate: '',
-    customerAdd: '',
-    customerAddMore: '',
-    customerEmail: '',
-    customerEmailDomain: 'naver.com',
-    customerRate: '',
-    customerRole: '',
-  });
+function SignupComponent() {
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const fullPhone = `${formData.customerPhone1}-${formData.customerPhone2}-${formData.customerPhone3}`;
-    const fullEmail = `${formData.customerEmail}@${formData.customerEmailDomain}`;
-
-    try {
-      const response = await axios.post('http://localhost:8090/popcon/signup', {
-        ...formData,
-        customerPhone: fullPhone,
-        customerEmail: fullEmail,
-      });
-      alert('회원가입해주셔서 감사합니다! 환영합니다!!');
-    } catch (error) {
-      console.error('There was an error signing up!', error);
-    }
-  };
+  //실패경우1 - 400: Bad Request 발생시 에러처리
+  const data = useActionData();
+  console.log("useActionData:", data);
 
   return (
-    <div className="signUp-container">
-      <div className="signUp-box">
-        <form className="signUp-form" onSubmit={handleSubmit}>
-          <div className="signUp-box-item">
-            <input type="text" name="customerId" placeholder="ID" value={formData.customerId} onChange={handleChange} />
-            <button type="button">중복확인</button>
-          </div>
-          <input type="password" name="customerPw" placeholder="Password" value={formData.customerPw} onChange={handleChange} />
-          <input type="text" name="customerName" placeholder="Name" value={formData.customerName} onChange={handleChange} />
-          <input type="text" name="customerRate" placeholder="Rate" value={formData.customerRate} onChange={handleChange} />
-          <input type="text" name="customerRole" placeholder="Role" value={formData.customerRole} onChange={handleChange} />
-          <input type="date" name="customerDate" placeholder="Year-Month-Day" value={formData.customerDate} onChange={handleChange} />
-          <div className="signUp-phone-box">
-            <input type="text" name="customerPhone1" placeholder="010" value={formData.customerPhone1} onChange={handleChange} />
-            <input type="text" name="customerPhone2" placeholder="0000" value={formData.customerPhone2} onChange={handleChange} />
-            <input type="text" name="customerPhone3" placeholder="0000" value={formData.customerPhone3} onChange={handleChange} />
-          </div>
-          <div className="signUp-email-box">
-            <input type="text" name="customerEmail" placeholder="Email" value={formData.customerEmail} onChange={handleChange} />
-            <select name="customerEmailDomain" value={formData.customerEmailDomain} onChange={handleChange}>
-              <option value="naver.com">naver.com</option>
-              <option value="gmail.com">gmail.com</option>
-              <option value="yahoo.com">yahoo.com</option>
-            </select>
-          </div>
-          <div className="signUp-address">
-            <input type="text" name="customerAdd" placeholder="Address Line 1" value={formData.customerAdd} onChange={handleChange} />
-            <input type="text" name="customerAddMore" placeholder="Address Line 2" value={formData.customerAddMore} onChange={handleChange} />
-            <button type="button">주소찾기</button>
-          </div>
-          <div className="signUp-button-box">
-            <button type="submit">회원가입</button>
-            <button type="reset">취소</button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="signUp-container flex-c">
+            <div className="signUp-box flex-c flex-d-column">
+                <img src={sign_up} alt=""/>
+                <Form method="post" className="signUp-form flex-sb flex-d-column">
+                    <div className="signUp-name-box flex-sb">
+                        <input type="text" name="userid" placeholder="아이디"/>
+                        <button className="thema-btn-01">중복확인</button>
+                    </div>
+                    <input type="password" name="password" placeholder="비밀번호"/>
+                    <input type="password" placeholder="비밀번호 확인"/>
+                    <input type="text" name="username" placeholder="이름"/>
+                    <input type="date" name="date" placeholder=""/>
+                    <div className="signUp-phone-box flex-sb">
+                        <input type="text" name="phone1" placeholder="010"/>
+                        <input type="text" name="phone2" placeholder="0000"/>
+                        <input type="text" name="phone3" placeholder="0000"/>
+                    </div>
+                    <div className="signUp-email-box flex-sb">
+                        <input type="text" name="email"/>
+                        <select name="" id="">
+                            <option value="">naver.com</option>
+                            <option value=""></option>
+                            <option value=""></option>
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div className="signUp-address flex-sb">
+                        <input type="text" name="add1"/>
+                        <button className="thema-btn-01">주소찾기</button>
+                    </div>
+                    <input type="text" name="add2"/>
+                    <div className="signUp-button-box flex-sb">
+                        <button className="thema-btn-01">회원가입</button>
+                        <button className="thema-btn-03">취소</button>
+                    </div>
+                </Form>
+            </div>
+        </div>
   );
-};
+}
+
+export async function action({request}){
+
+  // 회원가입폼 데이터 얻기
+  const data = await request.formData();
+  const authData = {
+    customerId: data.get('userid'),
+    customerPw: data.get('password'),
+    customerName: data.get('username'),
+    customerPhone: `${data.get('phone1')}-${data.get('phone2')}-${data.get('phone3')}`,
+    customerDate: data.get('date'),
+    customerAdd: data.get('add1'),  
+    customerAddMore: data.get('add2'),
+    customerEmail: `${data.get('email')}@${data.get('emailDomain')}`,
+    customerEmailDomain: 'naver.com',
+    customerRate: '1',
+    customerRole: '1',
+  };
+  console.log("authData>>", authData);
+
+  const response = await fetch('http://localhost:8090/popcon/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(authData),
+  });
+
+  console.log("회원가입 요청결과:", response);
+
+  //실패경우1 - 400: Bad Request 와 401: Unauthorized
+  //  실습은 스프리의 @Valid 위반시 400 에러가 발생됨. 이 경우 response를 바로 리턴하면 
+  //  폼에서 useActionData()로 에러를 처리할 수 있음.
+  if (response.status === 400 || response.status === 401 || response.status === 422) {
+    console.log("response.status>>", response.status);
+    return response;
+  }
+  
+  //실패경우2- 전반적인 서버에러 ( 예> userid 중복에러 )
+  if (!response.ok) {
+    console.log("response.status>>", response.status);
+    throw  json(
+      {
+        message:'요청에 대한 처리 불가.',
+        title:'요청에러',
+        email:'inky4832@daum.net'
+      },
+      {status:500}
+   )
+  } 
+
+  return redirect('/');
+}//end action
 
 export default SignupComponent;

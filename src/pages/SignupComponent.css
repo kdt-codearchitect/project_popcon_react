@@ -1,110 +1,118 @@
-.signUp-container {
+.signUp-container{
   width: 100%;
   background-image: url("../image/store_image/signup_bg2.png");
   background-repeat: no-repeat;
   background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  flex: 1;
+  flex-direction: column;
 }
 
-.signUp-box {
+.signUp-container input, select{
+  padding: 7px 20px;
+}
+.signUp-box{
   width: 600px;
+  height: 450px;
+  padding: 35px 0;
   background-image: url("../image/store_image/signup_bg.png");
   background-size: cover;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
 }
 
-.signUp-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.signUp-box > img{
+  height: 25px;
+  object-fit: cover;
+  margin-bottom: 20px;
 }
 
-.signUp-form input, .signUp-form select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.signUp-form{
+  width: 350px;
+  height: 530px;
+}
+
+.signUp-form > input{
+  width: 240px;
+  border-radius: 4px;
   background-color: #F2F2F2;
-}
-
-.signUp-box-item {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.signUp-box-item input {
-  flex: 1;
-}
-
-.signUp-box-item button {
-  flex-shrink: 0;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #FFEB3B;
-  border: none;
-  margin-left: 10px;
   font-weight: bold;
-  cursor: pointer;
 }
 
-.signUp-phone-box, .signUp-email-box, .signUp-address {
-  display: flex;
-  align-items: center;
+.signUp-name-box{
+  width: 280px;
+}
+
+.signUp-name-box > input{
+  width: 140px;
+  border-radius: 4px;
+  background-color: #F2F2F2;
+  font-weight: bold;
+}
+
+.signUp-phone-box{
   width: 100%;
 }
 
-.signUp-phone-box input, .signUp-email-box input {
-  flex: 1;
-  margin-right: 5px;
-}
-
-.signUp-email-box select {
-  flex-shrink: 0;
-  width: 120px;
-}
-
-.signUp-address input {
-  flex: 1;
-  margin-right: 5px;
-}
-
-.signUp-address button {
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #FFEB3B;
-  border: none;
+.signUp-name-box button{
+  width: 80px;
+  height: 30px;
+  border-radius: 4px;
   font-weight: bold;
-  cursor: pointer;
 }
 
-.signUp-button-box {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+.signUp-phone-box{
+  width: 280px;
 }
 
-.signUp-button-box button {
-  width: 48%;
-  padding: 10px;
-  border-radius: 5px;
+.signUp-phone-box > input{
+  width: 48px;
+  border-radius: 4px;
+  background-color: #F2F2F2;
   font-weight: bold;
-  cursor: pointer;
+  
+}
+
+.signUp-email-box{
+  width: 280px;
+}
+
+.signUp-email-box > input{
+  width: 103px;
+  border-radius: 4px;
+  background-color: #F2F2F2;
+  font-weight: bold;
+}
+
+.signUp-email-box > select{
+  width: 90px;
+  border-radius: 4px;
+  background-color: #F2F2F2;
+  font-weight: bold;
   border: none;
 }
 
-.signUp-button-box button[type="submit"] {
-  background-color: #FFEB3B;
+.signUp-address{
+  width: 280px;
 }
 
-.signUp-button-box button[type="reset"] {
-  background-color: #9E9E9E;
-  color: white;
+.signUp-address > input{
+  width: 140px;
+  border-radius: 4px;
+  background-color: #F2F2F2;
+  font-weight: bold;
+}
+
+.signUp-address > button{
+  width: 80px;
+  height: 30px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.signUp-button-box{
+  width: 280px;
+}
+.signUp-button-box button{
+  width: 123px;
+  height: 30px;
+  border-radius: 4px;
+  font-weight: bold;
 }
