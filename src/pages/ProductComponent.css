@@ -1,66 +1,77 @@
+.product-grid__wrapper {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 20px !important;
+}
+
+.product-grid__wrap {
+  display: flex !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  max-width: 1200px !important;
+}
+
+.product-grid__container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+}
+
 .product-card {
-  position: relative;
-  width: 200px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin: 20px;
-}
-
-.product-card-image {
-  position: relative;
-}
-
-.product-card-image img {
-  width: 100%;
-  height: auto;
-}
-
-.favorite-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: yellow;
+  position: relative !important;
+  width: 200px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 5px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+  margin: 10px !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 10px !important;
+  background: #fff !important;
 }
 
 .product-card-content {
-  padding: 5px;
-  text-align: center;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
 }
 
 .product-card-title {
-  margin: 0;
+  margin: 10px 0 !important;
+  font-size: 1.2rem !important;
+  font-weight: bold !important;
 }
 
 .product-buttons {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 10px;
+  display: flex !important;
+  justify-content: space-around !important;
+  margin-top: 10px !important;
 }
 
 .product-button {
-  background-color: #ffcc00;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
+  background-color: #ffcc00 !important;
+  border: none !important;
+  padding: 10px !important;
+  cursor: pointer !important;
+  font-size: 0.8rem !important;
+  border-radius: 5px !important;
 }
 
 .product-name {
-  display: block;
-  font-size: 1px;
+  display: block !important;
+  font-size: 1rem !important;
 }
 
 .product-price-wrapper {
-  margin-top: 5px;
+  margin-top: 5px !important;
 }
 
 .product-price-current {
-  font-weight: bold;
-  color: #333;
+  font-weight: bold !important;
+  color: #333 !important;
+  font-size: 1rem !important;
 }
-
