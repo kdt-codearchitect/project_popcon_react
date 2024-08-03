@@ -31,7 +31,7 @@ const MyPage = () => {
           <h2 className="mypage-title" onClick={() => navigate('/MyPage')}>마이페이지</h2>
           <ul className="nav-links-side">
             <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
-            <li><Link to="/favorites">Favorites / 나의 찜 목록</Link></li>
+            <li><Link to="/Wish">Favorites / 나의 찜 목록</Link></li>
             <li><Link to="/MyDelivery">Delivery / 배송 상황</Link></li>
             <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
             <li><Link to="/Payment">Payment / 결제수단</Link></li>
@@ -42,7 +42,7 @@ const MyPage = () => {
       <div className="section-container">
         <div className="section-header">
           <div className="section-font">
-            <h1>My Info / 나의 정보</h1>
+            <h1>My Page / 나의 정보</h1>
           </div>
         </div>
         <div className="section-content">

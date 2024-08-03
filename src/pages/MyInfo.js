@@ -37,7 +37,7 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
           <h2 className="mypage-title" onClick={() => navigate('/MyPage')}>마이페이지</h2>
           <ul className="nav-links-side">
             <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
-            <li><Link to="/favorites">Favorites / 나의 찜 목록</Link></li>
+            <li><Link to="/Wish">Favorites / 나의 찜 목록</Link></li>
             <li><Link to="/MyDelivery">Delivery / 배송 상황</Link></li>
             <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
             <li><Link to="/Payment">Payment / 결제수단</Link></li>

@@ -1,17 +1,40 @@
-import React from 'react';
-import './RefrigeratorComponent.css'; // 동일한 CSS 파일을 사용
+import React, { useEffect, useState } from 'react';
+import './FavoriteComponent.css'; 
 import { Link, useNavigate } from "react-router-dom";
-import deleteIcon from "../image/Delete.png"; // 적절한 경로로 수정하세요
+import axios from 'axios';
+import deleteIcon from "../image/Delete.png"; 
 
-const FavoriteComponent = ({ favoriteItems, removeFromFavorites }) => {
- const navigate = useNavigate();
+const FavoriteComponent = ({ removeFromFavorites }) => {
+  const [favoriteItems, setFavoriteItems] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get('http://localhost:8090/popcon/Wish')
+      .then(response => {
+        setFavoriteItems(response.data);
+      })
+      .catch(error => {
+        console.error('상품 정보를 불러오는 중에 오류가 발생 했습니다!', error);
+      });
+  }, []);
+
+  const handleRemove = (wishIdx) => {
+    axios.delete(`http://localhost:8090/popcon/Wish/delete/${wishIdx}`)
+      .then(() => {
+        setFavoriteItems(prevItems => prevItems.filter(item => item.wishIdx !== wishIdx));
+      })
+      .catch(error => {
+        console.error('상품을 제거하던 중에 오류가 발생했습니다.', error);
+      });
+  };
+
   return (
     <div className="page-container">
       <div className="mypage-container">
         <div className="mypage-content">
-        <h2 className="mypage-title" onClick={() => navigate('/MyPage')}>마이페이지</h2>
+          <h2 className="mypage-title" onClick={() => navigate('/MyPage')}>마이페이지</h2>
           <ul className="nav-links-sides">
-          <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
+            <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
             <li><Link to="/favorites">Favorites / 나의 찜 목록</Link></li>
             <li><Link to="/MyDelivery">Delivery / 배송 상황</Link></li>
             <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
@@ -40,12 +63,12 @@ const FavoriteComponent = ({ favoriteItems, removeFromFavorites }) => {
             <tbody>
               {favoriteItems.map((item, index) => (
                 <tr key={index}>
-                  <td><img src={item.image} alt={item.name} className="favorites-item-image" /></td>
-                  <td>{item.name}</td>
+                  <td><img src={item.skuBarcode || ''} alt={item.skuName || '상품 이미지'} className="favorites-item-image" /></td>
+                  <td>{item.skuName || '상품명 없음'}</td>
                   <td>할인없음</td>
-                  <td>{item.price.toLocaleString()}원</td>
+                  <td>{(item.skuCost ? item.skuCost.toLocaleString() : '0')}원</td>
                   <td>
-                    <button className="remove-button" onClick={() => removeFromFavorites(item.id)}>
+                    <button className="remove-button" onClick={() => handleRemove(item.wishIdx)}>
                       <img src={deleteIcon} alt="Delete" className="delete-icon" />
                     </button>
                   </td>
@@ -58,5 +81,6 @@ const FavoriteComponent = ({ favoriteItems, removeFromFavorites }) => {
     </div>
   );
 }
+
 
 export default FavoriteComponent;
