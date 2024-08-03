@@ -42,7 +42,7 @@ const MyPage = () => {
       <div className="section-container">
         <div className="section-header">
           <div className="section-font">
-            <h1>My Info / 나의 정보</h1>
+            <h1>My Page / 나의 정보</h1>
           </div>
         </div>
         <div className="section-content">
