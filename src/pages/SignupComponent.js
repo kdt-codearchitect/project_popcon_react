@@ -6,8 +6,84 @@ import {
   useActionData
 } from 'react-router-dom';
 import sign_up from '../image/store_image/sign_up.png'
+import { useState,useEffect } from 'react';
+
+
+
+
 
 function SignupComponent() {
+
+  const [address, setAddress] = useState({
+    postcode: '',
+    roadAddress: '',
+    jibunAddress: '',
+    guide: ''
+  });
+
+  const [userid, setUserid] = useState("");
+  const [isIdUnique, setIsIdUnique] = useState(true);
+  const [idCheckMessage, setIdCheckMessage] = useState("");
+  
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+    script.async = true;
+    script.onload = () => {
+      console.log('Daum Postcode script loaded');
+    };
+    document.body.appendChild(script);
+  }, []);
+
+  const handleAddressChange = (e) => {
+    e.preventDefault();
+    new window.daum.Postcode({
+      oncomplete: function(data) {
+        var fullRoadAddr = data.roadAddress;
+        var extraRoadAddr = '';
+  
+        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+          extraRoadAddr += data.bname;
+        }
+        if (data.buildingName !== '' && data.apartment === 'Y') {
+          extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+        }
+        if (extraRoadAddr !== '') {
+          fullRoadAddr += ' (' + extraRoadAddr + ')';
+        }
+  
+        setAddress({
+          postcode: data.zonecode,
+          roadAddress: fullRoadAddr,
+          jibunAddress: data.jibunAddress,
+          guide: data.autoRoadAddress ? `(예상 도로명 주소: ${data.autoRoadAddress + extraRoadAddr})` 
+              : data.autoJibunAddress ? `(예상 지번 주소: ${data.autoJibunAddress})` 
+              : ''
+        });
+      }
+    }).open();
+  };
+  const idcheck = async (e) => {
+    e.preventDefault();
+    const response = await fetch(`http://localhost:8090/popcon/check-id?userid=${userid}`);
+    const result = await response.json();
+
+    if (response.ok) {
+      if (result.isUnique) {
+        setIsIdUnique(true);
+        console.log("아이디없음");
+        setIdCheckMessage("사용 가능한 아이디입니다.");
+      } else {
+        setIsIdUnique(false);
+        console.log("아이디있음");
+        setIdCheckMessage("이미 사용 중인 아이디입니다.");
+      }
+    } else {
+      setIsIdUnique(false);
+      setIdCheckMessage("아이디 중복 확인에 실패했습니다. 다시 시도해주세요.");
+    }
+    
+  };
 
   //실패경우1 - 400: Bad Request 발생시 에러처리
   const data = useActionData();
@@ -19,9 +95,10 @@ function SignupComponent() {
                 <img src={sign_up} alt=""/>
                 <Form method="post" className="signUp-form flex-sb flex-d-column">
                     <div className="signUp-name-box flex-sb">
-                        <input type="text" name="userid" placeholder="아이디"/>
-                        <button className="thema-btn-01">중복확인</button>
+                        <input type="text" name="userid" placeholder="아이디"  value={userid} onChange={(e) => setUserid(e.target.value)}/>
+                        <button className="thema-btn-04" onClick={idcheck}>중복확인</button>
                     </div>
+                    { <div className="error-message">{idCheckMessage}</div>}
                     <input type="password" name="password" placeholder="비밀번호"/>
                     <input type="password" placeholder="비밀번호 확인"/>
                     <input type="text" name="username" placeholder="이름"/>
@@ -41,10 +118,10 @@ function SignupComponent() {
                         </select>
                     </div>
                     <div className="signUp-address flex-sb">
-                        <input type="text" name="add1"/>
-                        <button className="thema-btn-01">주소찾기</button>
+                        <input type="text" name="add1" value={address.roadAddress}/>
+                        <button className="thema-btn-01" onClick={handleAddressChange}>주소찾기</button>
                     </div>
-                    <input type="text" name="add2"/>
+                    <input type="text" name="add2" />
                     <div className="signUp-button-box flex-sb">
                         <button className="thema-btn-01">회원가입</button>
                         <button className="thema-btn-03">취소</button>
