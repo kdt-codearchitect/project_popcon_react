@@ -101,6 +101,7 @@ export async function action({ request }) {
 
   const resData = await response.json();
   const token = resData.token;
+  console.log("token",token);
   localStorage.setItem('jwtAuthToken', token);
   localStorage.setItem('userid', authData.userid);
   
