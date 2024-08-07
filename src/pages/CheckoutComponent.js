@@ -33,23 +33,21 @@ const CheckoutComponent = () => {
     };
     document.body.appendChild(script);
 
-    // 고객 데이터 가져오기
-    axios.get('http://localhost:8090/popcon/PayOrder')
+    // 고객 데이터 가져오기 (임의로 customerIdx를 1로 설정)
+    const customerIdx = 1;
+    axios.get(`http://localhost:8090/popcon/Customer/${customerIdx}`)
       .then(response => {
-        if (Array.isArray(response.data)) {
-          setCustomer(response.data[0]); // 첫 번째 고객 데이터 사용
-        } else {
-          setCustomer(response.data);
-        }
+        setCustomer(response.data);
       })
       .catch(error => {
         console.error('There was an error fetching the customer data!', error);
       });
     
-    // 장바구니 데이터 가져오기
-    axios.get('http://localhost:8090/popcon/Cart')
+    // 장바구니 데이터 가져오기 (임의로 cartIdx를 1로 설정)
+    const cartIdx = 1;
+    axios.get(`http://localhost:8090/popcon/Cart/${cartIdx}`)
       .then(response => {
-        setCartItems(response.data);
+        setCartItems(response.data.cartItems);
       })
       .catch(error => {
         console.error('There was an error fetching the cart data!', error);
@@ -143,7 +141,7 @@ const CheckoutComponent = () => {
           </div>
           <div className="checkOut-delivery-info">
             {cartItems.map(item => (
-              <div className="co-delivery-item" key={item.skuIdx}>
+              <div className="co-delivery-item" key={item.cartItemIdx}>
                 <p>{item.skuName}</p>
                 <p>{item.skuType}</p>
                 <p>수량 /</p>

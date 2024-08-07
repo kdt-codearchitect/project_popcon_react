@@ -17,16 +17,16 @@ function ProductComponent() {
 
   const handleAddToCart = (product) => {
     const cartItem = {
-      customerIdx: 1, 
       skuIdx: product.skuIdx,
-      skuValue: 1 
+      skuValue: 1,
+      customerIdx: 1
     };
     axios.post('http://localhost:8090/popcon/Sku/addToCart', cartItem, { withCredentials: true })
       .then(response => {
-        console.log('Product added to cart:', response.data);
+        console.log('상품이 장바구니에 담겼습니다', response.data);
       })
       .catch(error => {
-        console.error('There was an error adding the product to the cart!', error);
+        console.error('상품이 장바구니에 담기면서 문제가 발생했습니다!', error);
       });
   };
 
@@ -37,10 +37,10 @@ function ProductComponent() {
     };
     axios.post('http://localhost:8090/popcon/Sku/addToWish', wishItem, { withCredentials: true })
       .then(response => {
-        console.log('Product added to wishlist:', response.data);
+        console.log('상품이 찜목록에 담겼습니다.', response.data);
       })
       .catch(error => {
-        console.error('There was an error adding the product to the wishlist!', error);
+        console.error('찜목록에 상품이 담기면서 오류가 발생했습니다!', error);
       });
   };
 

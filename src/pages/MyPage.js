@@ -10,7 +10,7 @@ const MyPage = () => {
     
     const fetchMembers = async () => {
       try {
-        const response = await fetch('http://localhost:8090/app/MyPage');  
+        const response = await fetch('http://localhost:8090/popcon/MyPage');  
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
