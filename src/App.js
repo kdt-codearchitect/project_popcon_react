@@ -10,12 +10,14 @@ import MyInfo from "./pages/MyInfo";
 import Cart from "./pages/Cart";
 import MyPage from "./pages/MyPage";
 import FavoriteComponent from "./pages/FavoriteComponent";
-import SignupComponent from "./pages/SignupComponent";
-import LoginComponent from "./pages/LoginComponent";
 import CheckoutComponent from './pages/CheckoutComponent';
 import RootLayout from "./pages/Root";
 import ErrorPage from './pages/Error';
 import './App.css';
+import LoginModal, { action as authAction } from './pages/LoginModal';
+import { tokenLoader } from './util/auth';
+import { action as logoutAction } from './pages/Logout';
+import SignupComponent, { action as signUpAction } from './pages/SignupComponent';
 
 const App = () => {
   const [userInfo, setUserInfo] = useState({
@@ -119,10 +121,13 @@ const App = () => {
       path: "/",
       element: <RootLayout />,
       errorElement: <ErrorPage />,
+      id: 'tokenRoot',
+      loader: tokenLoader,
       children: [
         { path: '/', element: <HomeComponent /> },
-        { path: '/signup', element: <SignupComponent /> },
-        { path: '/login', element: <LoginComponent /> },
+        { path: '/signup', element: <SignupComponent />, action: signUpAction},
+        { path: '/login', element: <LoginModal />, action: authAction },
+        { path: '/logout', action: logoutAction },
         { path: '/Sku', element: <ProductComponent addToCart={addToCart} addToFavorites={addToFavorites} /> },
         { path: '/product2', element: <ProductComponent2 addToCart={addToCart} addToFavorites={addToFavorites} /> },
         { path: '/product3', element: <ProductComponent3 addToCart={addToCart} addToFavorites={addToFavorites} /> },
