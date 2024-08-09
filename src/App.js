@@ -19,6 +19,7 @@ import { tokenLoader } from './util/auth';
 import { action as logoutAction } from './pages/Logout';
 import SignupComponent, { action as signUpAction } from './pages/SignupComponent';
 
+
 const App = () => {
   const [userInfo, setUserInfo] = useState({
     name: '',
@@ -121,6 +122,7 @@ const App = () => {
       path: "/",
       element: <RootLayout />,
       errorElement: <ErrorPage />,
+
       id: 'tokenRoot',
       loader: tokenLoader,
       children: [

@@ -15,6 +15,7 @@ const CheckoutComponent = () => {
     customerAdd: '',
     customerAddMore: ''
   });
+
   const [address, setAddress] = useState({
     postcode: '',
     roadAddress: '',
@@ -33,26 +34,27 @@ const CheckoutComponent = () => {
     };
     document.body.appendChild(script);
 
-    // 고객 데이터 가져오기
-    axios.get('http://localhost:8090/popcon/PayOrder')
+    // 고객 데이터 가져오기 (임의로 customerIdx를 1로 설정)
+    const customerIdx = 1;
+    axios.get(`http://localhost:8090/popcon/Customer/${customerIdx}`)
       .then(response => {
-        if (Array.isArray(response.data)) {
-          setCustomer(response.data[0]); // 첫 번째 고객 데이터 사용
-        } else {
-          setCustomer(response.data);
-        }
+        setCustomer(response.data);
       })
       .catch(error => {
-        console.error('There was an error fetching the customer data!', error);
+        console.error('고객 데이터를 가져오는데 오류가 발생했습니다.', error);
       });
     
-    // 장바구니 데이터 가져오기
-    axios.get('http://localhost:8090/popcon/Cart')
+    // 장바구니 데이터 가져오기 (임의로 customerIdx를 1로 설정)
+    axios.get(`http://localhost:8090/popcon/customer/${customerIdx}`)
       .then(response => {
-        setCartItems(response.data);
+        setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
+          ...item,
+          cartIdx: cart.cartIdx,
+          customerIdx: cart.customerIdx
+        }))));
       })
       .catch(error => {
-        console.error('There was an error fetching the cart data!', error);
+        console.error('장바구니 데이터를 가져오는데 오류가 발생했습니다.', error);
       });
   }, []);
 
@@ -143,12 +145,9 @@ const CheckoutComponent = () => {
           </div>
           <div className="checkOut-delivery-info">
             {cartItems.map(item => (
-              <div className="co-delivery-item" key={item.skuIdx}>
+              <div className="co-delivery-item" key={item.cartItemIdx}>
                 <p>{item.skuName}</p>
-                <p>{item.skuType}</p>
-                <p>수량 /</p>
-                <p>{item.skuValue}</p>
-                <p>무료배송/</p>
+                <p>수량: {item.skuValue}</p>
                 <p>{item.skuCost}원</p>
               </div>
             ))}
@@ -164,7 +163,7 @@ const CheckoutComponent = () => {
           </div>
           <div className="checkOut-pay-info checkOut-grid">
             <p>총 상품 가격</p>
-            <p>8,750,000원</p>
+            <p>{cartItems.reduce((total, item) => total + item.skuCost * item.skuValue, 0).toLocaleString()}원</p>
             <p>포인트 할인</p>
             <div className="co-point-box">
               <p>1,750,000</p>
