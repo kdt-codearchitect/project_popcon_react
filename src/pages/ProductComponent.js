@@ -19,9 +19,10 @@ function ProductComponent() {
     const cartItem = {
       skuIdx: product.skuIdx,
       skuValue: 1,
-      customerIdx: 1
+      customerIdx: 1,
+      cartIdx:1
     };
-    axios.post('http://localhost:8090/popcon/Sku/addToCart', cartItem, { withCredentials: true })
+    axios.post('http://localhost:8090/popcon/sku/addToCart', cartItem, { withCredentials: true })
       .then(response => {
         console.log('상품이 장바구니에 담겼습니다', response.data);
       })

@@ -7,10 +7,14 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    const customerIdx = 1;
-    axios.get(`http://localhost:8090/popcon/Cart`)
+    const customerIdx = 1; // customerIdx를 1로 설정
+    axios.get(`http://localhost:8090/popcon/customer/${customerIdx}`)
       .then(response => {
-        setCartItems(response.data);
+        setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
+          ...item,
+          cartIdx: cart.cartIdx,
+          customerIdx: cart.customerIdx
+        }))));
       })
       .catch(error => {
         console.error('카트에 제품데이터를 가져오는데 오류가 발생 했습니다', error);
@@ -26,20 +30,21 @@ const Cart = () => {
       console.error('냉장고에서 제품 가져오는데 오류가 발생 했습니다')
     })
   };
-  const removeFromCart = (cartIdx) => {
-    axios.delete(`http://localhost:8090/popcon/Cart/${cartIdx}`)
+  
+  const removeFromCart = (cartItemIdx) => {
+    axios.delete(`http://localhost:8090/popcon/cartitem/${cartItemIdx}`)
       .then(response => {
-        setCartItems(cartItems.filter(item => item.cartIdx !== cartIdx));
+        setCartItems(cartItems.filter(item => item.cartItemIdx !== cartItemIdx));
       })
       .catch(error => {
-        console.error('제품 데이터를 삭제하는데 오류가 발생 했습니다.', error);
+        console.error('제품 데이터를 삭제하는 데 오류가 발생했습니다.', error);
       });
   };
 
-  const updateQuantity = (cartIdx, skuValue) => {
-    axios.put(`http://localhost:8090/popcon/Cart/${cartIdx}`, { skuValue })
+  const updateQuantity = (cartItemIdx, skuValue) => {
+    axios.put(`http://localhost:8090/popcon/Cart/${cartItemIdx}`, { skuValue })
       .then(response => {
-        setCartItems(cartItems.map(item => item.cartIdx === cartIdx ? { ...item, skuValue } : item));
+        setCartItems(cartItems.map(item => item.cartItemIdx === cartItemIdx ? { ...item, skuValue } : item));
       })
       .catch(error => {
         console.error('수량 설정하는데 에러가 발생 했습니다.', error);
@@ -50,10 +55,10 @@ const Cart = () => {
     return cartItems.reduce((total, item) => total + item.skuCost * item.skuValue, 0);
   };
 
-  const handleQuantityChange = (cartIdx, event) => {
+  const handleQuantityChange = (cartItemIdx, event) => {
     const newQuantity = event.target.value;
     if (newQuantity >= 0) {
-      updateQuantity(cartIdx, newQuantity);
+      updateQuantity(cartItemIdx, newQuantity);
     }
   };
 
@@ -72,18 +77,18 @@ const Cart = () => {
         </thead>
         <tbody>
           {cartItems.map((item) => (
-            <tr key={item.cartIdx}>
+            <tr key={item.cartItemIdx}>
               <td><img src={item.skuBarcode} alt={item.skuName} className="cart-item-image" /></td>
               <td>{item.skuName}</td>
               <td>
                 <input
                   type="number"
                   value={item.skuValue}
-                  onChange={(event) => handleQuantityChange(item.cartIdx, event)}
+                  onChange={(event) => handleQuantityChange(item.cartItemIdx, event)}
                 />
               </td>
               <td>
-                <button className="remove-button" onClick={() => removeFromCart(item.cartIdx)}>
+                <button className="remove-button" onClick={() => removeFromCart(item.cartItemIdx)}>
                   <img src={deleteIcon} alt="삭제" className="delete-icon" />
                 </button>
               </td>
