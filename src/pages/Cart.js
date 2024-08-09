@@ -21,16 +21,6 @@ const Cart = () => {
       });
   }, []);
 
-  const Keep = (fridgeIdx) => {
-    axios.get('http://localhost:8090/popcon/Keep')
-    .then(response => {
-      setCartItems(response.data);
-    })
-    .catch(error =>{
-      console.error('냉장고에서 제품 가져오는데 오류가 발생 했습니다')
-    })
-  };
-  
   const removeFromCart = (cartItemIdx) => {
     axios.delete(`http://localhost:8090/popcon/cartitem/${cartItemIdx}`)
       .then(response => {
@@ -42,7 +32,7 @@ const Cart = () => {
   };
 
   const updateQuantity = (cartItemIdx, skuValue) => {
-    axios.put(`http://localhost:8090/popcon/Cart/${cartItemIdx}`, { skuValue })
+    axios.put(`http://localhost:8090/popcon/cartitem/${cartItemIdx}/quantity`, { skuValue })
       .then(response => {
         setCartItems(cartItems.map(item => item.cartItemIdx === cartItemIdx ? { ...item, skuValue } : item));
       })
@@ -51,6 +41,7 @@ const Cart = () => {
       });
   };
 
+  // calculateTotal 함수 추가
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + item.skuCost * item.skuValue, 0);
   };
