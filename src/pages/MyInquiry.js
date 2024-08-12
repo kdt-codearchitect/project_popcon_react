@@ -1,0 +1,117 @@
+import React,{useState,useEffect} from 'react';
+import './MyInquiry.css';
+import { Link } from 'react-router-dom';
+import MyInquiryModalComponent from './MyInquiryModal';
+
+var url = 'http://localhost:8090';
+
+const MyInquiryComponent=({currentThings})=>{
+    
+    // 모달창 상태 확인 (제목 선택)
+    const [isModalOpen,setIsModalOpen]=useState(false);
+    const [modalTitle, setModalTitle]=useState('');
+    const [modalText, setModalText]=useState('');
+    const [modalImage, setModalImage]=useState('');
+
+
+    const openModal=(title, text, image)=>{
+            setModalTitle(title);
+            setModalText(text);
+            setModalImage(image);
+            setIsModalOpen(true)}
+
+    const closeModal=()=>{setIsModalOpen(false);}
+
+    // 데이터, 로딩, 에러 상태확인
+    const[myInquiry, setMyinquiry] = useState([]); 
+    const[loading, setLoading]=useState(true);
+    const[error, setError]=useState(null);
+
+    
+    // 페이징 처리
+    const[currentPage,setCurrentPage]=useState(1);
+    const itemsPerPage = 7; //페이지당 아이템 수
+    
+    // 현재페이지 가져오기
+    const idxLastItem = currentPage*itemsPerPage;
+    const idxFirstItem = idxLastItem-itemsPerPage;
+    const currentItems = myInquiry.slice(idxFirstItem,idxLastItem);
+
+    // 전체페이지 계산 (라운딩업)
+    const totalPages = Math.ceil(myInquiry.length/itemsPerPage);
+
+    // 페이지 변경 함수
+    const handlePage = (pageNum) => {
+         setCurrentPage(pageNum);
+    }
+
+    useEffect(() => {
+        const fetchMyinquiry = async () =>{
+            try{
+                // DB에 비동기 데이터 요청
+                const MyinquiryResponse = await fetch(url+'/popcon/myinquiry');
+                    if(!MyinquiryResponse.ok){
+                    throw new Error('네트워크 상태가 불안정합니다.') //응답이 성공이 아닐 경우
+                    }
+                    const MyinquiryData  = await MyinquiryResponse.json();
+                    setMyinquiry(MyinquiryData); // DB 데이터 저장
+                }  catch(error){
+                    setError(error.message); // 에러 상태 업데이트
+                }   finally{
+                    setLoading(false); // 로딩 상태 업데이트 (중단)
+                }
+        };
+        fetchMyinquiry();
+    },[]);
+
+    console.log(myInquiry);
+    return(
+        <div className="myinquiry-page">
+            <div className="inquiry-h1"><h1> 나의 문의내역 </h1></div>
+            <div className="myinquiry-list">
+                <div className="myinquiry-list-headers margintop15">
+                    <div className="myinquiry-list-short m-right"><p>순번</p></div>
+                    <div className="myinquiry-list-long"><p>글제목</p></div>
+                    <div className="myinquiry-list-head"><p>작성일자</p></div> 
+                    <div className="myinquiry-list-head"><p>처리결과</p></div>
+                    <div className="myinquiry-list-head"><p>처리일자</p></div>
+                </div>
+                <div><hr className="horizon"></hr></div>
+
+                {/* DB 매핑 */}
+                {currentItems.map((customer_qna,idx)=>(
+                <div className="myinquiry-list-headers margintop10" key={customer_qna.idx}>
+                    <div className="myinquiry-list-short m-right"><p>{customer_qna.qnaIdx}</p></div>
+                    <div className="myinquiry-list-long ta-left"><p>
+                        <Link 
+                        onClick={() => openModal(customer_qna.qnaTitle, customer_qna.qnaText, customer_qna.qnaImage)} 
+                        style={{ cursor: 'pointer' }}
+                        >
+                                [{customer_qna.faqtypeIdx}] {customer_qna.qnaTitle}</Link></p></div>
+                    <div className="myinquiry-list-head"><p>{customer_qna.qnaDate}</p></div>   
+                    <div className="myinquiry-list-head"><p>대기중</p></div>    
+                    <div className="myinquiry-list-head"><p>---</p></div>    
+                </div>
+                ))}
+                {/* 페이징 매핑 */}
+                <div className="myinquiry-list-pages">
+                    <button onClick={()=>handlePage(currentPage-1)}     
+                    className="myinquiry-list-page"
+                    disabled={currentPage === 1}
+                    >◀</button>
+                    <p>{currentPage}</p>
+                    <button onClick={()=>handlePage(currentPage+1)}
+                    className="myinquiry-list-page"
+                    disabled={currentPage === totalPages}
+                    >▶</button>
+                    </div>
+        </div>
+            {/* 모달 컴포넌트 렌더링 */}
+            {isModalOpen && (
+                <MyInquiryModalComponent title={modalTitle} text={modalText} image={modalImage} onClose={closeModal} />
+            )}
+    </div>
+    )
+}
+
+export default MyInquiryComponent;

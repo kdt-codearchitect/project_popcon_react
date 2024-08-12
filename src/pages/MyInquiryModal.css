@@ -1,0 +1,96 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+   
+.modal-sample-bg{
+    background-color: none;
+    display:flex;
+    justify-content: center;
+}
+
+.modal-form-inquiry{
+    background-color: white;
+    height: 500px;
+    width: 550px;
+    border: 1px solid #9d9d9d;
+    border-radius: 16px;
+}
+.modal-faqedit-header h1{
+    color:black;
+    margin-top:5px;
+}
+.inquiry-category{
+    width: 300px;
+    padding-right:20px;
+}
+.modal-faqedit-title{
+    display:flex;
+    margin-bottom:10px;
+}
+.faqedit-title-txt{
+    width:241px;
+    height:30px;
+    padding-left:10px;
+    border-radius:4px;
+    border:1px solid #9d9d9d;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
+}
+.faqedit-title-txt:focus{
+    border-color: #FAE41C;
+}
+.modal-faqedit-txtara{
+    width:400px;
+    height:150px;
+    resize:none;
+    outline:none;
+    padding:10px;
+    border: 1px solid #9d9d9d;
+    border-radius:4px;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
+}
+.modal-faqedit-txtara:focus{
+    border-color:#FAE41C;
+}
+.faqedit-m-left{
+    margin-left: 10px
+}
+
+.gap{
+    gap:10px;
+}
+.myIq-q-logo{
+    background-color: black;
+    font-weight: 900;
+    margin-top:2px;
+    margin-right:12px;
+    padding-top:6px;
+    height: 26px;
+    width: 32px;
+    text-align: center;
+    color:#FAE41C;
+    margin-left:0;
+    border-radius: 30px;
+}
+.myIq-a-logo{
+    background-color: black;
+    font-weight: 900;
+    margin-top:4px;
+    padding-top:6px;
+    height: 26px;
+    width: 32px;
+    text-align: center;
+    color:#FAE41C;
+    margin-left:1px;
+    border-radius: 30px;
+}
+.modal-faqedit-pic{
+    border:1px solid #9d9d9d;
+    border-radius: 4px;
+    width: 420px;
+    height:150px;
+    margin-left:43px;
+    margin-bottom:10px;
+}
+.modal-faqedit-pic img{
+    opacity:0.5;
+}

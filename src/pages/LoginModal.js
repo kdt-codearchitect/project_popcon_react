@@ -46,7 +46,7 @@ const LoginModal = forwardRef((props, ref) => {
 
   return (
     <dialog ref={dialogRef} className="modal-login-box" onClick={handleClose}>
-      <div className="modal-content flex-sa flex-d-column">
+      <div className="modal-content flex-c flex-d-column">
         <FontAwesomeIcon icon={faXmark} className='modal-close' onClick={() => dialogRef.current.close()} />
         <div className="modal-login-img flex-sa flex-d-column">
           <img src={PopconG} alt="PopconG" />
@@ -58,8 +58,11 @@ const LoginModal = forwardRef((props, ref) => {
             <input type="password" name="password" placeholder="비밀번호" required />
           </div>
           {data?.error && <div className="error-message">{data.error}</div>}
+          <div className='remember-id-box'>
+            <input type="checkbox" id='id-checked' onChange={handleOnChange} checked={isRemember} placeholder='체크'/>
+            <label for='id-checked'>아아디 기억하기</label>
+          </div>
           <div className="modal-login-botton-box flex-sb">
-            <input type="checkbox" onChange={handleOnChange} checked={isRemember} placeholder='체크'></input>
             <button type="submit" className="thema-btn-01" onClick={modal_exit} >로그인</button>
             <Link className="flex-c thema-btn-02" to="/signup" onClick={modal_exit}>회원가입</Link>
           </div>
