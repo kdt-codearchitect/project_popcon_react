@@ -134,7 +134,7 @@ const App = () => {
         { path: '/product2', element: <ProductComponent2 addToCart={addToCart} addToFavorites={addToFavorites} /> },
         { path: '/product3', element: <ProductComponent3 addToCart={addToCart} addToFavorites={addToFavorites} /> },
         { path: '/refrigerator', element: <RefrigeratorComponent products={refrigeratorItems} /> },
-        { path: '/PayOrder', element: <CheckoutComponent cartItems={cartItems} userInfo={userInfo} /> },
+        { path: '/CheckOut', element: <CheckoutComponent /> },
         { path: '/MyInfo', element: <MyInfo userInfo={userInfo} updateUserInfo={updateUserInfo} /> },
         { path: '/MyPage', element: <MyPage userInfo={userInfo} setUserInfo={setUserInfo} /> },
         { path: '/orderhistory', element: <OrderHistoryComponent /> },
