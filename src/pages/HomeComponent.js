@@ -125,17 +125,17 @@ const HomeComponent = () => {
                     <div className="main-header-mymenu flex-sa">
                         <nav>
                             <ul className="flex-sa">
-                                <li><Link to="/Sku"><FontAwesomeIcon icon={faStore}/></Link></li>
+                                <li><Link to="/Sku" className="main-header-icon"><FontAwesomeIcon icon={faStore}/></Link></li>
                                 {!token &&
                                     <li><FontAwesomeIcon icon={faUser} onClick={show_modal}/></li>
                                 }
 
                                 {token && <Form action="/logout" method="post">
-                                    <li><FontAwesomeIcon icon={faDoorOpen}/></li>
+                                    <button id="logout-btn"><FontAwesomeIcon icon={faDoorOpen}/></button>
                                 </Form>
                                 }
 
-                                <li><Link to="/faq"><FontAwesomeIcon icon={faPhone}/></Link></li>
+                                <li><Link to="/faq" className="main-header-icon"><FontAwesomeIcon icon={faPhone}/></Link></li>
                             </ul>
                         </nav>
                         <LoginModal ref={xxx} />

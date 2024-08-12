@@ -79,11 +79,23 @@
   animation: popIn 0.35s forwards;
 }
 
-.main-header-mymenu a{
+.main-header-icon{
   color: white;
 }
 
-.main-header-mymenu a:hover{
+.main-header-icon:hover{
+  cursor: pointer;
+  color: #FAE41C;
+  animation: popIn 0.35s forwards;
+}
+
+#logout-btn{
+  background-color: rgba(0, 0, 0, 0.0);
+  color: white;
+  font-size: 1.2rem;
+}
+
+#logout-btn:hover{
   cursor: pointer;
   color: #FAE41C;
   animation: popIn 0.35s forwards;
