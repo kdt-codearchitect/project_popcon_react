@@ -1,0 +1,141 @@
+
+
+/* 문의내역 전체페이지 */
+.customer-service-page{
+    background-color: black;
+    justify-content: flex-start;
+    flex:1;
+}
+
+/* 문의내역 헤더 */
+.customer-service-page-title{
+    display:flex;
+    color:#FAE41C;
+}
+.title-block{
+    display:flex;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+}
+
+/* 문의검색과 버튼 */
+.customer-service-inputs{
+    display:flex;
+    justify-content: center;
+    gap: 5px;
+    width: 800px;
+    margin:0;
+    margin-bottom:40px;
+}
+.customer-service-search{
+    height:24px;
+    width:200px;
+    border-radius: 4px;
+}
+.customer-service-button{
+    background-color:#FAE41C;
+    border-radius: 4px;
+    height:24px;
+    width:60px;
+}
+/* 문의항목 */
+.nav-list{
+width: 100%;
+max-width: 800px;
+display:flex;
+justify-content: center;
+list-style-type: none;
+margin:0;
+padding:0;
+}
+.nav-list-link{
+    text-decoration: none;
+
+}
+.nav-list-link:hover{
+    color: #FAE41C;
+}
+
+/* 문의항목 아랫선 */
+.hover-li{
+    height: 40px;
+    width:  120px;
+    transition: border 0.5s ease;
+    border-bottom: 2px solid transparent;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hover-li a{
+    color:#7c7c7c;
+}
+.hover-li:hover {
+    border-color: #FAE41C;
+}
+.hover-li-selected{
+    height: 40px;
+    width:  120px;
+    text-align: center;
+    background-color: white;
+    border-bottom: 2px solid white;
+    border-radius: 4px 4px 0 0;
+    font-weight: 800;
+    color:black;
+}
+.hover-li-selected a{
+    color:black;
+}
+/* 문의내용 */
+.claim-list{
+    background-color: white;
+    border-radius: 12px;
+    height:350px;
+    width: 750px;
+    font-size: 0.8rem;
+
+}
+.claim-list-headers{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+}
+.horizon{
+    width:650px;
+}
+.claim-list-head{
+    height: 15px;
+    width:  120px;
+    align-items: center;
+    text-align: center;
+    color : #7c7c7c;
+    margin : 5px;
+}
+.claim-list-tm{
+    margin-top:20px;
+}
+.claim-list-head-long{
+    height: 15px;
+    width:  200px;
+    align-items: center;
+    color : #7c7c7c;
+}
+.ta-center{
+    text-align: center;
+}
+.claim-list-pages{
+    display:flex;
+    justify-content: center;
+    margin-top: 10px;
+    align-items: center;
+    color:#7c7c7c;
+}
+.claim-list-page{
+    color:#7c7c7c;
+    margin: 0 10px;
+}
+.claim-list-page:hover{
+    color:#FAE41C;
+}
