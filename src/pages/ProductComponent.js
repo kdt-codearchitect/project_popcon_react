@@ -4,45 +4,93 @@ import axios from 'axios';
 
 function ProductComponent() {
   const [products, setProducts] = useState([]);
+  const [customerIdx, setCustomerIdx] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:8090/popcon/Sku', { withCredentials: true })
-      .then(response => {
-        setProducts(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the products!', error);
-      });
+    // localStorage에서 customerIdx와 토큰을 가져옴
+    const storedCustomerIdx = localStorage.getItem('customerIdx');
+    const storedToken = localStorage.getItem('jwtAuthToken');
+
+    if (storedCustomerIdx && storedToken) {
+      setCustomerIdx(storedCustomerIdx);
+      setToken(storedToken);
+      console.log('Stored customerIdx:', storedCustomerIdx);
+      console.log('Stored token:', storedToken);
+
+      // 제품 목록을 가져옴 (axios 사용)
+      axios.get('http://localhost:8090/popcon/Sku')
+        .then(response => {
+          setProducts(response.data); // 제품 목록을 상태에 저장
+        })
+        .catch(error => {
+          console.error('제품을 가져오는 데 실패했습니다.', error);
+        });
+    } else {
+      console.error('로그인 정보가 없습니다. customerIdx 또는 token을 찾을 수 없습니다.');
+    }
   }, []);
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = async (product) => {
+    if (!customerIdx) return;
+
+    console.log('Adding to cart with token:', token);
+
     const cartItem = {
       skuIdx: product.skuIdx,
       skuValue: 1,
-      customerIdx: 1,
-      cartIdx:1
+      customerIdx: customerIdx,
+      cartIdx: customerIdx // 이 예제에서는 customerIdx와 cartIdx가 동일하다고 가정
     };
-    axios.post('http://localhost:8090/popcon/sku/addToCart', cartItem, { withCredentials: true })
-      .then(response => {
-        console.log('상품이 장바구니에 담겼습니다', response.data);
-      })
-      .catch(error => {
-        console.error('상품이 장바구니에 담기면서 문제가 발생했습니다!', error);
+
+    try {
+      const response = await fetch('http://localhost:8090/popcon/sku/addToCart', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cartItem)
       });
+
+      if (response.ok) {
+        console.log('상품이 장바구니에 성공적으로 담겼습니다');
+      } else {
+        console.error('상품이 장바구니에 담기면서 문제가 발생했습니다!');
+      }
+    } catch (error) {
+      console.error('상품이 장바구니에 담기면서 문제가 발생했습니다!', error);
+    }
   };
 
-  const handleAddToWishlist = (product) => {
+  const handleAddToWishlist = async (product) => {
+    if (!customerIdx) return;
+
+    console.log('Adding to wishlist with token:', token);
+
     const wishItem = {
-      customerIdx: 1, 
+      customerIdx: customerIdx,
       skuIdx: product.skuIdx
     };
-    axios.post('http://localhost:8090/popcon/Sku/addToWish', wishItem, { withCredentials: true })
-      .then(response => {
-        console.log('상품이 찜목록에 담겼습니다.', response.data);
-      })
-      .catch(error => {
-        console.error('찜목록에 상품이 담기면서 오류가 발생했습니다!', error);
+
+    try {
+      const response = await fetch('http://localhost:8090/popcon/Wish/add', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(wishItem)
       });
+
+      if (response.ok) {
+        console.log('상품이 찜목록에 성공적으로 담겼습니다.');
+      } else {
+        console.error('찜목록에 상품이 담기면서 오류가 발생했습니다!');
+      }
+    } catch (error) {
+      console.error('찜목록에 상품이 담기면서 오류가 발생했습니다!', error);
+    }
   };
 
   return (
