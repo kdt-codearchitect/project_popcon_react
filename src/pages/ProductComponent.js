@@ -19,8 +19,7 @@ function ProductComponent() {
     const cartItem = {
       skuIdx: product.skuIdx,
       skuValue: 1,
-      customerIdx: 1,
-      cartIdx:1
+      cartIdx: 1
     };
     axios.post('http://localhost:8090/popcon/sku/addToCart', cartItem, { withCredentials: true })
       .then(response => {
@@ -33,7 +32,6 @@ function ProductComponent() {
 
   const handleAddToWishlist = (product) => {
     const wishItem = {
-      customerIdx: 1, 
       skuIdx: product.skuIdx
     };
     axios.post('http://localhost:8090/popcon/Sku/addToWish', wishItem, { withCredentials: true })
@@ -51,6 +49,8 @@ function ProductComponent() {
         <div className="product-grid__container">
           {products.map(product => (
             <article key={product.skuIdx} className="product-card">
+              {/* 이미지 추가 부분 */}
+              <img src={product.imageUrl} alt={product.skuName} className="product-image" />
               <div className="product-card-content">
                 <h3 className="product-card-title">{product.skuName}</h3>
                 <div className="product-price-wrapper">
