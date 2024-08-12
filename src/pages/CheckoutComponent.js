@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './CheckoutComponent.css';
 import PopconB from "../image/store_image/PopconB.png";
 import checkout_labe1 from "../image/store_image/checkout_label01.png"; 
 import checkout_labe2 from "../image/store_image/checkout_label02.png";
 import checkout_labe3 from "../image/store_image/checkout_label03.png"; 
 import checkout_labe4 from "../image/store_image/checkout_label04.png";
+import { Payment, xxx } from "./payment";
+import { getAuthToken } from '../util/auth';
 
 const CheckoutComponent = () => {
   const [customer, setCustomer] = useState({
@@ -15,16 +16,20 @@ const CheckoutComponent = () => {
     customerAdd: '',
     customerAddMore: ''
   });
-
   const [address, setAddress] = useState({
     postcode: '',
     roadAddress: '',
     jibunAddress: '',
-    guide: ''
+    guide: '',
+    roadAddress_more: '' // 추가: 상세주소 필드
   });
-
   const [cartItems, setCartItems] = useState([]);
- 
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
+  const [editedPhone, setEditedPhone] = useState('');
+
+  // 총 상품 가격 불러오기 위한 변수 
+  const totalSumCost = cartItems.length > 0 ? cartItems[0].totalSumCost : 0;
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -33,34 +38,74 @@ const CheckoutComponent = () => {
       console.log('Daum Postcode script loaded');
     };
     document.body.appendChild(script);
-
-    // 고객 데이터 가져오기 (임의로 customerIdx를 1로 설정)
-    const customerIdx = 1;
-    axios.get(`http://localhost:8090/popcon/Customer/${customerIdx}`)
-      .then(response => {
-        setCustomer(response.data);
-      })
-      .catch(error => {
-        console.error('고객 데이터를 가져오는데 오류가 발생했습니다.', error);
-      });
-    
-    // 장바구니 데이터 가져오기 (임의로 customerIdx를 1로 설정)
-    axios.get(`http://localhost:8090/popcon/customer/${customerIdx}`)
-      .then(response => {
-        setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
-          ...item,
-          cartIdx: cart.cartIdx,
-          customerIdx: cart.customerIdx
-        }))));
-      })
-      .catch(error => {
-        console.error('장바구니 데이터를 가져오는데 오류가 발생했습니다.', error);
-      });
   }, []);
 
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      const token = getAuthToken();
+      try {
+        const response = await fetch('http://localhost:8090/popcon/findCustomer', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Customer data:", data); // 로그 출력
+          if (Array.isArray(data)) {
+            setCustomer(data[0]); // 첫 번째 고객 데이터 사용
+            setEditedPhone(data[0].customerPhone); // 초기 값 설정
+          } else {
+            setCustomer(data);
+            setEditedPhone(data.customerPhone); // 초기 값 설정
+          }
+        } else {
+          console.error('There was an error fetching the customer data!', response.status);
+        }
+      } catch (error) {
+        console.error('There was an error fetching the customer data!', error);
+      }
+    };
+
+    const fetchCartItems = async () => {
+      const token = getAuthToken();
+      try {
+        const response = await fetch('http://localhost:8090/popcon/findCart', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Cart data:", data); // 로그 출력
+          if (Array.isArray(data)) {
+            setCartItems(data); // 전체 배열 설정
+          } else {
+            setCartItems([]); // 빈 배열 설정
+          }
+        } else {
+          console.error('There was an error fetching the cart data!', response.status);
+        }
+      } catch (error) {
+ 
+        console.error('There was an error fetching the cart data!', error);
+        setCartItems([]); // 오류 발생 시 빈 배열로 설정
+        alert("로그인이 필요한 페이지 입니다.999")
+        // redirect("/")
+        window.location.href="/";
+      }
+    };
+
+    fetchCustomer();
+    fetchCartItems();
+  }, []);
+
+  // 주소 불러오기 API
   const handleAddressChange = () => {
     new window.daum.Postcode({
-      oncomplete: function(data) {
+      oncomplete: function (data) {
         var fullRoadAddr = data.roadAddress;
         var extraRoadAddr = '';
 
@@ -80,17 +125,39 @@ const CheckoutComponent = () => {
           jibunAddress: data.jibunAddress,
           guide: data.autoRoadAddress ? `(예상 도로명 주소: ${data.autoRoadAddress + extraRoadAddr})` 
               : data.autoJibunAddress ? `(예상 지번 주소: ${data.autoJibunAddress})` 
-              : ''
+              : '',
+          roadAddress_more: '' // 새로운 주소가 선택되면 상세주소 필드 초기화
         });
       }
     }).open();
+  };
+
+  console.log("3333333333333", xxx)
+  xxx.totalAmount = totalSumCost;
+
+  const handleEditPhoneClick = () => {
+    setIsEditingPhone(true);
+  };
+
+  const handlePhoneChange = (e) => {
+    setEditedPhone(e.target.value);
+  };
+
+  const handlePhoneBlur = () => {
+    setCustomer({ ...customer, customerPhone: editedPhone });
+    setIsEditingPhone(false);
+  };
+
+  // 숫자를 3자리 콤마로 포맷팅하는 함수
+  const formatNumber = (number) => {
+    return new Intl.NumberFormat().format(number);
   };
 
   return (
     <div className="checkOut-container flex-c flex-d-column">
       <div className="checkOut-title-box flex-c">
         <div className="title-box-text">
-          <img src={PopconB} alt="#"/>
+          <img src={PopconB} alt="#" />
           <h1>주문결제</h1>
         </div>
       </div>
@@ -98,18 +165,30 @@ const CheckoutComponent = () => {
       <div className="checkOut-contents flex-d-column">
         <div className="checkOut-contents-box flex-c flex-d-column">
           <div className="co-contents-title">
-            <img src={checkout_labe1} alt=""/>
+            <img src={checkout_labe1} alt="" />
             <h2>구매자 정보</h2>
           </div>
           <div className="checkOut-user-info checkOut-grid">
             <p>이름</p>
-            <p>{customer.customerName}</p>
+            <p>{customer.customerName || 'N/A'}</p>
             <p>이메일</p>
-            <p>{customer.customerEmail}</p>
+            <p>{customer.customerEmail || 'N/A'}</p>
             <p>휴대폰번호</p>
             <div className="co-user-input-box">
-              <input type="text" value={customer.customerPhone} readOnly />
-              <button>수정</button>
+              {isEditingPhone ? (
+                <input 
+                  type="text" 
+                  value={editedPhone} 
+                  onChange={handlePhoneChange}
+                  onBlur={handlePhoneBlur} 
+                  autoFocus
+                />
+              ) : (
+                <>
+                  <input type="text" value={customer.customerPhone || ''} readOnly />
+                  <button onClick={handleEditPhoneClick}>수정</button>
+                </>
+              )}
             </div>
             <p></p>
             <p>인증번호를 못 받았다면 1577-7011 번호 차단 및 스팸 설정을 확인해 주세요.</p>
@@ -120,17 +199,26 @@ const CheckoutComponent = () => {
       <div className="checkOut-contents flex-d-column">
         <div className="checkOut-contents-box flex-c flex-d-column">
           <div className="co-contents-title">
-            <img src={checkout_labe2} alt=""/>
+            <img src={checkout_labe2} alt="" />
             <h2>받는 사람 정보</h2>
             <button onClick={handleAddressChange}>배송지 변경</button>
           </div>
           <div className="checkOut-add-info checkOut-grid">
             <p>이름</p>
-            <p>{customer.customerName}</p>
+            <p>{customer.customerName || 'N/A'}</p>
             <p>배송주소</p>
-            <p>{address.roadAddress}</p>
-            <p>연락처</p>
-            <p>{customer.customerPhone}</p>
+            <p>{address.roadAddress || customer.customerAdd}</p>
+            <p>상세주소</p>
+            {address.roadAddress ? (
+              <input 
+                type="text" 
+                value={address.roadAddress_more} 
+                onChange={(e) => setAddress({ ...address, roadAddress_more: e.target.value })} 
+                placeholder="상세주소를 입력하세요"
+              />
+            ) : (
+              <p>{customer.customerAddMore}</p>
+            )}
             <p>배송 요청사항</p>
             <p>문 앞에 두고 가세요</p>
           </div>
@@ -140,17 +228,24 @@ const CheckoutComponent = () => {
       <div className="checkOut-contents flex-d-column">
         <div className="checkOut-contents-box flex-c flex-d-column">
           <div className="co-contents-title">
-            <img src={checkout_labe3} alt=""/>
+            <img src={checkout_labe3} alt="" />
             <h2>배송 정보</h2>
           </div>
           <div className="checkOut-delivery-info">
-            {cartItems.map(item => (
-              <div className="co-delivery-item" key={item.cartItemIdx}>
-                <p>{item.skuName}</p>
-                <p>수량: {item.skuValue}</p>
-                <p>{item.skuCost}원</p>
-              </div>
-            ))}
+            {Array.isArray(cartItems) && cartItems.length > 0 ? (
+              cartItems.map((item, index) => (
+                <div className="co-delivery-item" key={index}>
+                  <p>{item.skuName}</p>
+                  <p>{}</p>
+                  <p>수량 /</p>
+                  <p>{item.skuValue}</p>
+                  <p>무료배송/</p>
+                  <p>{formatNumber(item.skuCost)}원</p>
+                </div>
+              ))
+            ) : (
+              <p>장바구니가 비어 있습니다.</p>
+            )}
           </div>
         </div>
       </div>
@@ -158,23 +253,23 @@ const CheckoutComponent = () => {
       <div className="checkOut-contents flex-d-column">
         <div className="checkOut-contents-box flex-c flex-d-column">
           <div className="co-contents-title">
-            <img src={checkout_labe4} alt=""/>
+            <img src={checkout_labe4} alt="" />
             <h2>결제정보</h2>
           </div>
           <div className="checkOut-pay-info checkOut-grid">
             <p>총 상품 가격</p>
-            <p>{cartItems.reduce((total, item) => total + item.skuCost * item.skuValue, 0).toLocaleString()}원</p>
+            <p>{formatNumber(totalSumCost)}원</p>
             <p>포인트 할인</p>
             <div className="co-point-box">
               <p>1,750,000</p>
               <button className="thema-btn-01">사용</button>
             </div>
             <p>배송비</p>
-            <p>3000원</p>
+            <p>3,000원</p>
             <p>팝콘 캐시</p>
             <p>팝콘 캐시</p>
-            <p>결제 방법</p>
-            <div className="checkOut-method">
+            {/* <p>결제 방법</p> */}
+            {/* <div className="checkOut-method">
               <div>
                 <input type="checkbox" id="kakaoPay"/>
                 <label htmlFor="kakaoPay">카카오페이</label>
@@ -199,12 +294,12 @@ const CheckoutComponent = () => {
                 <input type="checkbox" id="mobilePay"/>
                 <label htmlFor="mobilePay">휴대폰결제</label>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
       <div className="checkOut-btn-box flex-sb">
-        <button className="thema-btn-01">주문하기</button>
+        <Payment /> 
         <button className="thema-btn-02">뒤로가기</button>
       </div>
     </div>

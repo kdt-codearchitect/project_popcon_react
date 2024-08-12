@@ -57,27 +57,6 @@ input:focus{
     outline: 1px solid #FAE41C;
 }
 
-.thema-btn-01{
-    color: #5F5F5F;
-    background-color: #FAE41C;
-    border-radius: 4px;
-    font-weight: bold;
-}
-
-.thema-btn-02{
-    color: #D9D9D9;
-    background-color: #4C4C4C;
-    border-radius: 4px;
-    font-weight: bold;
-}
-
-.thema-btn-03{
-    color: #D9D9D9;
-    background-color: #828282;
-    border-radius: 4px;
-    font-weight: bold;  
-}
-
 .thema-font-01{
     color: #FAE41C;
 }

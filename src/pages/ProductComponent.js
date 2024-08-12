@@ -37,9 +37,11 @@ function ProductComponent() {
     }
   
     const cartItem = {
+
       cartIdx: cartIdx, // 장바구니 식별자
       skuIdx: product.skuIdx, // 상품 식별자
       skuValue: 1  // 기본 수량을 1로 설정
+
     };
   
     console.log('장바구니에 추가할 데이터:', cartItem); // 디버깅용 로그
@@ -57,8 +59,10 @@ function ProductComponent() {
 
   const handleAddToWishlist = (product) => {
     const wishItem = {
+
       skuIdx: product.skuIdx,
       customerIdx: customerIdx  // 찜하기를 할 때도 customerIdx 사용
+
     };
 
     axios.post('http://localhost:8090/popcon/addToWish', wishItem, { withCredentials: true })
@@ -78,6 +82,8 @@ function ProductComponent() {
         <div className="product-grid__container">
           {products.map(product => (
             <article key={product.skuIdx} className="product-card">
+              {/* 이미지 추가 부분 */}
+              <img src={product.imageUrl} alt={product.skuName} className="product-image" />
               <div className="product-card-content">
                 <h3 className="product-card-title">{product.skuName}</h3>
                 <div className="product-price-wrapper">

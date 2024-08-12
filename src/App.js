@@ -18,6 +18,9 @@ import LoginModal, { action as authAction } from './pages/LoginModal';
 import { tokenLoader } from './util/auth';
 import { action as logoutAction } from './pages/Logout';
 import SignupComponent, { action as signUpAction } from './pages/SignupComponent';
+import FaqComponent from './pages/FaqComponent';
+import InquiryComponent from './pages/Inquiry';
+import MyInquiryComponent from './pages/MyInquiry';
 
 
 const App = () => {
@@ -134,12 +137,15 @@ const App = () => {
         { path: '/product2', element: <ProductComponent2 addToCart={addToCart} addToFavorites={addToFavorites} /> },
         { path: '/product3', element: <ProductComponent3 addToCart={addToCart} addToFavorites={addToFavorites} /> },
         { path: '/refrigerator', element: <RefrigeratorComponent products={refrigeratorItems} /> },
-        { path: '/PayOrder', element: <CheckoutComponent cartItems={cartItems} userInfo={userInfo} /> },
+        { path: '/CheckOut', element: <CheckoutComponent /> },
         { path: '/MyInfo', element: <MyInfo userInfo={userInfo} updateUserInfo={updateUserInfo} /> },
         { path: '/MyPage', element: <MyPage userInfo={userInfo} setUserInfo={setUserInfo} /> },
         { path: '/orderhistory', element: <OrderHistoryComponent /> },
         { path: '/Wish', element: <FavoriteComponent favoriteItems={favoriteItems} removeFromFavorites={removeFromFavorites} /> },
-        { path: '/Cart', element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} handleCheckout={handleCheckout} /> }
+        { path: '/Cart', element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} handleCheckout={handleCheckout} /> },
+        { path: '/faq', element: <FaqComponent/>},
+        { path: '/makeInquiry', element: <InquiryComponent/>},
+        { path: '/myInquiry', element: <MyInquiryComponent/>}
       ]
     }
   ]);

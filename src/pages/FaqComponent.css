@@ -1,0 +1,136 @@
+
+/* 페이지 헤더 */
+.inquiry-header{
+    display:flex;
+    justify-content: flex-end;
+    align-items: center;
+    width:600px;
+}
+/* 자주묻는질문 */
+.inquiry-h1{
+    color:#FAE41C;
+    width:40%;
+    text-align: center;
+}
+/* 문의신청 버튼 */
+.inquiry-button{
+    width:30%;
+    display:flex;
+    justify-content: flex-end;
+}
+.my-inquiry-button{
+    height: 35px;
+    width: 100px;
+}
+
+/* FAQ List */
+.faq-list{
+    background-color: white;
+    border-radius: 12px;
+    width: 750px;
+    font-size: 0.8rem;
+}
+
+/* 문의 Question */
+.faq-q{
+    padding: 10px 30px;
+    padding-bottom:5;
+    border-bottom: 1px solid #d9d9d9;
+    cursor: pointer;
+}
+
+.faq-q-head{
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+} 
+.faq-q p:nth-child(2){
+    margin-left:20px;
+}
+.faq-q p:nth-child(3){
+    margin-left:5px;
+}
+.faq-q-logo{
+    color:black;
+    background-color: #FAE41C;
+    border: 2px solid #FAE41C;
+    font-weight: 900;
+    border-radius: 20px;
+    text-align: center;
+    padding: 3px 6px 6px 6px;
+    height: 12px;
+}
+
+.faq-line{
+    width:650px;
+    margin-right:40px;
+}
+/* 문의답변 Answer */
+.faq-a{
+    padding: 0px 30px;
+    margin-top:10;
+    background-color: #FAE41C;
+
+}
+.faq-a-head{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+    margin-bottom:10px;
+} 
+.faq-a-logo{
+    color:black;
+    font-weight: 900;
+    border-radius: 20px;
+    /* border: 2px solid black; */
+    text-align: center;
+    padding: 3px 6px 6px 6px;
+    height: 12px;
+}
+.faq-a p:nth-child(2){
+    margin-left:20px;
+    margin-right:20px;
+}
+.faq-a p:nth-child(3){
+    margin-left:5px;
+}
+.faq-link{
+    color:black;
+}
+.faq-link:hover{
+    background-color: #FAE41C;
+}
+
+/* 다랍다운 화살표 */
+.fas{
+    font-size: 1.5rem;
+    margin-top:10px;
+}
+.faq-expand{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin-top:5px;
+    margin-bottom:10px;
+    text-decoration: none;
+    color:black;
+}
+.faq-expand button{
+    background-color: white;
+}
+.faq-expand button:hover{
+    color:#FAE41C;
+}
+.faq-expand-up{
+    margin-top:15px;
+}
+.faq-expand-up:hover{  
+    color: #FAE41C;
+}
+.faq-expand:hover{  
+    color: #FAE41C;
+}
+.faq-expand-down{
+    font-size: 0.8rem;
+    margin-left: 5px;
+}

@@ -1,0 +1,105 @@
+
+a{
+    color:black;
+}
+a:hover{
+    color:#ffc800;
+}
+/* 나의문의 전체페이지 */
+.myinquiry-page{
+    background-color: black;
+    flex:1;    
+    display:flex;
+    justify-content: flex-start;   
+    align-items: center;
+    flex-direction: column;
+    margin-top: 0;
+}
+.inquiry-h1{
+    color:#FAE41C;
+    text-align: center;
+}
+.inquiry-h1 h1{
+    padding:0;
+    margin-top: 20px;
+    margin-bottom:15px;
+}
+.customer-service-search{
+    margin-top:10px;
+    margin-bottom: 30px;
+}
+.customer-service-search input{
+    border-radius: 4px;
+    width:270px;
+    padding:5px;
+    padding-left:8px;
+}
+.myinquiry-list{
+    background-color: white;
+    border-radius:16px;
+    width:880px;
+    height:400px;
+}
+.margintop15{
+    margin-top:25px;
+}
+.margintop10{
+    margin-top:10px;
+}
+.margintop5{
+    margin-top:5px;
+}
+.myinquiry-list-headers{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.myinquiry-list-short{
+    width:60px;
+    text-align: center;
+}
+.m-right{
+    margin-right: 10px;
+}
+.myinquiry-list-head{
+    text-align: center;
+    width:110px;
+}
+.myinquiry-list-long{
+    width:310px;
+    text-align: center;
+}
+.ta-left{
+    text-align: left;
+}
+.horizon{
+    width:800px;
+}
+.myinquiry-list-pages{
+    display:flex;
+    justify-content: center;
+    margin-top: 20px;
+    align-items: center;    
+    color:#7c7c7c;
+    font-size: 0.8rem;
+
+}
+.myinquiry-list-page{
+    background-color: white;
+    color:#7c7c7c;
+    margin: 0 5px 2px;
+}
+.myinquiry-list-page:hover{
+    color:#FAE41C;
+}
+
+.myinquiry-list-page:disabled {
+    color: #7c7c7c; 
+    opacity: 0.5; /* 비활성화 시 투명도 조절 */
+}
+.myinquiry-list-page:disabled:hover {
+    background-color: inherit;
+    cursor: default;
+}
