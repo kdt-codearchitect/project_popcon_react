@@ -12,39 +12,37 @@ function ProductComponent() {
     const storedCustomerIdx = localStorage.getItem('customerIdx');
     const storedToken = localStorage.getItem('jwtAuthToken');
 
-    // 로그인된 경우에만 customerIdx와 token을 상태에 저장
     if (storedCustomerIdx && storedToken) {
       setCustomerIdx(storedCustomerIdx);
       setToken(storedToken);
       console.log('Stored customerIdx:', storedCustomerIdx);
       console.log('Stored token:', storedToken);
-    } else {
-      console.log('로그인되지 않은 사용자');
-    }
 
-    // 제품 목록을 가져옴 (로그인 여부와 상관없이)
-    axios.get('http://localhost:8090/popcon/Sku')
-      .then(response => {
-        setProducts(response.data); // 제품 목록을 상태에 저장
-      })
-      .catch(error => {
-        console.error('제품을 가져오는 데 실패했습니다.', error);
-      });
+      // 제품 목록을 가져옴 (axios 사용)
+      axios.get('http://localhost:8090/popcon/Sku')
+        .then(response => {
+          setProducts(response.data); // 제품 목록을 상태에 저장
+        })
+        .catch(error => {
+          console.error('제품을 가져오는 데 실패했습니다.', error);
+        });
+    } else {
+      console.error('로그인 정보가 없습니다. customerIdx 또는 token을 찾을 수 없습니다.');
+    }
   }, []);
 
   const handleAddToCart = async (product) => {
-    if (!customerIdx) {
-      console.error('로그인이 필요합니다.');
-      return;
-    }
+    if (!customerIdx) return;
 
     console.log('Adding to cart with token:', token);
 
     const cartItem = {
       skuIdx: product.skuIdx,
       skuValue: 1,
+
       customerIdx: customerIdx,
       cartIdx: customerIdx // 이 예제에서는 customerIdx와 cartIdx가 동일하다고 가정
+
     };
 
     try {
@@ -68,17 +66,15 @@ function ProductComponent() {
   };
 
   const handleAddToWishlist = async (product) => {
-    if (!customerIdx) {
-      console.error('로그인이 필요합니다.');
-      return;
-    }
+    if (!customerIdx) return;
 
     console.log('Adding to wishlist with token:', token);
 
     const wishItem = {
+
       customerIdx: customerIdx,
-      skuIdx: product.skuIdx,
-      wishIdx: customerIdx
+
+      skuIdx: product.skuIdx
     };
 
     try {
@@ -107,7 +103,7 @@ function ProductComponent() {
         <div className="product-grid__container">
           {products.map(product => (
             <article key={product.skuIdx} className="product-card">
-              {product.promotion && <div className="product-badge">{product.promotion}</div>}
+              {/* 이미지 추가 부분 */}
               <img src={product.imageUrl} alt={product.skuName} className="product-image" />
               <div className="product-card-content">
                 <h3 className="product-card-title">{product.skuName}</h3>

@@ -4,54 +4,28 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import deleteIcon from "../image/Delete.png"; 
 
-const FavoriteComponent = () => {
+const FavoriteComponent = ({ removeFromFavorites }) => {
   const [favoriteItems, setFavoriteItems] = useState([]);
-  const [customerIdx, setCustomerIdx] = useState(null);
-  const [token, setToken] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // localStorage에서 customerIdx와 토큰을 가져옴
-    const storedCustomerIdx = localStorage.getItem('customerIdx');
-    const storedToken = localStorage.getItem('jwtAuthToken');
-
-    if (storedCustomerIdx && storedToken) {
-      setCustomerIdx(storedCustomerIdx);
-      setToken(storedToken);
-      console.log('Stored customerIdx:', storedCustomerIdx);
-      console.log('Stored token:', storedToken);
-
-      // 로그인한 사용자의 찜 목록을 가져옴 (axios 사용)
-      axios.get(`http://localhost:8090/popcon/Wish/${storedCustomerIdx}`, {
-        headers: {
-          'Authorization': `Bearer ${storedToken}`,
-          'Content-Type': 'application/json'
-        }
-      })
+    axios.get('http://localhost:8090/popcon/Wish')
       .then(response => {
         setFavoriteItems(response.data);
       })
       .catch(error => {
         console.error('상품 정보를 불러오는 중에 오류가 발생 했습니다!', error);
       });
-    } else {
-      console.error('로그인 정보가 없습니다. customerIdx 또는 token을 찾을 수 없습니다.');
-    }
   }, []);
 
   const handleRemove = (wishIdx) => {
-    axios.delete(`http://localhost:8090/popcon/Wish/delete/${wishIdx}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(() => {
-      setFavoriteItems(prevItems => prevItems.filter(item => item.wishIdx !== wishIdx));
-    })
-    .catch(error => {
-      console.error('상품을 제거하던 중에 오류가 발생했습니다.', error);
-    });
+    axios.delete(`http://localhost:8090/popcon/Wish/delete/${wishIdx}`)
+      .then(() => {
+        setFavoriteItems(prevItems => prevItems.filter(item => item.wishIdx !== wishIdx));
+      })
+      .catch(error => {
+        console.error('상품을 제거하던 중에 오류가 발생했습니다.', error);
+      });
   };
 
   return (
@@ -107,5 +81,6 @@ const FavoriteComponent = () => {
     </div>
   );
 }
+
 
 export default FavoriteComponent;
