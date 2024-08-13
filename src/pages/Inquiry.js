@@ -5,11 +5,12 @@ import image_icon from '../image/image_icon.png';
 
 // 문의 등록하기
 const InquiryComponent = () => {
-
+    var name = localStorage.getItem('userid');
     // 데이터, 로딩, 에러 상태확인
     const[inquiry, setInquiry] = useState({
         faqtypeIdx:'1',
-        customerIdx:'1',        
+        customerIdx: '',        
+        customerId: name,        
         qnaTitle:'',
         qnaText:'',
         qnaPicture:'',
@@ -17,6 +18,10 @@ const InquiryComponent = () => {
     }); 
     const[loading, setLoading] = useState(true);
     const[error, setError] = useState(null);
+    // const[userid,setUserid] = useState(""); //아이디 가져오기 위한 상태확인
+    // setUserid(name);
+    console.log("userid: ", name);
+
 
     // 링크 이동을 위한 네비게이션
     const navigate = useNavigate();
@@ -62,7 +67,7 @@ const InquiryComponent = () => {
 
     // 등록하기 기능 (JSON 정보 전송)
     const handleSubmit =() =>{
-        
+
         //문의신청 POST 데이터 전송 [JSON 처리]
         fetch('http://localhost:8090/popcon/ask',{
                method: 'POST',
@@ -85,7 +90,7 @@ const InquiryComponent = () => {
                 console.log('Error', error);
             })
 
-
+            console.log(inquiry);
         }
         
 

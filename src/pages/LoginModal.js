@@ -107,7 +107,11 @@ export async function action({ request }) {
   console.log("token",token);
   localStorage.setItem('jwtAuthToken', token);
   localStorage.setItem('userid', authData.userid);
+
   localStorage.setItem('customerIdx', resData.customerIdx);
+
+  console.log(authData.userid);
+
   
   return redirect('/');
 }
