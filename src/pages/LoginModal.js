@@ -107,11 +107,11 @@ export async function action({ request }) {
   console.log("token",token);
   localStorage.setItem('jwtAuthToken', token);
   localStorage.setItem('userid', authData.userid);
-<<<<<<< HEAD
+
   localStorage.setItem('customerIdx', resData.customerIdx);
-=======
+
   console.log(authData.userid);
->>>>>>> 19918b7 (qna 타임스탬프 수정)
+
   
   return redirect('/');
 }
