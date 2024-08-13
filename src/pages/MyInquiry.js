@@ -12,7 +12,8 @@ const MyInquiryComponent=({currentThings})=>{
     const [modalTitle, setModalTitle]=useState('');
     const [modalText, setModalText]=useState('');
     const [modalImage, setModalImage]=useState('');
-
+    
+    
 
     const openModal=(title, text, image)=>{
             setModalTitle(title);
@@ -36,6 +37,7 @@ const MyInquiryComponent=({currentThings})=>{
     const idxLastItem = currentPage*itemsPerPage;
     const idxFirstItem = idxLastItem-itemsPerPage;
     const currentItems = myInquiry.slice(idxFirstItem,idxLastItem);
+
 
     // 전체페이지 계산 (라운딩업)
     const totalPages = Math.ceil(myInquiry.length/itemsPerPage);
@@ -63,8 +65,9 @@ const MyInquiryComponent=({currentThings})=>{
         };
         fetchMyinquiry();
     },[]);
-
+   
     console.log(myInquiry);
+  
     return(
         <div className="myinquiry-page">
             <div className="inquiry-h1"><h1> 나의 문의내역 </h1></div>
