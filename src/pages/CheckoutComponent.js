@@ -26,9 +26,13 @@ const CheckoutComponent = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isEditingPhone, setIsEditingPhone] = useState(false);
   const [editedPhone, setEditedPhone] = useState('');
+  
 
   // 총 상품 가격 불러오기 위한 변수 
   const totalSumCost = cartItems.length > 0 ? cartItems[0].totalSumCost : 0;
+
+  
+
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -40,11 +44,14 @@ const CheckoutComponent = () => {
     document.body.appendChild(script);
   }, []);
 
+
+
   useEffect(() => {
+    console.log("aaaaaaa",localStorage.getItem('customerIdx'));
     const fetchCustomer = async () => {
       const token = getAuthToken();
       try {
-        const response = await fetch('http://localhost:8090/popcon/findCustomer', {
+        const response = await fetch(`http://localhost:8090/popcon/findCustomer/${CustomerIdx}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`
@@ -67,11 +74,11 @@ const CheckoutComponent = () => {
         console.error('There was an error fetching the customer data!', error);
       }
     };
-
+    
     const fetchCartItems = async () => {
       const token = getAuthToken();
       try {
-        const response = await fetch('http://localhost:8090/popcon/findCart', {
+        const response = await fetch(`http://localhost:8090/popcon/findCart/${CustomerIdx}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`
