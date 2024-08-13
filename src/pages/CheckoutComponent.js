@@ -30,7 +30,7 @@ const CheckoutComponent = () => {
 
   // 총 상품 가격 불러오기 위한 변수 
   const totalSumCost = cartItems.length > 0 ? cartItems[0].totalSumCost : 0;
-
+  const CustomerIdx = localStorage.getItem('customerIdx');
   
 
 
