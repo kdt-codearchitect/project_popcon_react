@@ -3,7 +3,7 @@ import './CheckoutComponent.css';
 
 const xxx = {
     storeId: "store-b0ebe037-6ace-4169-a208-a5e368cbe5ec",
-    paymentId: "testlzl4f9xe",
+    paymentId: "testlzl4f9xe1",
     orderName: "테스트 결제",
     totalAmount: 100,
     currency: "KRW",
