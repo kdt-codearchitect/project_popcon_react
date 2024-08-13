@@ -5,49 +5,24 @@ import deleteIcon from '../image/Delete.png';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
-  const [customerIdx, setCustomerIdx] = useState(null);
-  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    // localStorage에서 customerIdx와 토큰을 가져옴
-    const storedCustomerIdx = localStorage.getItem('customerIdx');
-    const storedToken = localStorage.getItem('jwtAuthToken');
-
-    if (storedCustomerIdx && storedToken) {
-      setCustomerIdx(storedCustomerIdx);
-      setToken(storedToken);
-      console.log('Stored customerIdx:', storedCustomerIdx);
-      console.log('Stored token:', storedToken);
-
-      // 로그인한 사용자의 카트를 가져옴 (axios 사용)
-      axios.get(`http://localhost:8090/popcon/customer/${storedCustomerIdx}`, {
-        headers: {
-          'Authorization': `Bearer ${storedToken}`,
-          'Content-Type': 'application/json'
-        }
+    const customerIdx = 1; // customerIdx를 1로 설정
+    axios.get(`http://localhost:8090/popcon/customer/${customerIdx}`)
+      .then(response => {
+        setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
+          ...item,
+          cartIdx: cart.cartIdx,
+          customerIdx: cart.customerIdx
+        }))));
       })
-        .then(response => {
-          setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
-            ...item,
-            cartIdx: cart.cartIdx,
-            customerIdx: cart.customerIdx
-          }))));
-        })
-        .catch(error => {
-          console.error('카트에 제품데이터를 가져오는데 오류가 발생 했습니다', error);
-        });
-    } else {
-      console.error('로그인 정보가 없습니다. customerIdx 또는 token을 찾을 수 없습니다.');
-    }
+      .catch(error => {
+        console.error('카트에 제품데이터를 가져오는데 오류가 발생 했습니다', error);
+      });
   }, []);
 
   const removeFromCart = (cartItemIdx) => {
-    axios.delete(`http://localhost:8090/popcon/cartitem/${cartItemIdx}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
+    axios.delete(`http://localhost:8090/popcon/cartitem/${cartItemIdx}`)
       .then(response => {
         setCartItems(cartItems.filter(item => item.cartItemIdx !== cartItemIdx));
       })
@@ -57,12 +32,7 @@ const Cart = () => {
   };
 
   const updateQuantity = (cartItemIdx, skuValue) => {
-    axios.put(`http://localhost:8090/popcon/cartitem/${cartItemIdx}/quantity`, { skuValue }, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
+    axios.put(`http://localhost:8090/popcon/cartitem/${cartItemIdx}/quantity`, { skuValue })
       .then(response => {
         setCartItems(cartItems.map(item => item.cartItemIdx === cartItemIdx ? { ...item, skuValue } : item));
       })
@@ -71,6 +41,7 @@ const Cart = () => {
       });
   };
 
+  // calculateTotal 함수 추가
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + item.skuCost * item.skuValue, 0);
   };
