@@ -39,10 +39,8 @@ function ProductComponent() {
     const cartItem = {
       skuIdx: product.skuIdx,
       skuValue: 1,
-
       customerIdx: customerIdx,
       cartIdx: customerIdx // 이 예제에서는 customerIdx와 cartIdx가 동일하다고 가정
-
     };
 
     try {
@@ -71,10 +69,9 @@ function ProductComponent() {
     console.log('Adding to wishlist with token:', token);
 
     const wishItem = {
-
       customerIdx: customerIdx,
-
-      skuIdx: product.skuIdx
+      skuIdx: product.skuIdx,
+      wishIdx: customerIdx
     };
 
     try {
@@ -103,7 +100,8 @@ function ProductComponent() {
         <div className="product-grid__container">
           {products.map(product => (
             <article key={product.skuIdx} className="product-card">
-              {/* 이미지 추가 부분 */}
+            
+              {product.promotion && <div className="product-badge">{product.promotion}</div>}
               <img src={product.imageUrl} alt={product.skuName} className="product-image" />
               <div className="product-card-content">
                 <h3 className="product-card-title">{product.skuName}</h3>
