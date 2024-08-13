@@ -131,7 +131,7 @@
 .main-title-text p:nth-child(1){
   font-size: 3rem;
   font-weight: 700;
-  /* text-shadow: 0px 0px 2px black; */
+  text-shadow: 0px 0px 2px black;
 }
 .main-title-text p:nth-child(2){
   margin-top: 20px;
