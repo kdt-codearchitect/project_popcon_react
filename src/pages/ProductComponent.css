@@ -84,24 +84,3 @@
   border-bottom: 1px solid #ddd;
   margin-bottom: 10px;
 }
-
-.floating-menu{
-  width: 100px;
-  height: 200px;
-  border: 1px solid #82828274;
-  border-radius: 15px;
-  position: fixed;
-  right: 60px;
-  top: 185px;
-}
-
-.floating-menu a{
-  font-size: 0.8rem;
-  color: #828282;
-}
-
-.floating-menu-top{
-  width: 85%;
-  height: 50px;
-  border-bottom: 1px solid #82828274;
-}
