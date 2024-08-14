@@ -5,12 +5,14 @@ import image_icon from '../image/image_icon.png';
 
 // 문의 등록하기
 const InquiryComponent = () => {
-    var name = localStorage.getItem('userid');
+    var customerIdx = localStorage.getItem('customerIdx');
+    var customerId = localStorage.getItem('userid');
+
     // 데이터, 로딩, 에러 상태확인
     const[inquiry, setInquiry] = useState({
         faqtypeIdx:'1',
-        customerIdx: '',        
-        customerId: name,        
+        customerIdx: customerIdx,        
+        customerId: customerId,        
         qnaTitle:'',
         qnaText:'',
         qnaPicture:'',
@@ -20,7 +22,8 @@ const InquiryComponent = () => {
     const[error, setError] = useState(null);
     // const[userid,setUserid] = useState(""); //아이디 가져오기 위한 상태확인
     // setUserid(name);
-    console.log("userid: ", name);
+    console.log("customerIdx: ", customerIdx);
+    console.log("customerId: ", customerId);
 
 
     // 링크 이동을 위한 네비게이션
@@ -136,7 +139,7 @@ const InquiryComponent = () => {
             </div>
             <div className="inquiry-submit-buttons">
                 <button type="submit" className="thema-btn-01 inquiry-register" onClick={handleSubmit}>등록</button>
-                <button type="submit" className="thema-btn-02 inquiry-tempsave">임시저장</button>
+                <button type="submit" className="thema-btn-02 inquiry-tempsave"><Link to="/faq">취소</Link></button>
             </div>
         </div>
         </div>
