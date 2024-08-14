@@ -140,19 +140,6 @@ function ProductComponent() {
           ))}
         </div>
       </div>
-<<<<<<< HEAD
-      <div className="floating-menu flex-sa flex-d-column">
-        <div className="floating-menu-top flex-c flex-d-column">
-          <i className="fas fa-caret-up"></i>
-          <a href="#" className="font-w-b">TOP</a>
-        </div>
-        <a href="#">매장찾기</a>
-        <a href="#">장바구니</a>
-        <a href="#">마이페이지</a>
-        <a href="#">문의하기</a>
-      </div>
-=======
->>>>>>> 76916e7 (fix/Component UI)
     </div>
   );
 }
