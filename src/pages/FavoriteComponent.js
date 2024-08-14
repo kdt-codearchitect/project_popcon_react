@@ -6,8 +6,10 @@ import deleteIcon from "../image/Delete.png";
 
 const FavoriteComponent = () => {
   const [favoriteItems, setFavoriteItems] = useState([]);
-  const [customerIdx, setCustomerIdx] = useState(null); // 초기화 추가
-  const [token, setToken] = useState(null); // 초기화 추가
+
+  const [customerIdx, setCustomerIdx] = useState(null); // 추가된 부분
+  const [token, setToken] = useState(null); // 추가된 부분
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +35,9 @@ const FavoriteComponent = () => {
         console.error('상품 정보를 불러오는 중에 오류가 발생 했습니다!', error);
       });
     }
-  }, []); // useEffect 내부 블록 닫힘 추가
+
+  }, []); // useEffect 훅의 올바른 닫힘
+
 
   const handleRemove = (wishItemIdx) => {
     console.log('Removing wish item with ID:', wishItemIdx);
@@ -55,7 +59,7 @@ const FavoriteComponent = () => {
     axios.post('http://localhost:8090/popcon/Wish/moveToCart', null, {
       params: {
         wishItemIdx: wishItemIdx,
-        cartIdx: customerIdx, // 실제 사용 중인 cartIdx 값으로 대체하세요
+        cartIdx: customerIdx,
       },
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -64,7 +68,7 @@ const FavoriteComponent = () => {
     })
     .then(() => {
       alert('상품이 장바구니로 이동되었습니다.');
-      handleRemove(wishItemIdx); // 장바구니로 이동 후 찜 목록에서 제거
+      handleRemove(wishItemIdx);
     })
     .catch(error => {
       console.error('장바구니로 상품을 이동하는 중에 오류가 발생했습니다.', error);

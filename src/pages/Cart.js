@@ -2,11 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Cart.css';
 import deleteIcon from '../image/Delete.png';
+import { useNavigate } from 'react-router-dom'; // * 추가된 코드
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [customerIdx, setCustomerIdx] = useState(null);
   const [token, setToken] = useState(null);
+  const navigate = useNavigate(); // * 추가된 코드
+
+  const handleOrder = () => { // * 컴포넌트 내부로 이동
+    navigate('/checkout'); // * 추가된 코드
+  };
 
   useEffect(() => {
     // localStorage에서 customerIdx와 토큰을 가져옴
@@ -122,7 +128,7 @@ const Cart = () => {
       <div className="cart-summary">
         <div className="cart-total">총 합계: {(calculateTotal()).toLocaleString()}원</div>
         <div className="cart-actions">
-          <button className="order-button">주문하기</button>
+        <button className="order-button" onClick={handleOrder}>주문하기</button>
           <button className="back-button">뒤로가기</button>
         </div>
       </div>
