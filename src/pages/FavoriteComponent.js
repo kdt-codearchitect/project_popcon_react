@@ -11,7 +11,6 @@ const FavoriteComponent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // localStorage에서 customerIdx와 토큰을 가져옴
     const storedCustomerIdx = localStorage.getItem('customerIdx');
     const storedToken = localStorage.getItem('jwtAuthToken');
 
@@ -21,7 +20,6 @@ const FavoriteComponent = () => {
       console.log('Stored customerIdx:', storedCustomerIdx);
       console.log('Stored token:', storedToken);
 
-      // 로그인한 사용자의 찜 목록을 가져옴 (axios 사용)
       axios.get(`http://localhost:8090/popcon/Wish/${storedCustomerIdx}`, {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
@@ -39,18 +37,39 @@ const FavoriteComponent = () => {
     }
   }, []);
 
-  const handleRemove = (wishIdx) => {
-    axios.delete(`http://localhost:8090/popcon/Wish/delete/${wishIdx}`, {
+  const handleRemove = (wishItemIdx) => {
+    console.log('Removing wish item with ID:', wishItemIdx); // 로그로 확인
+    axios.delete(`http://localhost:8090/popcon/Wish/delete/${wishItemIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     })
     .then(() => {
-      setFavoriteItems(prevItems => prevItems.filter(item => item.wishIdx !== wishIdx));
+      setFavoriteItems(prevItems => prevItems.filter(item => item.wishItemIdx !== wishItemIdx));
     })
     .catch(error => {
-      console.error('상품을 제거하던 중에 오류가 발생했습니다.', error);
+      console.error('제품 데이터를 삭제하는 데 오류가 발생했습니다.', error);
+    });
+  };
+
+  const handleMoveToCart = (wishItemIdx) => {
+    axios.post('http://localhost:8090/popcon/Wish/moveToCart', null, {
+      params: {
+        wishItemIdx: wishItemIdx,
+        cartIdx: customerIdx, // 실제 사용 중인 cartIdx 값으로 대체하세요
+      },
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(() => {
+      alert('상품이 장바구니로 이동되었습니다.');
+      handleRemove(wishItemIdx); // 장바구니로 이동 후 찜 목록에서 제거
+    })
+    .catch(error => {
+      console.error('장바구니로 상품을 이동하는 중에 오류가 발생했습니다.', error);
     });
   };
 
@@ -94,8 +113,11 @@ const FavoriteComponent = () => {
                   <td>할인없음</td>
                   <td>{(item.skuCost ? item.skuCost.toLocaleString() : '0')}원</td>
                   <td>
-                    <button className="remove-button" onClick={() => handleRemove(item.wishIdx)}>
+                    <button className="remove-button" onClick={() => handleRemove(item.wishItemIdx)}>
                       <img src={deleteIcon} alt="Delete" className="delete-icon" />
+                    </button>
+                    <button className="move-to-cart-button" onClick={() => handleMoveToCart(item.wishItemIdx)}>
+                      장바구니로 이동
                     </button>
                   </td>
                 </tr>
