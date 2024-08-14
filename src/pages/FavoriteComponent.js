@@ -6,10 +6,11 @@ import deleteIcon from "../image/Delete.png";
 
 const FavoriteComponent = ({ removeFromFavorites }) => {
   const [favoriteItems, setFavoriteItems] = useState([]);
+  const [customerIdx, setCustomerIdx] = useState(null); // 추가된 부분
+  const [token, setToken] = useState(null); // 추가된 부분
   const navigate = useNavigate();
 
   useEffect(() => {
-
     const storedCustomerIdx = localStorage.getItem('customerIdx');
     const storedToken = localStorage.getItem('jwtAuthToken');
 
@@ -25,18 +26,17 @@ const FavoriteComponent = ({ removeFromFavorites }) => {
           'Content-Type': 'application/json'
         }
       })
-
       .then(response => {
         setFavoriteItems(response.data);
       })
       .catch(error => {
         console.error('상품 정보를 불러오는 중에 오류가 발생 했습니다!', error);
       });
-  }, []);
-
+    }
+  }, []); // useEffect 훅의 올바른 닫힘
 
   const handleRemove = (wishItemIdx) => {
-    console.log('Removing wish item with ID:', wishItemIdx); // 로그로 확인
+    console.log('Removing wish item with ID:', wishItemIdx);
     axios.delete(`http://localhost:8090/popcon/Wish/delete/${wishItemIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -55,7 +55,7 @@ const FavoriteComponent = ({ removeFromFavorites }) => {
     axios.post('http://localhost:8090/popcon/Wish/moveToCart', null, {
       params: {
         wishItemIdx: wishItemIdx,
-        cartIdx: customerIdx, // 실제 사용 중인 cartIdx 값으로 대체하세요
+        cartIdx: customerIdx,
       },
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -64,12 +64,11 @@ const FavoriteComponent = ({ removeFromFavorites }) => {
     })
     .then(() => {
       alert('상품이 장바구니로 이동되었습니다.');
-      handleRemove(wishItemIdx); // 장바구니로 이동 후 찜 목록에서 제거
+      handleRemove(wishItemIdx);
     })
     .catch(error => {
       console.error('장바구니로 상품을 이동하는 중에 오류가 발생했습니다.', error);
     });
-
   };
 
   return (
@@ -128,6 +127,5 @@ const FavoriteComponent = ({ removeFromFavorites }) => {
     </div>
   );
 }
-
 
 export default FavoriteComponent;

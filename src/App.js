@@ -21,6 +21,7 @@ import SignupComponent, { action as signUpAction } from './pages/SignupComponent
 import FaqComponent from './pages/FaqComponent';
 import InquiryComponent from './pages/Inquiry';
 import MyInquiryComponent from './pages/MyInquiry';
+import MapComponent from './pages/MapComponent'
 
 
 const App = () => {
@@ -145,7 +146,8 @@ const App = () => {
         { path: '/Cart', element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} handleCheckout={handleCheckout} /> },
         { path: '/faq', element: <FaqComponent/>},
         { path: '/makeInquiry', element: <InquiryComponent/>},
-        { path: '/myInquiry', element: <MyInquiryComponent/>}
+        { path: '/myInquiry', element: <MyInquiryComponent/>},
+        { path: '/Maps', element: <MapComponent/>}
       ]
     }
   ]);

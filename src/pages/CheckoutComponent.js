@@ -5,7 +5,7 @@ import checkout_labe1 from "../image/store_image/checkout_label01.png";
 import checkout_labe2 from "../image/store_image/checkout_label02.png";
 import checkout_labe3 from "../image/store_image/checkout_label03.png"; 
 import checkout_labe4 from "../image/store_image/checkout_label04.png";
-import { Payment, xxx } from "./payment";
+import { Payment, payment_value } from "./payment";
 import { getAuthToken } from '../util/auth';
 
 const CheckoutComponent = () => {
@@ -29,8 +29,9 @@ const CheckoutComponent = () => {
   
 
   // 총 상품 가격 불러오기 위한 변수 
-  const totalSumCost = cartItems.length > 0 ? cartItems[0].totalSumCost : 0;
-  const CustomerIdx = localStorage.getItem('customerIdx');
+  const totalSumCost = cartItems.length > 0 ? cartItems[0].totalSumCost : 0;   // 총 상품 가격 불러오기 위한 변수 
+  const CustomerIdx = localStorage.getItem('customerIdx'); // 로그인한 유저의 customeridx를 불러옴
+  payment_value.customer.fullName = customer.customerName;
   
 
 
@@ -139,8 +140,8 @@ const CheckoutComponent = () => {
     }).open();
   };
 
-  console.log("3333333333333", xxx)
-  xxx.totalAmount = totalSumCost;
+  console.log("3333333333333", payment_value)
+  payment_value.totalAmount = totalSumCost;
 
   const handleEditPhoneClick = () => {
     setIsEditingPhone(true);

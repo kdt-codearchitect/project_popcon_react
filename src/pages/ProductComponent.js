@@ -73,7 +73,7 @@ function ProductComponent() {
     const wishItem = {
 
       customerIdx: customerIdx,
-
+      wishIdx: customerIdx,
       skuIdx: product.skuIdx
     };
 

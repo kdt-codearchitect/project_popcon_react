@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import './CheckoutComponent.css';
 
-const xxx = {
+const payment_value = {
     storeId: "store-b0ebe037-6ace-4169-a208-a5e368cbe5ec",
-    paymentId: "testlzl4f9xe1",
+    paymentId: "testlzl4f9xe2",
     orderName: "테스트 결제",
     totalAmount: 100,
     currency: "KRW",
     channelKey: "channel-key-0c8dda50-9f5b-4487-bdfd-b4511f8fd803",
     payMethod: "CARD",
     card: {},
+    customer: {
+      fullName: "포트원",
+    },
     redirectUrl: "https://sdk-playground.portone.io/",
 }
 
@@ -29,7 +32,7 @@ const Payment = () => {
 
      
 
-    window.PortOne.requestPayment(xxx);
+    window.PortOne.requestPayment(payment_value);
   };
 
   return (
@@ -39,4 +42,4 @@ const Payment = () => {
   );
 };
 
-export { Payment,xxx };
+export { Payment,payment_value };
