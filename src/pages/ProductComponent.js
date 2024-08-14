@@ -12,37 +12,37 @@ function ProductComponent() {
     const storedCustomerIdx = localStorage.getItem('customerIdx');
     const storedToken = localStorage.getItem('jwtAuthToken');
 
+    // customerIdx와 token을 상태에 저장
     if (storedCustomerIdx && storedToken) {
       setCustomerIdx(storedCustomerIdx);
       setToken(storedToken);
       console.log('Stored customerIdx:', storedCustomerIdx);
       console.log('Stored token:', storedToken);
-
-      // 제품 목록을 가져옴 (axios 사용)
-      axios.get('http://localhost:8090/popcon/Sku')
-        .then(response => {
-          setProducts(response.data); // 제품 목록을 상태에 저장
-        })
-        .catch(error => {
-          console.error('제품을 가져오는 데 실패했습니다.', error);
-        });
-    } else {
-      console.error('로그인 정보가 없습니다. customerIdx 또는 token을 찾을 수 없습니다.');
     }
+
+    // 로그인 여부와 상관없이 제품 목록을 가져옴 (axios 사용)
+    axios.get('http://localhost:8090/popcon/Sku')
+      .then(response => {
+        setProducts(response.data); // 제품 목록을 상태에 저장
+      })
+      .catch(error => {
+        console.error('제품을 가져오는 데 실패했습니다.', error);
+      });
   }, []);
 
   const handleAddToCart = async (product) => {
-    if (!customerIdx) return;
+    if (!customerIdx) {
+      console.log('로그인이 필요합니다.');
+      return;
+    }
 
     console.log('Adding to cart with token:', token);
 
     const cartItem = {
       skuIdx: product.skuIdx,
       skuValue: 1,
-
       customerIdx: customerIdx,
       cartIdx: customerIdx // 이 예제에서는 customerIdx와 cartIdx가 동일하다고 가정
-
     };
 
     try {
@@ -66,7 +66,10 @@ function ProductComponent() {
   };
 
   const handleAddToWishlist = async (product) => {
-    if (!customerIdx) return;
+    if (!customerIdx) {
+      console.log('로그인이 필요합니다.');
+      return;
+    }
 
     console.log('Adding to wishlist with token:', token);
 
@@ -121,15 +124,15 @@ function ProductComponent() {
           ))}
         </div>
       </div>
-      <div class="floating-menu flex-sa flex-d-column">
-          <div class="floating-menu-top flex-c flex-d-column">
-              <i class="fas fa-caret-up"></i>
-              <a href="#" class="font-w-b">TOP</a>
-          </div>
-          <a href="#">매장찾기</a>
-          <a href="#">장바구니</a>
-          <a href="#">마이페이지</a>
-          <a href="#">문의하기</a>
+      <div className="floating-menu flex-sa flex-d-column">
+        <div className="floating-menu-top flex-c flex-d-column">
+          <i className="fas fa-caret-up"></i>
+          <a href="#" className="font-w-b">TOP</a>
+        </div>
+        <a href="#">매장찾기</a>
+        <a href="#">장바구니</a>
+        <a href="#">마이페이지</a>
+        <a href="#">문의하기</a>
       </div>
     </div>
   );
