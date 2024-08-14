@@ -4,12 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import deleteIcon from "../image/Delete.png"; 
 
-const FavoriteComponent = ({ removeFromFavorites }) => {
+const FavoriteComponent = () => {
   const [favoriteItems, setFavoriteItems] = useState([]);
+  const [customerIdx, setCustomerIdx] = useState(null); // 초기화 추가
+  const [token, setToken] = useState(null); // 초기화 추가
   const navigate = useNavigate();
 
   useEffect(() => {
-
     const storedCustomerIdx = localStorage.getItem('customerIdx');
     const storedToken = localStorage.getItem('jwtAuthToken');
 
@@ -25,18 +26,17 @@ const FavoriteComponent = ({ removeFromFavorites }) => {
           'Content-Type': 'application/json'
         }
       })
-
       .then(response => {
         setFavoriteItems(response.data);
       })
       .catch(error => {
         console.error('상품 정보를 불러오는 중에 오류가 발생 했습니다!', error);
       });
-  }, []);
-
+    }
+  }, []); // useEffect 내부 블록 닫힘 추가
 
   const handleRemove = (wishItemIdx) => {
-    console.log('Removing wish item with ID:', wishItemIdx); // 로그로 확인
+    console.log('Removing wish item with ID:', wishItemIdx);
     axios.delete(`http://localhost:8090/popcon/Wish/delete/${wishItemIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -69,7 +69,6 @@ const FavoriteComponent = ({ removeFromFavorites }) => {
     .catch(error => {
       console.error('장바구니로 상품을 이동하는 중에 오류가 발생했습니다.', error);
     });
-
   };
 
   return (
@@ -128,6 +127,5 @@ const FavoriteComponent = ({ removeFromFavorites }) => {
     </div>
   );
 }
-
 
 export default FavoriteComponent;

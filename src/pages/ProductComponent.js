@@ -71,10 +71,9 @@ function ProductComponent() {
     console.log('Adding to wishlist with token:', token);
 
     const wishItem = {
-
+      skuIdx: product.skuIdx,
       customerIdx: customerIdx,
-
-      skuIdx: product.skuIdx
+      wishIdx: customerIdx
     };
 
     try {
