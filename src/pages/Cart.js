@@ -1,34 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Cart.css';
-import { useNavigate } from 'react-router-dom'; // * 추가된 코드
 import deleteIcon from '../image/Delete.png';
 
-const Cart = () => { // 컴포넌트 함수 내부에서 훅을 호출
+const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
-
   const [customerIdx, setCustomerIdx] = useState(null);
   const [token, setToken] = useState(null);
-  const navigate = useNavigate(); // * 추가된 코드
-
 
   useEffect(() => {
-    const customerIdx = 1; // customerIdx를 1로 설정
-    axios.get(`http://localhost:8090/popcon/customer/${customerIdx}`)
-      .then(response => {
-        setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
-          ...item,
-          cartIdx: cart.cartIdx,
-          customerIdx: cart.customerIdx
-        }))));
+    // localStorage에서 customerIdx와 토큰을 가져옴
+    const storedCustomerIdx = localStorage.getItem('customerIdx');
+    const storedToken = localStorage.getItem('jwtAuthToken');
+
+    if (storedCustomerIdx && storedToken) {
+      setCustomerIdx(storedCustomerIdx);
+      setToken(storedToken);
+      console.log('Stored customerIdx:', storedCustomerIdx);
+      console.log('Stored token:', storedToken);
+
+      // 로그인한 사용자의 카트를 가져옴 (axios 사용)
+      axios.get(`http://localhost:8090/popcon/customer/${storedCustomerIdx}`, {
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+          'Content-Type': 'application/json'
+        }
       })
-      .catch(error => {
-        console.error('카트에 제품데이터를 가져오는데 오류가 발생 했습니다', error);
-      });
+        .then(response => {
+          setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
+            ...item,
+            cartIdx: cart.cartIdx,
+            customerIdx: cart.customerIdx
+          }))));
+        })
+        .catch(error => {
+          console.error('카트에 제품데이터를 가져오는데 오류가 발생 했습니다', error);
+        });
+    } else {
+      console.error('로그인 정보가 없습니다. customerIdx 또는 token을 찾을 수 없습니다.');
+    }
   }, []);
 
   const removeFromCart = (cartItemIdx) => {
-    axios.delete(`http://localhost:8090/popcon/cartitem/${cartItemIdx}`)
+    axios.delete(`http://localhost:8090/popcon/cartitem/${cartItemIdx}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => {
         setCartItems(cartItems.filter(item => item.cartItemIdx !== cartItemIdx));
       })
@@ -38,7 +57,12 @@ const Cart = () => { // 컴포넌트 함수 내부에서 훅을 호출
   };
 
   const updateQuantity = (cartItemIdx, skuValue) => {
-    axios.put(`http://localhost:8090/popcon/cartitem/${cartItemIdx}/quantity`, { skuValue })
+    axios.put(`http://localhost:8090/popcon/cartitem/${cartItemIdx}/quantity`, { skuValue }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => {
         setCartItems(cartItems.map(item => item.cartItemIdx === cartItemIdx ? { ...item, skuValue } : item));
       })
@@ -47,7 +71,6 @@ const Cart = () => { // 컴포넌트 함수 내부에서 훅을 호출
       });
   };
 
-  // calculateTotal 함수 추가
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + item.skuCost * item.skuValue, 0);
   };
@@ -57,10 +80,6 @@ const Cart = () => { // 컴포넌트 함수 내부에서 훅을 호출
     if (newQuantity >= 0) {
       updateQuantity(cartItemIdx, newQuantity);
     }
-  };
-
-  const handleOrder = () => { // * 컴포넌트 내부로 이동
-    navigate('/checkout'); // * 추가된 코드
   };
 
   return (
@@ -103,7 +122,7 @@ const Cart = () => { // 컴포넌트 함수 내부에서 훅을 호출
       <div className="cart-summary">
         <div className="cart-total">총 합계: {(calculateTotal()).toLocaleString()}원</div>
         <div className="cart-actions">
-          <button className="order-button" onClick={handleOrder}>주문하기</button>
+          <button className="order-button">주문하기</button>
           <button className="back-button">뒤로가기</button>
         </div>
       </div>
@@ -112,3 +131,4 @@ const Cart = () => { // 컴포넌트 함수 내부에서 훅을 호출
 };
 
 export default Cart;
+
