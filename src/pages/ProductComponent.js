@@ -103,39 +103,42 @@ function ProductComponent() {
   };
 
   return (
-    <div className="product-grid__wrapper">
-      <div className="product-grid__wrap">
-        <div className="product-grid__container">
+    <div className="productList-container">
+      <div className="productList-contents flex-c flex-d-column">
+        <nav>
+          <ul className="flex-sb">
+            <li className="product-nav-uderbar thema-font-01">전체목록</li>
+            <li>즉석요리</li>
+            <li>과자류</li>
+            <li>아이스크림</li>
+            <li>식품</li>
+            <li>음료</li>
+            <li>생활용품</li>
+          </ul>
+        </nav>
+        <div className="productList-box">
           {products.map(product => (
-            <article key={product.skuIdx} className="product-card">
-              {/* 이미지 추가 부분 */}
-              <img src={product.imageUrl} alt={product.skuName} className="product-image" />
-              <div className="product-card-content">
-                <h3 className="product-card-title">{product.skuName}</h3>
-                <div className="product-price-wrapper">
-                  <span className="product-price-current">
-                    {product.skuCost.toLocaleString()}원
-                  </span>
-                </div>
+            <div key={product.skuIdx} className="product-card flex-sb flex-d-column">
+              <div className="product-img-box flex-c">
+                <label className="opo flex-c">1+1</label>
+                {/* <label className="tpo flex-c">2+1</label> */}
+                <img src={product.imageUrl} alt={product.skuName} />
               </div>
-              <div className="product-buttons">
-                <button className="product-button" onClick={() => handleAddToWishlist(product)}>찜하기</button>
-                <button className="product-button" onClick={() => handleAddToCart(product)}>장바구니</button>
-                <button className="product-button" onClick={() => handleAddToCart(product)}>구매하기</button>
+              <div className='product-title-box'>
+                <p>{product.skuName}</p>
               </div>
-            </article>
+              <div className="product-price-box flex-sb">
+                <p className="product-original-price">19,500,000<span>원</span></p>
+                <p className="product-event-price">{product.skuCost.toLocaleString()}<span>원</span></p>
+              </div>
+              <div className="product-button-box flex-sb">
+                {/* <button className="product-button" onClick={() => handleAddToWishlist(product)}>찜하기</button> */}
+                <button className="thema-btn-01" onClick={() => handleAddToCart(product)}>장바구니</button>
+                <button className="thema-btn-02" onClick={() => handleAddToCart(product)}>바로구매</button>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
-      <div className="floating-menu flex-sa flex-d-column">
-        <div className="floating-menu-top flex-c flex-d-column">
-          <i className="fas fa-caret-up"></i>
-          <a href="#" className="font-w-b">TOP</a>
-        </div>
-        <a href="#">매장찾기</a>
-        <a href="#">장바구니</a>
-        <a href="#">마이페이지</a>
-        <a href="#">문의하기</a>
       </div>
     </div>
   );

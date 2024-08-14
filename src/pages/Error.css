@@ -2,6 +2,7 @@
   text-align: center;
   color: #FAE41C;
   background-color: black;
+  flex: 1;
 }
 .ErrorPage p{
   color:rgb(255, 196, 0);

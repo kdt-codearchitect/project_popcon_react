@@ -96,7 +96,7 @@ function SignupComponent() {
                 <Form method="post" className="signUp-form flex-sb flex-d-column">
                     <div className="signUp-name-box flex-sb">
                         <input type="text" name="userid" placeholder="아이디"  value={userid} onChange={(e) => setUserid(e.target.value)}/>
-                        <button className="thema-btn-04" onClick={idcheck}>중복확인</button>
+                        <button className="thema-btn-01" onClick={idcheck}>중복확인</button>
                     </div>
                     { <div className="error-message">{idCheckMessage}</div>}
                     <input type="password" name="password" placeholder="비밀번호"/>

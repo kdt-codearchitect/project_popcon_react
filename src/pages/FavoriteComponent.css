@@ -7,7 +7,7 @@
 /* 마이페이지 컨테이너 */
 .mypage-container {
   width: 250px;
-  background-color: yellow;
+  background-color: #FAE41C;
   padding: 20px;
   box-sizing: border-box;
   position: relative;
@@ -34,7 +34,7 @@
 }
 
 .mypage-title {
-  color: yellow;
+  color: #FAE41C;
   transform: rotate(-10deg); /* 텍스트 기울이기 */
   transform-origin: bottom left; /* 회전 기준점을 왼쪽 아래로 설정 */
   margin-left: 10px;
@@ -71,11 +71,11 @@
 
 .section-header {
   background-color: #000;
-  background: linear-gradient(115deg, #000000 65%, #00000000 65%, #ffffff 65%, #ffffff 65%);
+  height: 85px;
+  background: linear-gradient(115deg, #000000 56.5%, #00000000 56.5%, #ffffff 65%, #ffffff 65%);
   color: #fff;
-  padding: 20px;
   text-align: left;
-  flex: 0 0 auto; /* 고정 위치 설정 */
+  flex: 0 0 auto; /* 고정 위치 설정 */  
 }
 
 .section-content {
@@ -90,7 +90,7 @@
 }
 
 .section-font {
-  color: yellow;
+  color: #FAE41C;
   text-align: horizontal;
 }
 
@@ -116,7 +116,7 @@
 }
 
 .pickup-button, .remove-button {
-  background-color: yellow;
+  background-color: #FAE41C;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
