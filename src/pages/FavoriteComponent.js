@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import deleteIcon from "../image/Delete.png"; 
 
-const FavoriteComponent = ({ removeFromFavorites }) => {
+const FavoriteComponent = () => {
   const [favoriteItems, setFavoriteItems] = useState([]);
+
   const [customerIdx, setCustomerIdx] = useState(null); // 추가된 부분
   const [token, setToken] = useState(null); // 추가된 부분
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +35,9 @@ const FavoriteComponent = ({ removeFromFavorites }) => {
         console.error('상품 정보를 불러오는 중에 오류가 발생 했습니다!', error);
       });
     }
+
   }, []); // useEffect 훅의 올바른 닫힘
+
 
   const handleRemove = (wishItemIdx) => {
     console.log('Removing wish item with ID:', wishItemIdx);
