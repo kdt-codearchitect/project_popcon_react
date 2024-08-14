@@ -1,5 +1,6 @@
 /* 전체 컨테이너 */
 .page-container {
+  flex: 1;
   display: flex;
   height: 100vh; /* 전체 화면 높이로 설정 */
 }
@@ -35,7 +36,7 @@
 }
 
 .mypage-title {
-  color: yellow;
+  color: #FAE41C;
   transform: rotate(-10deg); /* 텍스트 기울이기 */
   transform-origin: bottom left; /* 회전 기준점을 왼쪽 아래로 설정 */
   margin-left: 10px;
@@ -90,7 +91,7 @@
 }
 
 .section-font {
-  color: yellow;
+  color: #FAE41C;
   text-align: horizontal;
 }
 
@@ -108,7 +109,7 @@
 }
 
 .update-button {
-  background-color: yellow;
+  background-color: #FAE41C;
   border: none;
   padding: 10px 20px;
   cursor: pointer;

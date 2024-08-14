@@ -8,7 +8,7 @@
 }
 
 .signUp-container input, select{
-  padding: 7px 20px;
+  padding: 8px 20px;
 }
 .signUp-box{
   width: 600px;
@@ -41,7 +41,7 @@
 }
 
 .signUp-name-box > input{
-  width: 140px;
+  width: 150px;
   border-radius: 4px;
   background-color: #F2F2F2;
   font-weight: bold;
@@ -53,7 +53,7 @@
 
 .signUp-name-box button{
   width: 80px;
-  height: 30px;
+  height: 32px;
   border-radius: 4px;
   font-weight: bold;
 }
@@ -75,14 +75,14 @@
 }
 
 .signUp-email-box > input{
-  width: 103px;
+  width: 100px;
   border-radius: 4px;
   background-color: #F2F2F2;
   font-weight: bold;
 }
 
 .signUp-email-box > select{
-  width: 90px;
+  width: 130px;
   border-radius: 4px;
   background-color: #F2F2F2;
   font-weight: bold;
@@ -94,7 +94,7 @@
 }
 
 .signUp-address > input{
-  width: 140px;
+  width: 150px;
   border-radius: 4px;
   background-color: #F2F2F2;
   font-weight: bold;
@@ -111,7 +111,7 @@
   width: 280px;
 }
 .signUp-button-box button{
-  width: 123px;
+  width: 133px;
   height: 30px;
   border-radius: 4px;
   font-weight: bold;

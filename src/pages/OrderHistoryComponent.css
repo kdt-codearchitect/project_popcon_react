@@ -24,7 +24,7 @@
 .order-history-header h2 {
   margin: 0;
   font-size: 18px;
-  color: yellow;
+  color: #FAE41C;
 }
 
 .order-history-table {
@@ -49,7 +49,7 @@
 }
 
 .return-button, .review-button {
-  background-color: yellow;
+  background-color: #FAE41C;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
@@ -57,7 +57,7 @@
 }
 
 .return-button:hover, .review-button:hover {
-  background-color: #ffcc00;
+  background-color: #FAE41C;
 }
 .page-container {
   display: flex;
@@ -67,7 +67,7 @@
 /* 마이페이지 컨테이너 */
 .mypage-container {
   width: 250px;
-  background-color: yellow;
+  background-color: #FAE41C;
   padding: 20px;
   box-sizing: border-box;
   position: relative;
@@ -94,7 +94,7 @@
 }
 
 .mypage-title {
-  color: yellow;
+  color: #FAE41C;
   transform: rotate(-10deg); /* 텍스트 기울이기 */
   transform-origin: bottom left; /* 회전 기준점을 왼쪽 아래로 설정 */
   margin-left: 10px;

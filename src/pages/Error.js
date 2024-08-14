@@ -30,13 +30,13 @@ function ErrorPage() {
   return (
     <>
       <MainNavigation />
-      <main className='ErrorPage'>
+      <div className='ErrorPage'>
           <img src={popcon_error} />
           <h1>{error.status} {title}</h1> 
 			    <p>{message}</p>
 			    <p>{email}</p>
           <h1><Link to="/faq">고객센터</Link></h1>
-      </main>
+      </div>
     </>
   );
 }
