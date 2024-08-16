@@ -7,6 +7,7 @@ import checkout_labe3 from "../image/store_image/checkout_label03.png";
 import checkout_labe4 from "../image/store_image/checkout_label04.png";
 import { Payment, payment_value } from "./payment";
 import { getAuthToken } from '../util/auth';
+import { useNavigate } from 'react-router-dom';
 
 const CheckoutComponent = () => {
   const [customer, setCustomer] = useState({
@@ -26,14 +27,13 @@ const CheckoutComponent = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isEditingPhone, setIsEditingPhone] = useState(false);
   const [editedPhone, setEditedPhone] = useState('');
-  
+
+  const navigate = useNavigate();
 
   // 총 상품 가격 불러오기 위한 변수 
-  const totalSumCost = cartItems.length > 0 ? cartItems[0].totalSumCost : 0;   // 총 상품 가격 불러오기 위한 변수 
-  const CustomerIdx = localStorage.getItem('customerIdx'); // 로그인한 유저의 customeridx를 불러옴
+  const totalSumCost = cartItems.length > 0 ? cartItems[0].totalSumCost : 0; 
+  const CustomerIdx = localStorage.getItem('customerIdx'); // 로그인한 유저의 customerIdx를 불러옴
   payment_value.customer.fullName = customer.customerName;
-  
-
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -45,10 +45,7 @@ const CheckoutComponent = () => {
     document.body.appendChild(script);
   }, []);
 
-
-
   useEffect(() => {
-    console.log("aaaaaaa",localStorage.getItem('customerIdx'));
     const fetchCustomer = async () => {
       const token = getAuthToken();
       try {
@@ -60,7 +57,6 @@ const CheckoutComponent = () => {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log("Customer data:", data); // 로그 출력
           if (Array.isArray(data)) {
             setCustomer(data[0]); // 첫 번째 고객 데이터 사용
             setEditedPhone(data[0].customerPhone); // 초기 값 설정
@@ -87,7 +83,6 @@ const CheckoutComponent = () => {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log("Cart data:", data); // 로그 출력
           if (Array.isArray(data)) {
             setCartItems(data); // 전체 배열 설정
           } else {
@@ -97,20 +92,17 @@ const CheckoutComponent = () => {
           console.error('There was an error fetching the cart data!', response.status);
         }
       } catch (error) {
- 
         console.error('There was an error fetching the cart data!', error);
         setCartItems([]); // 오류 발생 시 빈 배열로 설정
-        alert("로그인이 필요한 페이지 입니다.999")
-        // redirect("/")
-        window.location.href="/";
+        alert("로그인이 필요한 페이지입니다.");
+        window.location.href = "/";
       }
     };
 
     fetchCustomer();
     fetchCartItems();
-  }, []);
+  }, [CustomerIdx]);
 
-  // 주소 불러오기 API
   const handleAddressChange = () => {
     new window.daum.Postcode({
       oncomplete: function (data) {
@@ -140,7 +132,6 @@ const CheckoutComponent = () => {
     }).open();
   };
 
-  console.log("3333333333333", payment_value)
   payment_value.totalAmount = totalSumCost;
 
   const handleEditPhoneClick = () => {
@@ -156,7 +147,15 @@ const CheckoutComponent = () => {
     setIsEditingPhone(false);
   };
 
-  // 숫자를 3자리 콤마로 포맷팅하는 함수
+  const handlePaymentSuccess = () => {
+    const userChoice = window.confirm("결제하신 상품을 냉장고에 킵하시겠습니까?");
+    if (userChoice) {
+      navigate('/refrigerator', { state: { openModal: true } }); // 냉장고로 이동하며 모달 열기
+    } else {
+      navigate('/refrigerator'); // 냉장고로 이동하지만 모달은 열지 않음
+    }
+  };
+
   const formatNumber = (number) => {
     return new Intl.NumberFormat().format(number);
   };
@@ -244,10 +243,9 @@ const CheckoutComponent = () => {
               cartItems.map((item, index) => (
                 <div className="co-delivery-item" key={index}>
                   <p>{item.skuName}</p>
-                  <p>{}</p>
-                  <p>수량 /</p>
+                  <p>수량</p>
                   <p>{item.skuValue}</p>
-                  <p>무료배송/</p>
+                  <p>무료배송</p>
                   <p>{formatNumber(item.skuCost)}원</p>
                 </div>
               ))
@@ -276,38 +274,12 @@ const CheckoutComponent = () => {
             <p>3,000원</p>
             <p>팝콘 캐시</p>
             <p>팝콘 캐시</p>
-            {/* <p>결제 방법</p> */}
-            {/* <div className="checkOut-method">
-              <div>
-                <input type="checkbox" id="kakaoPay"/>
-                <label htmlFor="kakaoPay">카카오페이</label>
-              </div>
-              <div>
-                <input type="checkbox" id="naverPay"/>
-                <label htmlFor="naverPay">네이버페이</label>
-              </div>
-              <div>
-                <input type="checkbox" id="tossPay"/>
-                <label htmlFor="tossPay">토스페이</label>
-              </div>
-              <div>
-                <input type="checkbox" id="accountTransfer"/>
-                <label htmlFor="accountTransfer">계좌이체</label>
-              </div>
-              <div>
-                <input type="checkbox" id="creditCard"/>
-                <label htmlFor="creditCard">신용/체크카드</label>
-              </div>
-              <div>
-                <input type="checkbox" id="mobilePay"/>
-                <label htmlFor="mobilePay">휴대폰결제</label>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
+
       <div className="checkOut-btn-box flex-sb">
-        <Payment /> 
+        <Payment onPaymentSuccess={handlePaymentSuccess} /> 
         <button className="thema-btn-02">뒤로가기</button>
       </div>
     </div>

@@ -1,16 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './RefrigeratorComponent.css';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import KeepModal from './KeepModal';
 
 const RefrigeratorComponent = ({ products }) => {
-  const navigate = useNavigate();
+  const location = useLocation();
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (location.state && location.state.openModal) {
+      setModalOpen(true);
+    }
+  }, [location.state]);
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div className="page-container">
       <div className="mypage-container">
         <div className="mypage-content">
-        <h2 className="mypage-title" onClick={() => navigate('/MyPage')}>마이페이지</h2>
+          <h2 className="mypage-title">마이페이지</h2>
           <ul className="nav-links-side">
-          <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
+            <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
             <li><Link to="/Wish">Favorites / 나의 찜 목록</Link></li>
             <li><Link to="/MyDelivery">Delivery / 배송 상황</Link></li>
             <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
@@ -48,8 +61,15 @@ const RefrigeratorComponent = ({ products }) => {
           </table>
         </div>
       </div>
+
+      <KeepModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        cartItems={products}
+        customerIdx={localStorage.getItem('customerIdx')}
+      />
     </div>
   );
-}
+};
 
 export default RefrigeratorComponent;
