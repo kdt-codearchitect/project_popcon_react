@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import './CheckoutComponent.css';
+import { useNavigate } from 'react-router-dom';
 
 const payment_value = {
     storeId: "store-b0ebe037-6ace-4169-a208-a5e368cbe5ec",
-    paymentId: "testlzl4f9xe2",
+    paymentId: "testlzl4f9xe21",
     orderName: "테스트 결제",
     totalAmount: 100,
     currency: "KRW",
@@ -14,9 +15,11 @@ const payment_value = {
       fullName: "포트원",
     },
     redirectUrl: "https://sdk-playground.portone.io/",
-}
+};
 
 const Payment = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     // PortOne SDK가 로드되었는지 확인
     if (!window.PortOne) {
@@ -24,15 +27,68 @@ const Payment = () => {
     }
   }, []);
 
+  const clearCart = async (customerIdx) => {
+    const token = localStorage.getItem('jwtAuthToken');
+
+    try {
+      const response = await fetch(`http://localhost:8090/popcon/cart/clear/${customerIdx}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log("Cart cleared successfully!");
+      } else {
+        console.error('Cart clearing failed.');
+        alert('장바구니를 비우는 중 오류가 발생했습니다.');
+      }
+    } catch (error) {
+      console.error('Cart clearing request failed:', error);
+      alert('장바구니를 비우는 중 오류가 발생했습니다.');
+    }
+  };
+
   const requestPay = () => {
     if (!window.PortOne) {
       console.error('PortOne SDK가 로드되지 않았습니다.');
       return;
     }
 
-     
+    window.PortOne.requestPayment(payment_value)
+      .then(response => {
+        console.log("Payment response:", response);  // 로그 추가
 
-    window.PortOne.requestPayment(payment_value);
+        const customerIdx = localStorage.getItem('customerIdx');
+
+        // 결제 성공 여부와 상관없이 장바구니 비우기
+        clearCart(customerIdx);
+
+        // 결제 후 냉장고에 킵 여부를 물어보기
+        const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
+        if (userChoice) {
+          navigate('/refrigerator', { state: { openModal: true } });
+        } else {
+          navigate('/');
+        }
+      })
+      .catch(error => {
+        console.error('결제 요청 중 오류 발생:', error);
+        alert('결제 처리 중 오류가 발생했습니다.');
+
+        const customerIdx = localStorage.getItem('customerIdx');
+        clearCart(customerIdx);
+
+        // 결제 실패 시에도 동일하게 처리
+        const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
+        if (userChoice) {
+          navigate('/refrigerator', { state: { openModal: true } });
+        } else {
+          navigate('/');
+        }
+      });
   };
 
   return (
@@ -42,4 +98,4 @@ const Payment = () => {
   );
 };
 
-export { Payment,payment_value };
+export { Payment, payment_value };
