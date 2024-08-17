@@ -113,8 +113,8 @@ function SignupComponent() {
                         <select name="emailDomain">
                             <option value="naver.com">naver.com</option>
                             <option value="gmail.com">gmail.com</option>
-                            <option value=""></option>
-                            <option value=""></option>
+                            <option value="hanmail.net">hanmail.net</option>
+                            <option value="nate.com">nate.com</option>
                         </select>
                     </div>
                     <div className="signUp-address flex-sb">
