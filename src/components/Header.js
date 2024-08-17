@@ -15,7 +15,7 @@ function Header() {
 
     function show_modal(){
     xxx.current.modal_open();
-  }
+    }
 
     return (
 
@@ -35,7 +35,7 @@ function Header() {
                         }
 
                         { token && <Form action="/logout" method="post">
-                                <button className='btn btn-success' >Logout</button>
+                                <button className='btn btn-success' ><a>로그아웃</a></button>
                                 </Form>
                         }
 
@@ -51,7 +51,6 @@ function Header() {
                         <ul className="flex-sa">
                             <li><Link to="/MyPage">마이페이지</Link></li>
                             <li><Link to="/Sku">1 + 1</Link></li>
-                            <li><Link to="/product2">2 + 1</Link></li>
                             <li><Link to="/usersAdd">이벤트</Link></li>
                         </ul>
                     </nav>
