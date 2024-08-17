@@ -110,9 +110,9 @@ function SignupComponent() {
                     </div>
                     <div className="signUp-email-box flex-sb">
                         <input type="text" name="email"/>
-                        <select name="" id="">
-                            <option value="">naver.com</option>
-                            <option value=""></option>
+                        <select name="emailDomain">
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
                             <option value=""></option>
                             <option value=""></option>
                         </select>

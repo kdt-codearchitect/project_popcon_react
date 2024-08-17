@@ -23,7 +23,8 @@ const MyPage = () => {
 
     fetchMembers();
   }, []);
-
+  console.log(localStorage.getItem('customerIdx'));
+  console.log(localStorage.getItem('userid'));
   return (
     <div className="page-container">
       <div className="mypage-container">
