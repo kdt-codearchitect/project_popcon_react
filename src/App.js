@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomeComponent from "./pages/HomeComponent";
 import ProductComponent from "./pages/ProductComponent";
-import ProductComponent2 from "./pages/ProductComponent2";
-import ProductComponent3 from "./pages/ProductComponent3";
 import RefrigeratorComponent from "./pages/RefrigeratorComponent";
 import OrderHistoryComponent from "./pages/OrderHistoryComponent";
 import MyInfo from "./pages/MyInfo";
@@ -135,8 +133,6 @@ const App = () => {
         { path: '/login', element: <LoginModal />, action: authAction },
         { path: '/logout', action: logoutAction },
         { path: '/Sku', element: <ProductComponent addToCart={addToCart} addToFavorites={addToFavorites} /> },
-        { path: '/product2', element: <ProductComponent2 addToCart={addToCart} addToFavorites={addToFavorites} /> },
-        { path: '/product3', element: <ProductComponent3 addToCart={addToCart} addToFavorites={addToFavorites} /> },
         { path: '/refrigerator', element: <RefrigeratorComponent products={refrigeratorItems} /> },
         { path: '/CheckOut', element: <CheckoutComponent /> },
         { path: '/MyInfo', element: <MyInfo userInfo={userInfo} updateUserInfo={updateUserInfo} /> },
