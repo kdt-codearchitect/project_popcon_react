@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Cart.css';
-import { useNavigate } from 'react-router-dom'; // * 추가된 코드
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp, faXmark } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,14 +9,13 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [customerIdx, setCustomerIdx] = useState(null);
   const [token, setToken] = useState(null);
-  const navigate = useNavigate(); // * 추가된 코드
+  const navigate = useNavigate();
 
-  const handleOrder = () => { // * 컴포넌트 내부로 이동
-    navigate('/checkout'); // * 추가된 코드
+  const handleOrder = () => {
+    navigate('/checkout');
   };
 
   useEffect(() => {
-    // localStorage에서 customerIdx와 토큰을 가져옴
     const storedCustomerIdx = localStorage.getItem('customerIdx');
     const storedToken = localStorage.getItem('jwtAuthToken');
 
@@ -26,8 +25,7 @@ const Cart = () => {
       console.log('Stored customerIdx:', storedCustomerIdx);
       console.log('Stored token:', storedToken);
 
-      // 로그인한 사용자의 카트를 가져옴 (axios 사용)
-      axios.get(`http://localhost:8090/popcon/customer/${storedCustomerIdx}`, {
+      axios.get(`http://localhost:8090/popcon/cart/customer/${storedCustomerIdx}`, {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
           'Content-Type': 'application/json'
@@ -37,7 +35,8 @@ const Cart = () => {
           setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
             ...item,
             cartIdx: cart.cartIdx,
-            customerIdx: cart.customerIdx
+            customerIdx: cart.customerIdx,
+            isFromKeep: item.keepCost !== null && item.keepCost === 0.00 // keepCost가 0.00인 경우
           }))));
         })
         .catch(error => {
@@ -49,7 +48,7 @@ const Cart = () => {
   }, []);
 
   const removeFromCart = (cartItemIdx) => {
-    axios.delete(`http://localhost:8090/popcon/cartitem/${cartItemIdx}`, {
+    axios.delete(`http://localhost:8090/popcon/cart/cartitem/${cartItemIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -64,7 +63,7 @@ const Cart = () => {
   };
 
   const updateQuantity = (cartItemIdx, skuValue) => {
-    axios.put(`http://localhost:8090/popcon/cartitem/${cartItemIdx}/quantity`, { skuValue }, {
+    axios.put(`http://localhost:8090/popcon/cart/cartitem/${cartItemIdx}/quantity`, { skuValue }, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -78,8 +77,12 @@ const Cart = () => {
       });
   };
 
+  const calculateItemCost = (item) => {
+    return item.isFromKeep ? 0 : item.skuCost * item.skuValue;  // Keep에서 온 경우 0원 처리
+  };
+
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.skuCost * item.skuValue, 0);
+    return cartItems.reduce((total, item) => total + calculateItemCost(item), 0);
   };
 
   const handleQuantityChange = (cartItemIdx, event) => {
@@ -88,7 +91,7 @@ const Cart = () => {
       updateQuantity(cartItemIdx, newQuantity);
     }
   };
-  // 수량 버튼 증감기능
+
   const handleIncrement = (cartItemIdx) => {
     const item = cartItems.find(item => item.cartItemIdx === cartItemIdx);
     const newQuantity = item.skuValue + 1;
@@ -111,12 +114,13 @@ const Cart = () => {
                   <p className="list-title-box">상품명</p>
                   <p className="list-stack-box">수량</p>
                   <p className="list-cancel-box">취소</p>
-                  <p className="list-point-box">포인트</p>
+                  <p className="list-cart-box">Cart</p>  {/* SKU에서 온 상품을 위한 칸 */}
+                  <p className="list-keep-box">냉장고</p>  {/* Keep에서 온 상품을 위한 칸 */}
                   <p className="list-price-box">주문액</p>
               </div>
 
               {cartItems.map((item) => (
-                <div className="cart-list-item flex-sa" key={item.cartItemIdx}>
+                <div className="cart-list-item flex-sa" key={`${item.cartItemIdx}-${item.isFromKeep ? 'KEEP' : 'SKU'}`}>
                     <div className="list-checkbox-box flex-c">
                         <input type="checkbox"/>
                     </div>
@@ -136,11 +140,14 @@ const Cart = () => {
                     <div className="list-cancel-box flex-c">
                         <button onClick={() => removeFromCart(item.cartItemIdx)}><FontAwesomeIcon icon={faXmark}/></button>
                     </div>
-                    <div className="list-point-box flex-c">
-                        <p>{item.skuCost}</p>
+                    <div className="list-cart-box flex-c"> {/* SKU에서 온 상품 */}
+                        <p>{!item.isFromKeep ? `${item.skuCost.toLocaleString()}원` : '-'}</p>
+                    </div>
+                    <div className="list-keep-box flex-c"> {/* Keep에서 온 상품 */}
+                        <p>{item.isFromKeep ? '0원' : '-'}</p>
                     </div>
                     <div className="list-price-box flex-c">
-                        <p>{(item.skuCost * item.skuValue).toLocaleString()}원</p>
+                        <p>{calculateItemCost(item).toLocaleString()}원</p>
                     </div>
                 </div>
               ))}
@@ -165,4 +172,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
