@@ -7,6 +7,7 @@
     right: 60px;
     top: 215px;
     z-index: 20;
+    padding-bottom: 10px;
 }
 
 .floating-menu a{
@@ -16,6 +17,7 @@
 
 .floating-menu-top{
     width: 85%;
-    height: 50px;
+    height: 40px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #82828274;
 }
