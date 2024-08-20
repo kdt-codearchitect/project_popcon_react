@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './RefrigeratorComponent.css';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import KeepModal from './KeepModal';
+import SideMenu from './SideMenu';
 
 const RefrigeratorComponent = () => {
   const location = useLocation();
@@ -72,19 +73,7 @@ const RefrigeratorComponent = () => {
 
   return (
     <div className="page-container">
-      <div className="mypage-container">
-        <div className="mypage-content">
-          <h2 className="mypage-title">마이페이지</h2>
-          <ul className="nav-links-side">
-            <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
-            <li><Link to="/Wish">Favorites / 나의 찜 목록</Link></li>
-            <li><Link to="/MyDelivery">Delivery / 배송 상황</Link></li>
-            <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
-            <li><Link to="/Payment">Payment / 결제수단</Link></li>
-            <li><Link to="/orderhistory">History / 주문 내역</Link></li>
-          </ul>
-        </div>
-      </div>
+      <SideMenu/>
       <div className="refrigerator-container">
         <div className="refrigerator-header">
           <div className="refrigerator-font">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './MyPage.css';
 import { Link, useNavigate } from "react-router-dom";
+import SideMenu from './SideMenu';
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const MyPage = () => {
   console.log(localStorage.getItem('userid'));
   return (
     <div className="page-container">
-      <div className="mypage-container">
+      {/* <div className="mypage-container">
         <div className="mypage-content">
           <h2 className="mypage-title" onClick={() => navigate('/MyPage')}>마이페이지</h2>
           <ul className="nav-links-side">
@@ -39,7 +40,8 @@ const MyPage = () => {
             <li><Link to="/orderhistory">History / 주문 내역</Link></li>
           </ul>
         </div>
-      </div>
+      </div> */}
+      <SideMenu/>
       <div className="section-container">
         <div className="section-header">
           <div className="section-font">

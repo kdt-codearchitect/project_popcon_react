@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './MyInfo.css';
 import { Link, useNavigate } from "react-router-dom";
+import SideMenu from './SideMenu';
 
 const MyInfo = ({ userInfo, updateUserInfo }) => {
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
@@ -32,30 +33,15 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
 
   return (
     <div className="page-container">
-      <div className="mypage-container">
-        <div className="mypage-content">
-          <h2 className="mypage-title" onClick={() => navigate('/MyPage')}>마이페이지</h2>
-          <ul className="nav-links-side">
-            <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
-            <li><Link to="/Wish">Favorites / 나의 찜 목록</Link></li>
-            <li><Link to="/MyDelivery">Delivery / 배송 상황</Link></li>
-            <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
-            <li><Link to="/Payment">Payment / 결제수단</Link></li>
-            <li><Link to="/orderhistory">History / 주문 내역</Link></li>
-          </ul>
-        </div>
-      </div>
+      <SideMenu/>
       <div className="section-container">
-        <div className="section-header">
+        <div className="myinfo-header">
           <div className="section-font">
             <h1>MyInfo / 개인정보수정</h1>
           </div>
         </div>
         <div className="section-content">
           <div className="myinfo-container">
-            <div className="myinfo-header">
-              <h2>MyInfo/ 개인정보 수정</h2>
-            </div>
             <form className="myinfo-form" onSubmit={handleSubmit}>
               <div className="myinfo-name">
                 <h1>{localUserInfo.name}</h1>

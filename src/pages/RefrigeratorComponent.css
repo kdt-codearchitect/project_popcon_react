@@ -71,10 +71,9 @@
 
 /* 냉장고 헤더 */
 .refrigerator-header {
-  background-color: #000;
-  background: linear-gradient(115deg, #000000 65%, #00000000 65%, #ffffff 65%, #ffffff 65%);
+  height: 86px;
+  background: linear-gradient(115deg, #000000 56.5%, #00000000 56.5%, #ffffff 56.5%, #ffffff 56.5%);
   color: #fff;
-  padding: 20px;
   text-align: left;
   flex: 0 0 auto; /* 고정 위치 설정 */
 }
