@@ -19,7 +19,7 @@ jobs:
         node-version: '20'  # 필요한 Node.js 버전을 설정
 
     - name: Install dependencies
-      run: npm install
+      run: CI=false && npm install
 
     - name: Build the project
       run: npm run build
