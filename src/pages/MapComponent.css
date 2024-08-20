@@ -1,10 +1,167 @@
 .map-container {
-    text-align: center;
-  }
-  
-  #map {
-    width: 100%;
-    height: 400px;
-    margin: 20px 0;
-  }
-  
+  width: 100%;
+  height: calc(100vh - 100px); /* 전체 화면 높이에서 헤더를 제외한 크기 */
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.map-sidemenu {
+  min-width: 350px;
+  max-width: 350px;
+  background-color: #FAE41C;
+  overflow: hidden;
+}
+
+.map-sidemenu-top {
+  width: 100%; /* 부모 요소의 너비를 100% 차지하도록 설정 */
+  box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비 계산 */
+  padding: 20px 20px; /* 패딩 조정 */
+  background-color: #FAE41C; /* 배경색이 시각적으로 묻히지 않도록 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-sidemenu-top .flex-sb.w-100 {
+  width: 100%; /* 부모 요소에 맞게 너비 설정 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.map-sidemenu-top p {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-left: 5px;
+}
+
+.map-sidemenu-top img {
+  width: 50px;
+  height: 25px;
+  margin-right: 5px;
+}
+
+.map-sidemenu-top form {
+  display: flex;
+  align-items: center;
+  width: 100%; /* 폼 요소가 전체 너비를 차지하도록 설정 */
+  margin-top: 10px;
+}
+
+.map-sidemenu-top input {
+  flex: 1;
+  padding: 6px 20px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.map-sidemenu-top button {
+  padding: 6px 12px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.map-sidemenu-top button:hover {
+  background-color: chartreuse;
+  color: black;
+}
+
+.map-sidemenu-bot {
+  transform: skewY(-3deg);
+  background-color: black;
+  height: calc(100% - 80px); /* 상단 영역을 제외한 나머지 높이 */
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-card-box {
+  transform: skewY(3deg);
+  width: 100%;
+  flex: 1; /* 높이를 유연하게 조정하여 공간을 채우도록 설정 */
+  padding-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto; /* y축 스크롤만 활성화 */
+}
+
+.sidebar-card {
+  width: 270px;
+  height: 90px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.sidebar-card i {
+  margin-right: 4px;
+}
+
+.sidebar-card p:nth-child(1) {
+  font-weight: 500;
+}
+
+.sidebar-card p:nth-child(2) {
+  font-size: 0.8rem;
+  color: chartreuse;
+}
+
+.sidebar-card p:nth-child(3) {
+  font-size: 0.9rem;
+}
+
+.sidebar-card-logo {
+  margin-left: 5px;
+  height: 100%;
+}
+
+.sidebar-card-logo img {
+  width: 50px;
+  object-fit: cover;
+}
+
+.map-api-box {
+  flex: 1;
+  height: 100%; /* 이 부분을 추가하여 map-api-box의 높이를 checkOut-container의 높이와 같게 설정 */
+  overflow: hidden; /* auto에서 hidden으로 변경하여 스크롤 바를 숨깁니다 */
+  position: relative; /* 지도가 상위 요소의 크기에 맞게 채워지도록 position을 relative로 설정 */
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  position: absolute; /* 지도 요소를 부모 요소(map-api-box)에 맞게 채우기 위해 절대 위치를 설정 */
+  top: 0;
+  left: 0;
+}
+
+#pagination {
+  margin-top: 10px;
+  padding: 10px 0;
+  background-color: #FAE41C;
+  text-align: center;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000; /* 다른 요소 위에 위치하도록 z-index 설정 */
+}
+
+#pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+#pagination button.on {
+  background-color: chartreuse;
+  font-weight: bold;
+}
