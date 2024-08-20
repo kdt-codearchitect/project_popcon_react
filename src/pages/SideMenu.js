@@ -6,13 +6,13 @@ const SideMenu = () => {
 
     return (
 
-        <div class="mypage-sidebar">
-            <div class="sidebar-top">
-                <div class="sidebar-title">
+        <div className="mypage-sidebar">
+            <div className="sidebar-top">
+                <div className="sidebar-title">
                     <h1>마이페이지</h1>
                 </div>
             </div>
-            <div class="sidebar-bot">
+            <div className="sidebar-bot">
                 <div className='sidebar-menu-box'>
                     <Link to="/MyInfo"><span>MyInfo</span><span><span> / </span></span>개인정보수정<span></span></Link>
                 </div>

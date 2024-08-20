@@ -4,44 +4,31 @@ import './KeepModal.css';
 
 const KeepModal = ({ isOpen, onClose, fridgeIdx }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [keepItems, setKeepItems] = useState([]); // keepItems 상태 정의
-  const [customerIdx, setCustomerIdx] = useState(null);
-  const [token, setToken] = useState(null);
+  const [keepItems, setKeepItems] = useState([]);
+  const customerIdx = localStorage.getItem('customerIdx');
+  const token = localStorage.getItem('jwtAuthToken');
 
   useEffect(() => {
-    // localStorage에서 customerIdx와 토큰을 가져옴
-    const storedCustomerIdx = localStorage.getItem('customerIdx');
-    const storedToken = localStorage.getItem('jwtAuthToken');
-
-    if (storedCustomerIdx && storedToken) {
-      setCustomerIdx(storedCustomerIdx);
-      setToken(storedToken);
-      console.log('Stored customerIdx:', storedCustomerIdx);
-      console.log('Stored token:', storedToken);
-
-      if (isOpen) {
-        // 로그인한 사용자의 카트를 가져옴 (axios 사용)
-        axios.get(`http://localhost:8090/popcon/customer/${storedCustomerIdx}`, {
-          headers: {
-            'Authorization': `Bearer ${storedToken}`,
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(response => {
-            setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
-              ...item,
-              cartIdx: cart.cartIdx,
-              customerIdx: cart.customerIdx
-            }))));
-          })
-          .catch(error => {
-            console.error('카트에 제품데이터를 가져오는데 오류가 발생 했습니다', error);
-          });
-      }
-    } else {
-      console.error('로그인 정보가 없습니다. customerIdx 또는 token을 찾을 수 없습니다.');
+    if (isOpen) {
+      axios.get(`http://localhost:8090/popcon/cart/customer/${customerIdx}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => {
+        setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
+          ...item,
+          cartIdx: cart.cartIdx,
+          customerIdx: cart.customerIdx,
+          skuCost: 0,  // KeepModal에서 skuCost를 0으로 설정
+        }))));
+      })
+      .catch((error) => {
+        console.error('카트에 제품 데이터를 가져오는데 오류가 발생했습니다', error);
+      });
     }
-  }, [isOpen]);
+  }, [isOpen, customerIdx, token]);
 
   const handleItemChange = (skuIdx, quantity) => {
     setKeepItems(prevState => {
@@ -56,21 +43,22 @@ const KeepModal = ({ isOpen, onClose, fridgeIdx }) => {
     });
   };
 
-  const handleMoveToKeep = async (cartItemIdx) => {
+  const handleMoveToKeep = async (cartItem) => {
     try {
-      const response = await axios.post('http://localhost:8090/popcon/cart/moveToKeep', null, {
+      const response = await axios.post('http://localhost:8090/popcon/cart/cart/moveToKeep', null, {
         params: {
-          cartItemIdx: cartItemIdx,
+          cartItemIdx: cartItem.cartItemIdx,
           fridgeIdx: fridgeIdx,
         },
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
-        }
+        },
       });
-  
+
       if (response.status === 200) {
         alert('상품이 킵으로 이동되었습니다.');
+        onClose(); // 성공 시 모달 닫기
       }
     } catch (error) {
       console.error('킵으로 상품을 이동하는 중에 오류가 발생했습니다.', error);
@@ -78,14 +66,18 @@ const KeepModal = ({ isOpen, onClose, fridgeIdx }) => {
   };
 
   const handleSubmit = () => {
-    keepItems.forEach(item => {
-      const cartItem = cartItems.find(cartItem => cartItem.skuIdx === item.skuIdx);
+    keepItems.forEach((item) => {
+      const cartItem = cartItems.find((cartItem) => cartItem.skuIdx === item.skuIdx);
       if (cartItem) {
-        handleMoveToKeep(cartItem.cartItemIdx);
+        // 가격을 0으로 설정한 후 서버로 전송
+        handleMoveToKeep({
+          ...cartItem,
+          skuCost: 0,  // 여기서 가격을 0으로 설정
+        });
       }
     });
 
-    onClose(); // 모달 닫기
+    onClose();
   };
 
   if (!isOpen) {
@@ -94,7 +86,7 @@ const KeepModal = ({ isOpen, onClose, fridgeIdx }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>킵할 상품을 선택하세요</h2>
         {cartItems.map((item, index) => (
           <div key={index} className="modal-item">

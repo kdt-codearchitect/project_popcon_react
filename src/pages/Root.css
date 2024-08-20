@@ -26,6 +26,10 @@ body {
     flex-direction: column;
 }
 
+button{
+    font-family: "Noto Sans KR";
+}
+
 /* .home-container {
     flex: 1;
     display: flex;
