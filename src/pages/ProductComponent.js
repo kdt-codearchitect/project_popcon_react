@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ProductComponent.css';
 import axios from 'axios';
 
 function ProductComponent() {
   const [products, setProducts] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+
+  const elementRef = useRef(null);
+
   const [customerIdx, setCustomerIdx] = useState(null);
   const [token, setToken] = useState(null);
+  const [activeTab, setActiveTab] = useState(0); // 현재 활성화된 탭의 인덱스를 저장
+  const [skuTypeIdx, setSkuTypeIdx] = useState(null); // 선택된 skuTypeIdx를 저장
 
   useEffect(() => {
     // localStorage에서 customerIdx와 토큰을 가져옴
@@ -19,16 +26,58 @@ function ProductComponent() {
       console.log('Stored customerIdx:', storedCustomerIdx);
       console.log('Stored token:', storedToken);
     }
-
-    // 로그인 여부와 상관없이 제품 목록을 가져옴 (axios 사용)
-    axios.get('http://localhost:8090/popcon/Sku')
-      .then(response => {
-        setProducts(response.data); // 제품 목록을 상태에 저장
-      })
-      .catch(error => {
-        console.error('제품을 가져오는 데 실패했습니다.', error);
-      });
   }, []);
+
+  useEffect(() => {
+    const fetchMoreItems = async () => {
+      try {
+        const response = await axios.get(
+          skuTypeIdx !== null
+            ? `http://localhost:8090/popcon/Sku/type/${skuTypeIdx}/${page * 12}`
+            : `http://localhost:8090/popcon/Sku/${page * 12}`
+        );
+  
+        if (response.data.length === 0) {
+          setHasMore(false);
+        } else {
+          setProducts((prevProducts) => [...prevProducts, ...response.data]);
+          setPage((prevPage) => prevPage + 1); // 페이지 번호 증가
+        }
+      } catch (error) {
+        console.error('제품을 가져오는 데 실패했습니다.', error);
+      }
+    };
+    
+    // 데이터 로드 초기화 및 fetchMoreItems 호출
+    setProducts([]);
+    setPage(1); // 페이지를 1로 초기화
+    setHasMore(true);
+    fetchMoreItems();
+  
+    // Intersection Observer 설정
+    const observer = new IntersectionObserver((entries) => {
+      const firstEntry = entries[0];
+      if (firstEntry.isIntersecting && hasMore) {
+        fetchMoreItems();
+      }
+    });
+  
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+  
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, [skuTypeIdx, hasMore]);
+
+
+  const handleTabClick = (index, skuType) => {
+    setActiveTab(index);  // 활성화된 탭의 인덱스를 업데이트
+    setSkuTypeIdx(skuType);  // 선택된 skuTypeIdx를 업데이트
+  };
 
   const handleAddToCart = async (product) => {
     if (!customerIdx) {
@@ -75,11 +124,7 @@ function ProductComponent() {
 
     const wishItem = {
       skuIdx: product.skuIdx,
-      customerIdx: customerIdx,
-
-      wishIdx: customerIdx,
-      skuIdx: product.skuIdx
-
+      customerIdx: customerIdx
     };
 
     try {
@@ -107,21 +152,21 @@ function ProductComponent() {
       <div className="productList-contents flex-c flex-d-column">
         <nav>
           <ul className="flex-sb">
-            <li className="product-nav-uderbar thema-font-01">전체목록</li>
-            <li>즉석요리</li>
-            <li>과자류</li>
-            <li>아이스크림</li>
-            <li>식품</li>
-            <li>음료</li>
-            <li>생활용품</li>
+            <li className={activeTab === 0 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(0, null)}>전체목록</li>
+            <li className={activeTab === 1 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(1, 2000)}>즉석요리</li>
+            <li className={activeTab === 2 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(2, 3000)}>과자류</li>
+            <li className={activeTab === 3 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(3, 4000)}>아이스크림</li>
+            <li className={activeTab === 4 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(4, 5000)}>식품</li>
+            <li className={activeTab === 5 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(5, 6000)}>음료</li>
+            <li className={activeTab === 6 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(6, 7000)}>생활용품</li>
           </ul>
         </nav>
         <div className="productList-box">
           {products.map(product => (
             <div key={product.skuIdx} className="product-card flex-sb flex-d-column">
               <div className="product-img-box flex-c">
-                <label className="opo flex-c">1+1</label>
-                {/* <label className="tpo flex-c">2+1</label> */}
+              {product.promotionIdx === 1 && <label className="opo flex-c">1+1</label>}
+              {product.promotionIdx === 2 && <label className="tpo flex-c">2+1</label>}
                 <img src={product.imageUrl} alt={product.skuName} />
               </div>
               <div className='product-title-box'>
@@ -132,12 +177,12 @@ function ProductComponent() {
                 <p className="product-event-price">{product.skuCost.toLocaleString()}<span>원</span></p>
               </div>
               <div className="product-button-box flex-sb">
-                {/* <button className="product-button" onClick={() => handleAddToWishlist(product)}>찜하기</button> */}
                 <button className="thema-btn-01" onClick={() => handleAddToCart(product)}>장바구니</button>
                 <button className="thema-btn-02" onClick={() => handleAddToCart(product)}>바로구매</button>
               </div>
             </div>
           ))}
+          <div ref={elementRef}></div>
         </div>
       </div>
     </div>

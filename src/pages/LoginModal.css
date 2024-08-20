@@ -24,7 +24,7 @@ dialog {
   animation: popIn 0.35s forwards;
 }
 
-.modal-content {
+.modal-contents {
   height: 100%;
 }
 

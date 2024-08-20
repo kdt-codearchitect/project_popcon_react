@@ -74,7 +74,7 @@
   left: -1px;
   bottom: 20px;
   font-weight: 900;
-  background-image: url("../image/store_image/event_bg.png");
+  background-image: url("../image/store_image/opo_bg.png");
   background-size: cover;
   font-style: oblique;
 }
@@ -85,9 +85,10 @@
   left: -1px;
   bottom: 20px;
   font-weight: 900;
-  background-image: url("../image/store_image/event_bg.png");
+  background-image: url("../image/store_image/tpo_bg.png");
   background-size: cover;
   font-style: oblique;
+  color: white;
 }
 
 .product-img-box > img{
