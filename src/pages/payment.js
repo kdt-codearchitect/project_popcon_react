@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const payment_value = {
     storeId: "store-b0ebe037-6ace-4169-a208-a5e368cbe5ec",
-    paymentId: "testlzl4f9xe21",
+    paymentId: "testlzl4f9xe29",
     orderName: "테스트 결제",
     totalAmount: 100,
     currency: "KRW",
@@ -21,11 +21,32 @@ const Payment = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // PortOne SDK가 로드되었는지 확인
     if (!window.PortOne) {
       console.error('PortOne SDK가 로드되지 않았습니다.');
     }
   }, []);
+
+  const moveToKeep = async (customerIdx) => {
+    const token = localStorage.getItem('jwtAuthToken');
+
+    try {
+      const response = await fetch(`http://localhost:8090/popcon/cart/moveToKeep/${customerIdx}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log("Items moved to Keep successfully!");
+      } else {
+        console.error('Failed to move items to Keep.');
+      }
+    } catch (error) {
+      console.error('Move to Keep request failed:', error);
+    }
+  };
 
   const clearCart = async (customerIdx) => {
     const token = localStorage.getItem('jwtAuthToken');
@@ -43,11 +64,9 @@ const Payment = () => {
         console.log("Cart cleared successfully!");
       } else {
         console.error('Cart clearing failed.');
-        alert('장바구니를 비우는 중 오류가 발생했습니다.');
       }
     } catch (error) {
       console.error('Cart clearing request failed:', error);
-      alert('장바구니를 비우는 중 오류가 발생했습니다.');
     }
   };
 
@@ -59,35 +78,29 @@ const Payment = () => {
 
     window.PortOne.requestPayment(payment_value)
       .then(response => {
-        console.log("Payment response:", response);  // 로그 추가
+        console.log("Payment response:", response);
 
         const customerIdx = localStorage.getItem('customerIdx');
 
-        // 결제 성공 여부와 상관없이 장바구니 비우기
-        clearCart(customerIdx);
-
-        // 결제 후 냉장고에 킵 여부를 물어보기
+        // 결제 성공 여부와 상관없이 장바구니 처리
         const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
         if (userChoice) {
-          navigate('/refrigerator', { state: { openModal: true } });
+          moveToKeep(customerIdx).then(() => {
+            navigate('/refrigerator', { state: { openModal: true } });
+          });
         } else {
-          navigate('/');
+          clearCart(customerIdx).then(() => {
+            navigate('/');
+          });
         }
       })
       .catch(error => {
         console.error('결제 요청 중 오류 발생:', error);
-        alert('결제 처리 중 오류가 발생했습니다.');
-
+    
         const customerIdx = localStorage.getItem('customerIdx');
-        clearCart(customerIdx);
-
-        // 결제 실패 시에도 동일하게 처리
-        const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
-        if (userChoice) {
-          navigate('/refrigerator', { state: { openModal: true } });
-        } else {
+        clearCart(customerIdx).then(() => {
           navigate('/');
-        }
+        });
       });
   };
 

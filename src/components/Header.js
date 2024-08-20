@@ -35,7 +35,9 @@ function Header() {
                         }
 
                         { token && <Form action="/logout" method="post">
+
                                 <button className='btn btn-success' >로그아웃</button>
+
                                 </Form>
                         }
 
