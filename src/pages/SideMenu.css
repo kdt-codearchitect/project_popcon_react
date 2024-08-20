@@ -1,0 +1,85 @@
+.mypage-sidebar{
+    width:250px;
+    overflow: hidden;
+    background-color: #FAE41C;
+}
+.sidebar-top {
+    width: 250px;
+    height: 130px;
+    background-color: #000;
+    color: #fff;
+    transform: skewY(-10deg);
+    transform-origin: top left;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.sidebar-title {
+    width: 100%;
+    background-color: #000;
+    color: #FAE41C;
+    transform: skewX(10deg);
+    transform-origin: top left;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.sidebar-title > h1{
+    position: absolute;
+    bottom: -8px;
+    margin: 0;
+}
+.sidebar-bot {
+    background-color: #000;
+    width: 100%;
+    height: 350px;
+    background-color: #FAE41C;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.sidebar-menu-box {
+    width: 100%;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: skewY(-2deg);
+    transform-origin: top left;
+    background: linear-gradient(to right, #000 0%, #000 100%, transparent 100%);
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.2s ease; /* 배경 크기를 애니메이션 */
+}
+/* .sidebar-menu-box > a{
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+} */
+
+.sidebar-menu-box:hover {
+    background-size: 100% 100%; /* 마우스 오버 시 배경이 전체로 확장 */
+}
+
+.sidebar-menu-box:hover > a {
+    /* width: 70%; */
+    /* display: flex;
+    justify-content: space-between;
+    align-items: center; */
+    color: #FAE41C;
+}
+
+.sidebar-menu-box > a {
+    transform: skew(2deg);
+    transform: skewY(2deg);
+    transform-origin: top left;
+    margin-bottom: 8px;
+}
+
+.sidebar-menu-box span:first-child {
+    font-weight: 700;
+}

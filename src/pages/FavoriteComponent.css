@@ -69,13 +69,19 @@
   overflow: hidden; /* 스크롤 영향 받지 않도록 설정 */
 }
 
-.section-header {
-  background-color: #000;
-  height: 85px;
-  background: linear-gradient(115deg, #000000 56.5%, #00000000 56.5%, #ffffff 65%, #ffffff 65%);
+.refrigerator-header {
+  height: 86px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background: linear-gradient(115deg, #000000 56.5%, #00000000 56.5%, #ffffff 56.5%, #ffffff 56.5%);
   color: #fff;
   text-align: left;
-  flex: 0 0 auto; /* 고정 위치 설정 */  
+  flex: 0 0 auto; /* 고정 위치 설정 */
+}
+
+.refrigerator-header > div{
+  margin-left: 30px;
 }
 
 .section-content {

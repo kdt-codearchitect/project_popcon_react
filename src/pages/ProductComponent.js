@@ -128,7 +128,7 @@ function ProductComponent() {
                 <p>{product.skuName}</p>
               </div>
               <div className="product-price-box flex-sb">
-                <p className="product-original-price">19,500,000<span>원</span></p>
+                <p className="product-original-price">{product.skuCost.toLocaleString()}<span>원</span></p>
                 <p className="product-event-price">{product.skuCost.toLocaleString()}<span>원</span></p>
               </div>
               <div className="product-button-box flex-sb">

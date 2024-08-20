@@ -3,6 +3,7 @@ import './FavoriteComponent.css';
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import deleteIcon from "../image/Delete.png"; 
+import SideMenu from './SideMenu';
 
 const FavoriteComponent = () => {
   const [favoriteItems, setFavoriteItems] = useState([]);
@@ -73,23 +74,14 @@ const FavoriteComponent = () => {
 
   return (
     <div className="page-container">
-      <div className="mypage-container">
-        <div className="mypage-content">
-          <h2 className="mypage-title" onClick={() => navigate('/MyPage')}>마이페이지</h2>
-          <ul className="nav-links-sides">
-            <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
-            <li><Link to="/favorites">Favorites / 나의 찜 목록</Link></li>
-            <li><Link to="/MyDelivery">Delivery / 배송 상황</Link></li>
-            <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
-            <li><Link to="/Payment">Payment / 결제수단</Link></li>
-            <li><Link to="/orderhistory">History / 주문 내역</Link></li>
-          </ul>
-        </div>
-      </div>
+      <SideMenu/>
       <div className="refrigerator-container">
         <div className="refrigerator-header">
           <div className="refrigerator-font">
-            <h1>Favorites / 나의 찜 목록</h1>
+            <div>
+              <h1>Favorites</h1>
+              <h2> / 나의 찜 목록</h2>
+            </div>
           </div>
         </div>
         <div className="refrigerator-content">
