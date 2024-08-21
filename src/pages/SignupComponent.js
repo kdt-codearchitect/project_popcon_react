@@ -8,7 +8,7 @@ import {
 import sign_up from '../image/store_image/sign_up.png'
 import { useState,useEffect } from 'react';
 
-
+const url = process.env.REACT_APP_API_BASE_URL;
 var isUnique = false;
 
 
@@ -24,6 +24,7 @@ function SignupComponent() {
   const [userid, setUserid] = useState("");
   const [isIdUnique, setIsIdUnique] = useState(true);
   const [idCheckMessage, setIdCheckMessage] = useState("");
+ 
   
   useEffect(() => {
     const script = document.createElement('script');
@@ -72,7 +73,7 @@ function SignupComponent() {
       }
       
     
-    const response = await fetch(`http://localhost:8090/popcon/check-id?userid=${userid}`);
+    const response = await fetch(url + `/check-id?userid=${userid}`);
     const result = await response.json();
       console.log(result);
     if (response.ok) {
@@ -171,7 +172,7 @@ export async function action({request}){
   };
   console.log("authData>>", authData);
 
-  const response = await fetch('http://localhost:8090/popcon/signup', {
+  const response = await fetch(url + '/signup', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

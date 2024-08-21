@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Link, Form, redirect, json, useActionData } from 'react-router-dom';  // Add 'json' and 'redirect' imports
 
+
+const url = process.env.REACT_APP_API_BASE_URL;
 const LoginModal = forwardRef((props, ref) => {
   const dialogRef = useRef(null);
   const data = useActionData();
@@ -78,8 +80,8 @@ export async function action({ request }) {
     userid: data.get('userid'),
     password: data.get('password'),
   };
-
-  const response = await fetch('http://localhost:8090/popcon/authenticate', {
+  const fetch_url = url + '/authenticate'
+  const response = await fetch(fetch_url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -90,7 +92,7 @@ export async function action({ request }) {
   if (response.status === 400 || response.status === 401 || response.status === 422) {
     return response;
   }
-  
+ 
   if (!response.ok) {
     throw json(
       {
