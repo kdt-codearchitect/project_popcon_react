@@ -97,9 +97,6 @@
     margin-top: 5px;   
     
 }
-.inquiry-picture img{
-    opacity: 0.5;
-}
 
 /* 하단 등록 버튼들 */
 .inquiry-submit-buttons{
@@ -116,4 +113,16 @@
 .inquiry-tempsave{
     height:35px;
     width:100px;
+}
+
+.inquiry-imgupload{
+    height: 50px;
+    width: 50px;
+}
+
+.inquiry-imguploaded{
+    opacity: 1;    
+    max-height: 300px; 
+    max-width: 420px;
+    object-fit: contain;
 }

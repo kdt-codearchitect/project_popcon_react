@@ -1,4 +1,5 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
 /* 문의내역 전체페이지 */
 .customer-service-page{
@@ -67,12 +68,14 @@ padding:0;
     display: flex;
     justify-content: center;
     align-items: center;
+    color:#d7d7d7;
+    font-weight: 500;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
 }
-.hover-li a{
-    color:#7c7c7c;
-}
+
 .hover-li:hover {
     border-color: #FAE41C;
+    cursor: pointer;
 }
 .hover-li-selected{
     height: 40px;
