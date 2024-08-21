@@ -7,6 +7,8 @@ import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import ErrorPage from './Error';
 
+const url = process.env.REACT_APP_API_BASE_URL;
+const sub_url=`/faq`;
 
 const FaqComponent=()=> {
     
@@ -50,7 +52,7 @@ const FaqComponent=()=> {
         const fetchFaqs = async () =>{
             try{
                 // DB에 비동기 데이터 요청
-                const faqResponse = await fetch('http://localhost:8090/popcon/faq');
+                const faqResponse = await fetch(url+sub_url);
                     if(!faqResponse.ok){
                     throw new Error('네트워크 상태가 원활하지 않습니다.') //응답이 성공이 아닐 경우
                     }
@@ -92,12 +94,12 @@ const FaqComponent=()=> {
             </div>
             <nav>
                 <ul className="nav-list">
-                    <li className={selectedFaq === 0? "hover-li-selected flex-c":"hover-li"} onClick={() => handleNavClick(0)}><a href="#" className="nav-list-link">FAQ</a></li>
-                    <li className={selectedFaq === 1? "hover-li-selected flex-c":"hover-li"} onClick={() => handleNavClick(1)}><a href="#" className="nav-list-link">상품 문의</a></li>
-                    <li className={selectedFaq === 2? "hover-li-selected flex-c":"hover-li"} onClick={() => handleNavClick(2)}><a href="#" className="nav-list-link">주문/결제</a></li>
-                    <li className={selectedFaq === 3? "hover-li-selected flex-c":"hover-li"} onClick={() => handleNavClick(3)}><a href="#" className="nav-list-link">반품/환불</a></li>
-                    <li className={selectedFaq === 4? "hover-li-selected flex-c":"hover-li"} onClick={() => handleNavClick(4)}><a href="#" className="nav-list-link">배송 문의</a></li>
-                    <li className={selectedFaq === 5? "hover-li-selected flex-c":"hover-li"} onClick={() => handleNavClick(5)}><a href="#" className="nav-list-link">기타</a></li>
+                    <li className={selectedFaq === 0? "hover-li-selected flex-c":"hover-li nav-list-link"} onClick={() => handleNavClick(0)}>FAQ</li>
+                    <li className={selectedFaq === 1? "hover-li-selected flex-c":"hover-li nav-list-link"} onClick={() => handleNavClick(1)}>상품 문의</li>
+                    <li className={selectedFaq === 2? "hover-li-selected flex-c":"hover-li nav-list-link"} onClick={() => handleNavClick(2)}>주문/결제</li>
+                    <li className={selectedFaq === 3? "hover-li-selected flex-c":"hover-li nav-list-link"} onClick={() => handleNavClick(3)}>반품/환불</li>
+                    <li className={selectedFaq === 4? "hover-li-selected flex-c":"hover-li nav-list-link"} onClick={() => handleNavClick(4)}>배송 문의</li>
+                    <li className={selectedFaq === 5? "hover-li-selected flex-c":"hover-li nav-list-link"} onClick={() => handleNavClick(5)}>기타</li>
                 </ul>
             </nav>
 

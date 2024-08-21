@@ -3,10 +3,15 @@ import "./Inquiry.css"
 import { Link, useNavigate } from "react-router-dom";
 import image_icon from '../image/image_icon.png';
 
+
+const url = process.env.REACT_APP_API_BASE_URL;
+var customerIdx = localStorage.getItem('customerIdx');
+var customerId = localStorage.getItem('userid');
+const sub_url=`ask/${customerIdx}`;
+
+
 // 문의 등록하기
 const InquiryComponent = () => {
-    var customerIdx = localStorage.getItem('customerIdx');
-    var customerId = localStorage.getItem('userid');
 
     // 데이터, 로딩, 에러 상태확인
     const[inquiry, setInquiry] = useState({
@@ -16,7 +21,8 @@ const InquiryComponent = () => {
         qnaTitle:'',
         qnaText:'',
         qnaPicture:'',
-        qnaImage:''
+        qnaImage:'',
+        qnaDel:'false'
     }); 
     const[loading, setLoading] = useState(true);
     const[error, setError] = useState(null);
@@ -72,7 +78,7 @@ const InquiryComponent = () => {
     const handleSubmit =() =>{
 
         //문의신청 POST 데이터 전송 [JSON 처리]
-        fetch('http://localhost:8090/popcon/ask',{
+        fetch(url+sub_url,{
                method: 'POST',
                headers:{    
                 'Content-Type':'application/json'},
@@ -133,8 +139,8 @@ const InquiryComponent = () => {
                     id="imageFile"
                 />
                 <label htmlFor="imageFile">
-                    {!imageFile && <img src={image_icon} height="50px" width="50px" alt="업로드 아이콘"></img>}
-                    {imageFile  && <img src={imageFile}  alt="미리보기" style={{ opacity: 1,    width: 'auto', height: 'auto', maxWidth: '500px'}}  />}
+                    {!imageFile && <img src={image_icon} className="inquiry-imgupload" alt="업로드 아이콘"/>}
+                    {imageFile  && <img src={imageFile}  alt="미리보기" className='inquiry-imguploaded'/>}
                 </label>
             </div>
             <div className="inquiry-submit-buttons">
