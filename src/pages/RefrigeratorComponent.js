@@ -16,10 +16,12 @@ const RefrigeratorComponent = () => {
   const customerIdx = localStorage.getItem('customerIdx');
   const token = localStorage.getItem('jwtAuthToken');
 
+  const url = process.env.REACT_APP_API_BASE_URL;
+
   // fetchKeeps 함수를 RefrigeratorComponent 내부에서 정의
   const fetchKeeps = async () => {
     try {
-      const response = await axios.get(`http://localhost:8090/popcon/keep/${customerIdx}`, {
+      const response = await axios.get(url+`/keep/${customerIdx}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -63,7 +65,7 @@ const RefrigeratorComponent = () => {
 
     const fetchCartIdx = async () => {
       try {
-        const response = await axios.get(`http://localhost:8090/popcon/cart/customer/${customerIdx}`, {
+        const response = await axios.get(url+`/cart/customer/${customerIdx}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -114,7 +116,7 @@ const RefrigeratorComponent = () => {
     }
   
     try {
-      const response = await axios.post('http://localhost:8090/popcon/cart/moveToCart', null, {
+      const response = await axios.post(url+'/cart/moveToCart', null, {
         params: {
           keepItemIdx: item.keepItemIdx,
           cartIdx: cartIdx,

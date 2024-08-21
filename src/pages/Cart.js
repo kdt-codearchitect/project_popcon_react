@@ -10,6 +10,7 @@ const Cart = () => {
   const [customerIdx, setCustomerIdx] = useState(null);
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
+  const url = process.env.REACT_APP_API_BASE_URL;
 
   const handleOrder = () => {
     // "KEEP"에서 온 상품이 있는지 확인
@@ -36,7 +37,7 @@ const Cart = () => {
       setCustomerIdx(storedCustomerIdx);
       setToken(storedToken);
 
-      axios.get(`http://localhost:8090/popcon/cart/customer/${storedCustomerIdx}`, {
+      axios.get(url+`/cart/customer/${storedCustomerIdx}`, {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
           'Content-Type': 'application/json'
@@ -65,7 +66,7 @@ const Cart = () => {
   }, []);
 
   const removeFromCart = (cartItemIdx) => {
-    axios.delete(`http://localhost:8090/popcon/cart/cartitem/${cartItemIdx}`, {
+    axios.delete(url+`/cart/cartitem/${cartItemIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -80,7 +81,7 @@ const Cart = () => {
   };
 
   const updateQuantity = (cartItemIdx, skuValue) => {
-    axios.put(`http://localhost:8090/popcon/cart/cartitem/${cartItemIdx}/quantity`, { skuValue }, {
+    axios.put(url+`/cart/cartitem/${cartItemIdx}/quantity`, { skuValue }, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -122,7 +123,7 @@ const Cart = () => {
   };
 
   const moveToCart = (keepItemIdx, cartIdx, quantity) => {
-    axios.post(`http://localhost:8090/popcon/cart/moveToCart`, null, {
+    axios.post(url+`/cart/moveToCart`, null, {
       params: {
         keepItemIdx: keepItemIdx,
         cartIdx: cartIdx,

@@ -6,12 +6,13 @@ import SideMenu from './SideMenu';
 const MyPage = () => {
   const navigate = useNavigate();
   const [userList, setUserList] = useState([]);
+  const url = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     
     const fetchMembers = async () => {
       try {
-        const response = await fetch('http://localhost:8090/popcon/MyPage');  
+        const response = await fetch(url+'/MyPage');  
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

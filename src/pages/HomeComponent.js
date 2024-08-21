@@ -23,6 +23,8 @@ const HomeComponent = () => {
     const mainRef = useRef(null); // 메인 텍스트의 참조
     const repeatedEvents = [...events, ...events];
     let slideDuration = 5000; // 슬라이드 시간
+    const url = process.env.REACT_APP_API_BASE_URL;
+
     const [isFirstRender, setIsFirstRender] = useState(true); // 최초 렌더링 여부 상태
 
     function show_modal() {
@@ -35,7 +37,7 @@ const HomeComponent = () => {
         const fetchEvent = async () => {
             try {
                 // DB에 비동기 데이터 요청
-                const eventResponse = await fetch('http://localhost:8090/popcon/');
+                const eventResponse = await fetch(url+'/');
                 if (!eventResponse.ok) {
                     throw new Error('네트워크 상태가 원활하지 않습니다.'); // 응답이 성공이 아닐 경우
                 }
