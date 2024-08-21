@@ -15,6 +15,7 @@ function ProductComponent() {
   const [skuTypeIdx, setSkuTypeIdx] = useState(null); // 선택된 skuTypeIdx를 저장
 
   const url = process.env.REACT_APP_API_BASE_URL;
+  const imgSrc = '../image/item_image/'
 
   useEffect(() => {
     // localStorage에서 customerIdx와 토큰을 가져옴
@@ -169,7 +170,7 @@ function ProductComponent() {
               <div className="product-img-box flex-c">
               {product.promotionIdx === 1 && <label className="opo flex-c">1+1</label>}
               {product.promotionIdx === 2 && <label className="tpo flex-c">2+1</label>}
-                <img src={product.imageUrl} alt={product.skuName} />
+                <img src={imgSrc+product.skuName+'.jpg'} alt={product.skuName} />
               </div>
               <div className='product-title-box'>
                 <p>{product.skuName}</p>
