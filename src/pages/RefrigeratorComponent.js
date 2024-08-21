@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import KeepModal from './KeepModal';
 import axios from 'axios';
 import './RefrigeratorComponent.css';
 
 const RefrigeratorComponent = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [keepItems, setKeepItems] = useState([]);
   const [cartIdx, setCartIdx] = useState(null); // cartIdx 상태 추가
   const [isModalOpen, setModalOpen] = useState(false);
@@ -14,6 +15,45 @@ const RefrigeratorComponent = () => {
   // customerIdx와 token을 localStorage에서 가져옴
   const customerIdx = localStorage.getItem('customerIdx');
   const token = localStorage.getItem('jwtAuthToken');
+
+  // fetchKeeps 함수를 RefrigeratorComponent 내부에서 정의
+  const fetchKeeps = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8090/popcon/keep/${customerIdx}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.status === 200 && response.data.length > 0) {
+        const firstKeep = response.data[0];
+  
+        // 동일한 SKU를 가진 항목들을 그룹화하고 수량을 합산
+        const groupedItems = firstKeep.keepItems.reduce((acc, item) => {
+          const existingItem = acc.find(i => i.skuIdx === item.skuIdx);
+          if (existingItem) {
+            existingItem.quantity += item.qty;
+          } else {
+            acc.push({
+              skuIdx: item.skuIdx,
+              quantity: item.qty,
+              name: `SKU ${item.skuIdx}`,
+              image: 'https://via.placeholder.com/50', // 이미지 URL이 없을 때 placeholder 사용
+              fridgeIdx: firstKeep.fridgeIdx,
+              keepItemIdx: item.keepItemIdx, // 이 필드 추가
+            });
+          }
+          return acc;
+        }, []);
+  
+        setKeepItems(groupedItems);
+      }
+  
+    } catch (error) {
+      console.error('Error fetching keeps:', error);
+    }
+  };
 
   useEffect(() => {
     if (!customerIdx || !token) {
@@ -41,36 +81,13 @@ const RefrigeratorComponent = () => {
     };
 
     fetchCartIdx(); // cartIdx를 가져오는 함수 호출
+    fetchKeeps(); // Keep Items를 가져오는 함수 호출
 
-    const fetchKeeps = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8090/popcon/keep/${customerIdx}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.status === 200 && response.data.length > 0) {
-          const firstKeep = response.data[0];
-          const items = firstKeep.keepItems.map(item => ({
-            skuIdx: item.skuIdx,
-            quantity: item.qty,
-            name: `SKU ${item.skuIdx}`,
-            image: 'https://via.placeholder.com/50', // 이미지 URL이 없을 때 placeholder 사용
-            fridgeIdx: firstKeep.fridgeIdx,
-            keepItemIdx: item.keepItemIdx, // 이 필드 추가
-          }));
-          setKeepItems(items);
-        }
-
-      } catch (error) {
-        console.error('Error fetching keeps:', error);
-      }
-    };
-
-    fetchKeeps();
-  }, [customerIdx, token, navigate]);
+    // 결제 후 리디렉션되어 온 경우, 모달을 자동으로 열기
+    if (location.state?.openModal) {
+      setModalOpen(true);
+    }
+  }, [customerIdx, token, navigate, location.state]);
 
   const handleModalOpen = (item) => {
     setSelectedItem(item);
@@ -80,6 +97,8 @@ const RefrigeratorComponent = () => {
   const handleModalClose = () => {
     setModalOpen(false);
     setSelectedItem(null);
+    // 모달이 닫힌 후 Keep Items를 다시 불러옵니다.
+    fetchKeeps();
   };
 
   const handlePickup = async (item) => {
@@ -88,11 +107,18 @@ const RefrigeratorComponent = () => {
       return;
     }
   
+    // 수량이 0 이하인 경우 처리하지 않음
+    if (item.quantity <= 0) {
+      alert('더 이상 픽업할 수 있는 수량이 없습니다.');
+      return;
+    }
+  
     try {
       const response = await axios.post('http://localhost:8090/popcon/cart/moveToCart', null, {
         params: {
           keepItemIdx: item.keepItemIdx,
-          cartIdx: cartIdx, // cartIdx를 요청에 포함
+          cartIdx: cartIdx,
+          quantity: 1 // 한 번에 하나씩 픽업
         },
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -102,15 +128,22 @@ const RefrigeratorComponent = () => {
   
       if (response.status === 200) {
         alert('아이템이 장바구니로 이동되었습니다.');
-        // 장바구니로 이동 시, keep에서 해당 아이템 제거
-        setKeepItems(keepItems.filter(i => i.keepItemIdx !== item.keepItemIdx));
+  
+        // 수량 하나를 픽업했으므로, 남은 수량을 1 줄임
+        setKeepItems(prevItems => 
+          prevItems.map(i => 
+            i.keepItemIdx === item.keepItemIdx 
+              ? { ...i, quantity: i.quantity - 1 } 
+              : i
+          ).filter(i => i.quantity > 0) // 수량이 0이 되면 목록에서 제거
+        );
       }
     } catch (error) {
       console.error('아이템을 장바구니로 이동하는 중 오류가 발생했습니다.', error);
       alert('아이템을 장바구니로 이동하는 중 오류가 발생했습니다.');
     }
-};
-  
+  };
+
   return (
     <div className="page-container">
       <div className="mypage-container">
