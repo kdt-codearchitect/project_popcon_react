@@ -7,6 +7,8 @@ const KeepModal = ({ isOpen, onClose, fridgeIdx }) => {
   const [keepItems, setKeepItems] = useState([]);
   const [customerIdx, setCustomerIdx] = useState(null);
   const [token, setToken] = useState(null);
+  
+  const url = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     const storedCustomerIdx = localStorage.getItem('customerIdx');
@@ -17,7 +19,7 @@ const KeepModal = ({ isOpen, onClose, fridgeIdx }) => {
       setToken(storedToken);
 
       if (isOpen) {
-        axios.get(`http://localhost:8090/popcon/cart/customer/${storedCustomerIdx}`, {
+        axios.get(url+`/cart/customer/${storedCustomerIdx}`, {
           headers: {
             'Authorization': `Bearer ${storedToken}`,
             'Content-Type': 'application/json'
@@ -61,7 +63,7 @@ const KeepModal = ({ isOpen, onClose, fridgeIdx }) => {
 
   const handleMoveToKeep = async (cartItemIdx, quantity) => {
     try {
-      const response = await axios.post('http://localhost:8090/popcon/cart/cart/moveToKeep', null, {
+      const response = await axios.post(url+'/cart/cart/moveToKeep', null, {
         params: {
           cartItemIdx: cartItemIdx,
           fridgeIdx: fridgeIdx,

@@ -10,6 +10,7 @@ const FavoriteComponent = () => {
   const [customerIdx, setCustomerIdx] = useState(null); // 초기화 추가
   const [token, setToken] = useState(null); // 초기화 추가
   const navigate = useNavigate();
+  const url = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     const storedCustomerIdx = localStorage.getItem('customerIdx');
@@ -21,7 +22,7 @@ const FavoriteComponent = () => {
       console.log('Stored customerIdx:', storedCustomerIdx);
       console.log('Stored token:', storedToken);
 
-      axios.get(`http://localhost:8090/popcon/Wish/${storedCustomerIdx}`, {
+      axios.get(url+`/Wish/${storedCustomerIdx}`, {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
           'Content-Type': 'application/json'
@@ -38,7 +39,7 @@ const FavoriteComponent = () => {
 
   const handleRemove = (wishItemIdx) => {
     console.log('Removing wish item with ID:', wishItemIdx);
-    axios.delete(`http://localhost:8090/popcon/Wish/delete/${wishItemIdx}`, {
+    axios.delete(url+`/Wish/delete/${wishItemIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -53,7 +54,7 @@ const FavoriteComponent = () => {
   };
 
   const handleMoveToCart = (wishItemIdx) => {
-    axios.post('http://localhost:8090/popcon/Wish/moveToCart', null, {
+    axios.post(url+'/Wish/moveToCart', null, {
       params: {
         wishItemIdx: wishItemIdx,
         cartIdx: customerIdx, // 실제 사용 중인 cartIdx 값으로 대체하세요

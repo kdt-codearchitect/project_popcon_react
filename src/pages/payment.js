@@ -17,6 +17,8 @@ const payment_value = {
     redirectUrl: "https://sdk-playground.portone.io/",
 };
 
+const url = process.env.REACT_APP_API_BASE_URL;
+
 const Payment = () => {
   const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ const Payment = () => {
     const token = localStorage.getItem('jwtAuthToken');
 
     try {
-      const response = await fetch(`http://localhost:8090/popcon/cart/moveToKeep/${customerIdx}`, {
+      const response = await fetch(url+`/cart/moveToKeep/${customerIdx}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -52,7 +54,7 @@ const Payment = () => {
     const token = localStorage.getItem('jwtAuthToken');
 
     try {
-      const response = await fetch(`http://localhost:8090/popcon/cart/clear/${customerIdx}`, {
+      const response = await fetch(url+`/cart/clear/${customerIdx}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

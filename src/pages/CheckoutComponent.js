@@ -35,6 +35,8 @@ const CheckoutComponent = () => {
   const CustomerIdx = localStorage.getItem('customerIdx'); // 로그인한 유저의 customerIdx를 불러옴
   payment_value.customer.fullName = customer.customerName;
 
+  const url = process.env.REACT_APP_API_BASE_URL;
+  
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -49,7 +51,7 @@ const CheckoutComponent = () => {
     const fetchCustomer = async () => {
       const token = getAuthToken();
       try {
-        const response = await fetch(`http://localhost:8090/popcon/findCustomer/${CustomerIdx}`, {
+        const response = await fetch(url+`/findCustomer/${CustomerIdx}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`
@@ -75,7 +77,7 @@ const CheckoutComponent = () => {
     const fetchCartItems = async () => {
       const token = getAuthToken();
       try {
-        const response = await fetch(`http://localhost:8090/popcon/findCart/${CustomerIdx}`, {
+        const response = await fetch(url+`/findCart/${CustomerIdx}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`
