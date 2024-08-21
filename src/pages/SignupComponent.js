@@ -24,7 +24,7 @@ function SignupComponent() {
   const [userid, setUserid] = useState("");
   const [isIdUnique, setIsIdUnique] = useState(true);
   const [idCheckMessage, setIdCheckMessage] = useState("");
-  const url = process.env.REACT_APP_API_BASE_URL;
+ 
   
   useEffect(() => {
     const script = document.createElement('script');
