@@ -4,14 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import image_icon from '../image/image_icon.png';
 
 
-const url = process.env.REACT_APP_API_BASE_URL;
-var customerIdx = localStorage.getItem('customerIdx');
-var customerId = localStorage.getItem('userid');
-const sub_url=`/ask/${customerIdx}`;
 
 
 // 문의 등록하기
 const InquiryComponent = () => {
+    
+    const url = process.env.REACT_APP_API_BASE_URL;
+    var customerIdx = localStorage.getItem('customerIdx');
+    var customerId = localStorage.getItem('userid');
+    const sub_url=`/ask/${customerIdx}`;
 
     // 데이터, 로딩, 에러 상태확인
     const[inquiry, setInquiry] = useState({
@@ -80,7 +81,6 @@ const InquiryComponent = () => {
         //문의신청 POST 데이터 전송 [JSON 처리]
         fetch(url+sub_url,{
                method: 'POST',
-               mode: 'no-cors',
                headers:{    
                 'Content-Type':'application/json'},
                   body: JSON.stringify(inquiry),
