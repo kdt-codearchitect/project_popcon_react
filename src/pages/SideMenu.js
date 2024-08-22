@@ -14,19 +14,19 @@ const SideMenu = () => {
             </div>
             <div className="sidebar-bot">
                 <div className='sidebar-menu-box'>
-                    <Link to="/MyInfo"><span>MyInfo</span><span><span> / </span></span>개인정보수정<span></span></Link>
+                    <Link to="/MyInfo"><p>MyInfo</p><p> / </p><p>개인정보수정</p></Link>
                 </div>
                 <div className='sidebar-menu-box'>
-                    <Link to="/Wish"><span>Favorites</span><span> / </span><span>나의 찜 목록</span></Link>
+                    <Link to="/Wish"><p>Favorites</p><p> / </p><p>나의 찜 목록</p></Link>
                 </div>
                 <div className='sidebar-menu-box'>
-                    <Link to="/MyDelivery"><span>Delivery</span><span> / </span><span>배송 상황</span></Link>
+                    <Link to="/MyDelivery"><p>Delivery</p><p> / </p><p>배송 상황</p></Link>
                 </div>
                 <div className='sidebar-menu-box'>
-                    <Link to="/refrigerator"><span>Fridge</span><span> / </span><span>나의 냉장고</span></Link>
+                    <Link to="/refrigerator"><p>Fridge</p><p> / </p><p>나의 냉장고</p></Link>
                 </div>
                 <div className='sidebar-menu-box'>
-                    <Link to="/orderhistory"><span>History</span><span> / </span><span>주문 내역</span></Link>
+                    <Link to="/orderhistory"><p>History</p><p> / </p><p>주문 내역</p></Link>
                 </div>
             </div>
         </div>
