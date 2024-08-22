@@ -64,8 +64,8 @@ const Payment = () => {
           },
           orderItems: cartResponse.data[0].cartItems.map(cartItem => ({
             skuIdx: cartItem.skuIdx,
-            orderItemQty: cartItem.quantity,
-            orderItemPrice: cartItem.price,
+            orderItemQty: cartItem.skuValue,
+            orderItemPrice: cartItem.skuCost,
             // 필요시 추가 필드도 추가 가능
           })),
           cart: cartResponse.data // 전체 카트 데이터를 포함
