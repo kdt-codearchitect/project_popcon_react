@@ -7,7 +7,7 @@ import image_icon from '../image/image_icon.png';
 const url = process.env.REACT_APP_API_BASE_URL;
 var customerIdx = localStorage.getItem('customerIdx');
 var customerId = localStorage.getItem('userid');
-const sub_url=`ask/${customerIdx}`;
+const sub_url=`/ask/${customerIdx}`;
 
 
 // 문의 등록하기
