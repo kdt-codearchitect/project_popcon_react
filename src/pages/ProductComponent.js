@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ProductComponent.css';
 import axios from 'axios';
+import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa6";
 
 function ProductComponent() {
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
 
   const elementRef = useRef(null);
 
   const [customerIdx, setCustomerIdx] = useState(null);
   const [token, setToken] = useState(null);
   const [activeTab, setActiveTab] = useState(0); // 현재 활성화된 탭의 인덱스를 저장
-  const [skuTypeIdx, setSkuTypeIdx] = useState(null); // 선택된 skuTypeIdx를 저장
+  const [skuTypeIdx, setSkuTypeIdx] = useState(1000); // 선택된 skuTypeIdx를 저장
 
   const url = process.env.REACT_APP_API_BASE_URL;
   const imgSrc = '../image/item_image/'
@@ -26,37 +28,36 @@ function ProductComponent() {
     if (storedCustomerIdx && storedToken) {
       setCustomerIdx(storedCustomerIdx);
       setToken(storedToken);
-      console.log('Stored customerIdx:', storedCustomerIdx);
-      console.log('Stored token:', storedToken);
+      // console.log('Stored customerIdx:', storedCustomerIdx);
+      // console.log('Stored token:', storedToken);
     }
   }, []);
 
-  useEffect(() => {
-    const fetchMoreItems = async () => {
-      try {
-        const response = await axios.get(
-          skuTypeIdx !== null
-            ? url+`/Sku/type/${skuTypeIdx}/${page * 12}`
-            : url+`/Sku/${page * 12}`
-        );
-  
-        if (response.data.length === 0) {
-          setHasMore(false);
-        } else {
-          setProducts((prevProducts) => [...prevProducts, ...response.data]);
-          setPage((prevPage) => prevPage + 1); // 페이지 번호 증가
-        }
-      } catch (error) {
-        console.error('제품을 가져오는 데 실패했습니다.', error);
+  const fetchMoreItems = async () => {
+    console.log("현제 page : ", page)
+    try {
+      const response = await axios.get(
+        skuTypeIdx !== 1000
+        ? `${url}/sku/type/${skuTypeIdx}/${page * 12}`
+        : `${url}/sku/${page * 12}`
+      );
+      if (response.data.length === 0) {
+        setHasMore(false);
+      } else {
+        // 기존 데이터와 새로운 데이터를 합칩니다.
+        setProducts((prevProducts) => [...prevProducts, ...response.data]);
+        setPage((prevPage) => prevPage + 1);
       }
-    };
-    
-    // 데이터 로드 초기화 및 fetchMoreItems 호출
-    setProducts([]);
-    setPage(1); // 페이지를 1로 초기화
-    setHasMore(true);
-    fetchMoreItems();
+    } catch (error) {
+      console.error('제품을 가져오는 데 실패했습니다.', error);
+    }
+  };
+
+  useEffect(()=>{
+    console.log("products : ", products)
+  },[products])
   
+  useEffect(() => {
     // Intersection Observer 설정
     const observer = new IntersectionObserver((entries) => {
       const firstEntry = entries[0];
@@ -74,29 +75,47 @@ function ProductComponent() {
         observer.unobserve(elementRef.current);
       }
     };
-  }, [skuTypeIdx, hasMore]);
-
-
+  }, [hasMore, page]);
+  
+  useEffect(() => {
+    // skuTypeIdx가 변경될 때마다 제품을 초기화하고 새 데이터 요청
+    if (skuTypeIdx !== null) {
+      setProducts([]);
+      setPage(0);
+      setHasMore(true);
+      console.log("탭변경 후 page : ", page)
+    }
+  }, [skuTypeIdx]);
+  
   const handleTabClick = (index, skuType) => {
-    setActiveTab(index);  // 활성화된 탭의 인덱스를 업데이트
-    setSkuTypeIdx(skuType);  // 선택된 skuTypeIdx를 업데이트
+    setActiveTab(index);
+    setSkuTypeIdx(skuType); // skuTypeIdx 업데이트
   };
+  
 
   const handleAddToCart = async (product) => {
     if (!customerIdx) {
       console.log('로그인이 필요합니다.');
       return;
     }
-
-    console.log('Adding to cart with token:', token);
-
+    
+    // console.log('Adding to cart with token:', token);
+    
+    let promotionValue = 1;
+    
+    if(product.promotionIdx===2){
+      promotionValue = 2;
+    }else if(product.promotionIdx===3){
+      promotionValue = 3;
+    }
+    
     const cartItem = {
       skuIdx: product.skuIdx,
-      skuValue: 1,
+      skuValue: promotionValue,
       customerIdx: customerIdx,
       cartIdx: customerIdx // 이 예제에서는 customerIdx와 cartIdx가 동일하다고 가정
     };
-
+    
     try {
       const response = await fetch(url+'/cart/sku/addToCart', {
         method: 'POST',
@@ -106,10 +125,11 @@ function ProductComponent() {
         },
         body: JSON.stringify(cartItem)
       });
-
+      
       if (response.ok) {
         console.log('상품이 장바구니에 성공적으로 담겼습니다');
       } else {
+        console.log("cartItem : ", cartItem)
         console.error('상품이 장바구니에 담기면서 문제가 발생했습니다!');
       }
     } catch (error) {
@@ -124,6 +144,7 @@ function ProductComponent() {
     }
 
     console.log('Adding to wishlist with token:', token);
+    console.log("wish products : ", product)
 
     const wishItem = {
       skuIdx: product.skuIdx,
@@ -131,7 +152,7 @@ function ProductComponent() {
     };
 
     try {
-      const response = await fetch(url+'/Wish/add', {
+      const response = await fetch(url+'/wish/add', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -155,7 +176,7 @@ function ProductComponent() {
       <div className="productList-contents flex-c flex-d-column">
         <nav>
           <ul className="flex-sb">
-            <li className={activeTab === 0 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(0, null)}>전체목록</li>
+            <li className={activeTab === 0 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(0, 1000)}>전체목록</li>
             <li className={activeTab === 1 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(1, 2000)}>즉석요리</li>
             <li className={activeTab === 2 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(2, 3000)}>과자류</li>
             <li className={activeTab === 3 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(3, 4000)}>아이스크림</li>
@@ -168,8 +189,10 @@ function ProductComponent() {
           {products.map(product => (
             <div key={product.skuIdx} className="product-card flex-sb flex-d-column">
               <div className="product-img-box flex-c">
-              {product.promotionIdx === 1 && <label className="opo flex-c">1+1</label>}
-              {product.promotionIdx === 2 && <label className="tpo flex-c">2+1</label>}
+                {product.favorite === 0 && <button className="product-button" onClick={() => handleAddToWishlist(product)}><FaRegHeart /></button>}
+                {product.favorite !== 0 && <button className="product-button-red" onClick={() => handleAddToWishlist(product)}><FaHeart /></button>}
+                {product.promotionIdx === 1 && <label className="opo flex-c">1+1</label>}
+                {product.promotionIdx === 2 && <label className="tpo flex-c">2+1</label>}
                 <img src={imgSrc+product.skuName+'.jpg'} alt={product.skuName} />
               </div>
               <div className='product-title-box'>
@@ -185,7 +208,9 @@ function ProductComponent() {
               </div>
             </div>
           ))}
-          <div ref={elementRef}></div>
+          {hasMore && (
+            <div ref={elementRef}></div>
+          )}
         </div>
       </div>
     </div>
