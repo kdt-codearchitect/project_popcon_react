@@ -9,6 +9,7 @@ import { Payment, payment_value } from "./Payment";
 import { getAuthToken } from '../util/auth';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';  // uuid import 추가
 
 const CheckoutComponent = () => {
   const [customer, setCustomer] = useState({
@@ -36,6 +37,7 @@ const CheckoutComponent = () => {
   const CustomerIdx = localStorage.getItem('customerIdx'); // 로그인한 유저의 customerIdx를 불러옴
   console.log("정보 불르기" + CustomerIdx);
   payment_value.customer.fullName = customer.customerName;
+  payment_value.paymentId = uuidv4();
   
   const url = process.env.REACT_APP_API_BASE_URL;
 
