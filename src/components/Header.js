@@ -9,7 +9,7 @@ import popcon_logo3 from '../image/store_image/popcon_logo3.png';
 function Header() {
 
     const token = useRouteLoaderData('tokenRoot');
-    console.log("MainNavigation.token", token);
+    // console.log("MainNavigation.token", token);
 
     const xxx = useRef(null)
 
