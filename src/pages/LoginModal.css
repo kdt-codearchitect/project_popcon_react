@@ -110,6 +110,15 @@ dialog {
   height: 35px;
   border-radius: 4px;
   font-weight: bold;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.login-modal-btn{
+  width: 97px;
+  height: 35px;
+  border-radius: 4px;
+  font-weight: bold;
   margin: 0;
   padding: 0;
   font-size: 0.9rem;
