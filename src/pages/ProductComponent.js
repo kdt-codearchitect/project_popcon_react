@@ -144,6 +144,7 @@ function ProductComponent() {
     }
 
     console.log('Adding to wishlist with token:', token);
+    console.log("wish products : ", product)
 
     const wishItem = {
       skuIdx: product.skuIdx,
