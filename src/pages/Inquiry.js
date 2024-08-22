@@ -80,7 +80,6 @@ const InquiryComponent = () => {
         //문의신청 POST 데이터 전송 [JSON 처리]
         fetch(url+sub_url,{
                method: 'POST',
-               mode: 'no-cors',
                headers:{    
                 'Content-Type':'application/json'},
                   body: JSON.stringify(inquiry),
