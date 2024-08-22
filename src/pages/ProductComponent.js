@@ -98,7 +98,7 @@ function ProductComponent() {
     };
 
     try {
-      const response = await fetch(url+'/sku/addToCart', {
+      const response = await fetch(url+'/cart/sku/addToCart', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
