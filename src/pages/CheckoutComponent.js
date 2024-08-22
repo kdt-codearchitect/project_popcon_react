@@ -8,6 +8,7 @@ import checkout_labe4 from "../image/store_image/checkout_label04.png";
 import { Payment, payment_value } from "./payment";
 import { getAuthToken } from '../util/auth';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const CheckoutComponent = () => {
   const [customer, setCustomer] = useState({
@@ -29,13 +30,15 @@ const CheckoutComponent = () => {
   const [editedPhone, setEditedPhone] = useState('');
 
   const navigate = useNavigate();
-
+  
   // 총 상품 가격 불러오기 위한 변수 
-  const totalSumCost = cartItems.length > 0 ? cartItems[0].totalSumCost : 0; 
+  const totalSumCost = cartItems.length > 0 ? cartItems.reduce((sum, item) => sum + item.skuCost * item.skuValue, 0) : 0; 
   const CustomerIdx = localStorage.getItem('customerIdx'); // 로그인한 유저의 customerIdx를 불러옴
+  console.log("정보 불르기" + CustomerIdx);
   payment_value.customer.fullName = customer.customerName;
-
+  
   const url = process.env.REACT_APP_API_BASE_URL;
+
   
   useEffect(() => {
     const script = document.createElement('script');
@@ -77,19 +80,25 @@ const CheckoutComponent = () => {
     const fetchCartItems = async () => {
       const token = getAuthToken();
       try {
-        const response = await fetch(url+`/findCart/${CustomerIdx}`, {
-          method: 'GET',
+        const response = await axios.get(url+`/cart/customer/${CustomerIdx}`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         });
-        if (response.ok) {
-          const data = await response.json();
-          if (Array.isArray(data)) {
-            setCartItems(data); // 전체 배열 설정
-          } else {
-            setCartItems([]); // 빈 배열 설정
-          }
+
+        if (response.status === 200) {
+          const data = response.data.flatMap(cart =>
+            cart.cartItems.map(item => ({
+              ...item,
+              cartIdx: cart.cartIdx,
+              customerIdx: cart.customerIdx,
+              skuCost: (item.source === 'keep' || item.keepCost === 0.00) ? 0 : item.skuCost,
+              isFromKeep: item.keepCost !== null && item.keepCost === 0.00,
+            }))
+          );
+          setCartItems(data);
+          console.log('Fetched cart items:', data); // 콘솔에 모든 관련된 cartItems 데이터를 출력
         } else {
           console.error('There was an error fetching the cart data!', response.status);
         }

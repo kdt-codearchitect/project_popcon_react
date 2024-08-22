@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import './CheckoutComponent.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const payment_value = {
     storeId: "store-b0ebe037-6ace-4169-a208-a5e368cbe5ec",
-    paymentId: "testlzl4f9xe29",
+    paymentId: "testlzl4f9xe759",
     orderName: "테스트 결제",
     totalAmount: 100,
     currency: "KRW",
@@ -28,10 +29,75 @@ const Payment = () => {
     }
   }, []);
 
+  const placeOrder = async (customerIdx, paymentId) => {
+    const token = localStorage.getItem('jwtAuthToken');
+    const validDeliveryIdx = 1; // 유효한 deliveryIdx 값을 미리 설정 또는 가져오기
+
+    try {
+      console.log("Attempting to fetch cart for customerIdx:", customerIdx);
+
+      const cartResponse = await axios.get(url+ `/cart/customer/${customerIdx}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      console.log("Cart Response:", cartResponse.data);
+      console.log("Cart Response:", cartResponse.data[0]);
+      console.log("Cart Response:", cartResponse.data[0].cartItems);
+
+      if (cartResponse.status === 200 && cartResponse.data.length > 0) {
+        const cartIdx = cartResponse.data[0].cartIdx;
+        console.log("Cart Index:", cartIdx);
+
+        // OrderDTO와 OrderItemDTO 리스트를 요청 본문에 포함
+        const orderData = {
+          orderDTO: {
+            customerIdx,
+            paymentId,
+            cartIdx,
+            deliveryIdx: validDeliveryIdx,  // 유효한 deliveryIdx 값 사용
+            orderTime: new Date().toISOString(),
+            orderStatusIdx: 1, // 예시 값, 실제로는 다른 값을 사용 가능
+            orderPrice: cartResponse.data.reduce((total, item) => total + item.price * item.quantity, 0) // 예시로 가격 계산
+          },
+          orderItems: cartResponse.data[0].cartItems.map(cartItem => ({
+            skuIdx: cartItem.skuIdx,
+            orderItemQty: cartItem.quantity,
+            orderItemPrice: cartItem.price,
+            // 필요시 추가 필드도 추가 가능
+          })),
+          cart: cartResponse.data // 전체 카트 데이터를 포함
+        };
+
+        console.log("Order Data:", orderData);
+
+        const response = await axios.post(url+'/orders/place', orderData, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.status === 200) {
+          console.log("Order placed successfully!");
+        } else {
+          console.error('Failed to place order:', response.statusText);
+        }
+      } else {
+        console.error('No cart found for the customer');
+      }
+    } catch (error) {
+      console.error('Order placement request failed:', error);
+    }
+  };
+
   const moveToKeep = async (customerIdx) => {
     const token = localStorage.getItem('jwtAuthToken');
 
     try {
+      console.log("Moving items to Keep for customerIdx:", customerIdx);
+
       const response = await fetch(url+`/cart/moveToKeep/${customerIdx}`, {
         method: 'POST',
         headers: {
@@ -54,7 +120,9 @@ const Payment = () => {
     const token = localStorage.getItem('jwtAuthToken');
 
     try {
-      const response = await fetch(url+`/cart/clear/${customerIdx}`, {
+      console.log("Clearing cart for customerIdx:", customerIdx);
+
+      const response = await fetch(url + `/cart/clear/${customerIdx}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -83,22 +151,25 @@ const Payment = () => {
         console.log("Payment response:", response);
 
         const customerIdx = localStorage.getItem('customerIdx');
+        const paymentId = response.paymentId || payment_value.paymentId;
 
-        // 결제 성공 여부와 상관없이 장바구니 처리
-        const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
-        if (userChoice) {
-          moveToKeep(customerIdx).then(() => {
-            navigate('/refrigerator', { state: { openModal: true } });
-          });
-        } else {
-          clearCart(customerIdx).then(() => {
-            navigate('/');
-          });
-        }
+        placeOrder(customerIdx, paymentId).then(() => {
+          const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
+          if (userChoice) {
+            moveToKeep(customerIdx).then(() => {
+              //여기서 킵하겠다고 했을때 냉장고 화면으로 넘어가는게 아니라 그 결제 페이지에서 keepModal이 뜨게 해줬으면 좋겠다.
+              navigate('/refrigerator', { state: { openModal: true } });
+            });
+          } else {
+            clearCart(customerIdx).then(() => {
+              navigate('/');
+            });
+          }
+        });
       })
       .catch(error => {
         console.error('결제 요청 중 오류 발생:', error);
-    
+
         const customerIdx = localStorage.getItem('customerIdx');
         clearCart(customerIdx).then(() => {
           navigate('/');

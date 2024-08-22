@@ -17,7 +17,6 @@ const RefrigeratorComponent = () => {
   const token = localStorage.getItem('jwtAuthToken');
 
   const url = process.env.REACT_APP_API_BASE_URL;
-
   // fetchKeeps 함수를 RefrigeratorComponent 내부에서 정의
   const fetchKeeps = async () => {
     try {
