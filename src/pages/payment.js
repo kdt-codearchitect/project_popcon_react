@@ -5,8 +5,8 @@ import axios from 'axios';
 
 const payment_value = {
     storeId: "store-b0ebe037-6ace-4169-a208-a5e368cbe5ec",
-    paymentId: "testlzl4f9xe759",
-    orderName: "테스트 결제",
+    paymentId: "test12345",  // UUID로 paymentId 생성
+    orderName: "총 결제금액",
     totalAmount: 100,
     currency: "KRW",
     channelKey: "channel-key-0c8dda50-9f5b-4487-bdfd-b4511f8fd803",
@@ -98,7 +98,7 @@ const Payment = () => {
     try {
       console.log("Moving items to Keep for customerIdx:", customerIdx);
 
-      const response = await fetch(url+`/cart/moveToKeep/${customerIdx}`, {
+      const response = await fetch(url+`/cart/cart/moveToKeep/${customerIdx}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -122,7 +122,7 @@ const Payment = () => {
     try {
       console.log("Clearing cart for customerIdx:", customerIdx);
 
-      const response = await fetch(url + `/cart/clear/${customerIdx}`, {
+      const response = await fetch(url + `/cart/cart/clear/${customerIdx}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
