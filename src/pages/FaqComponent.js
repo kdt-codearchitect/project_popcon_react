@@ -7,11 +7,11 @@ import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import ErrorPage from './Error';
 
-const url = process.env.REACT_APP_API_BASE_URL;
-const sub_url=`/faq`;
 
 const FaqComponent=()=> {
-    
+    const url = process.env.REACT_APP_API_BASE_URL;
+    const sub_url=`/faq`;
+    console.log("url 내용 확인 : ",url);
     const[faqs, setFaqs] = useState([]);                 //FAQ데이터
     const[loading, setLoading] = useState(true);         //로딩 
     const[error, setError] = useState(null);             //에러 상태확인

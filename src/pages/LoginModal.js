@@ -65,7 +65,7 @@ const LoginModal = forwardRef((props, ref) => {
             <label htmlFor='id-checked'>아아디 기억하기</label>
           </div>
           <div className="modal-login-botton-box flex-sb">
-            <button type="submit" className="thema-btn-01" onClick={modal_exit} >로그인</button>
+            <button type="submit" className="login-modal-btn thema-btn-01" onClick={modal_exit} >로그인</button>
             <Link className="flex-c thema-btn-02" to="/signup" onClick={modal_exit}>회원가입</Link>
           </div>
         </Form>

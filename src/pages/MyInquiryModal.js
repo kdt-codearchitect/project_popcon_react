@@ -8,7 +8,7 @@ import Error from './Error';
 const url = process.env.REACT_APP_API_BASE_URL;
 var customerIdx = localStorage.getItem('customerIdx'); // 유저 idx 불러오기
 const sub_url=`/asks/${customerIdx}`;
-const sub_url2 = `/asknot/${customerIdx}`;
+
 
 const MyInquiryModalComponent=({qnaIdx,
                                 faqtypeIdx,
@@ -17,7 +17,10 @@ const MyInquiryModalComponent=({qnaIdx,
                                 imgname,
                                 image,
                                 onClose})=>{
+                                    
+    
 
+    console.log("qnaIdx: ", qnaIdx);
     // 링크 이동을 위한 네비게이션
     const navigate = useNavigate();
 
@@ -115,11 +118,13 @@ const MyInquiryModalComponent=({qnaIdx,
         }
 
         const handleDelete =()=>{
+            const sub_url2 = `/asknot/${qnaIdx}`;
+            
             fetch(url+sub_url2,{
                 method: 'PUT',
                 headers: {    
                     'Content-Type':'application/json'},
-                })
+                body: JSON.stringify(inquiry),})
                 .then(response => {
                     if(!response.ok){
                         throw new Error('삭제 요청에 실패했습니다.');
@@ -132,8 +137,7 @@ const MyInquiryModalComponent=({qnaIdx,
                     <Error/>
                     console.log("Error: ", error);
                 })      
-        };
-
+            }
 
     return(
         // 모달창 페이지
