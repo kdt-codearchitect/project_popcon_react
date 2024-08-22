@@ -5,7 +5,7 @@ import checkout_labe1 from "../image/store_image/checkout_label01.png";
 import checkout_labe2 from "../image/store_image/checkout_label02.png";
 import checkout_labe3 from "../image/store_image/checkout_label03.png"; 
 import checkout_labe4 from "../image/store_image/checkout_label04.png";
-import { Payment, payment_value } from "./payment";
+import { Payment, payment_value } from "./Payment";
 import { getAuthToken } from '../util/auth';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';

@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import './CheckoutComponent.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';  // uuid import 추가
 
 const payment_value = {
     storeId: "store-b0ebe037-6ace-4169-a208-a5e368cbe5ec",
-    paymentId: "testlzl4f9xe759",
+    paymentId: uuidv4(),  // UUID로 paymentId 생성
     orderName: "테스트 결제",
     totalAmount: 100,
     currency: "KRW",
