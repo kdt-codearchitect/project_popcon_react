@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CheckoutComponent.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import KeepModal from './KeepModal';  // KeepModal 가져오기
 
 const payment_value = {
     storeId: "store-b0ebe037-6ace-4169-a208-a5e368cbe5ec",
-    paymentId: "test12345",  // UUID로 paymentId 생성
-    orderName: "총 결제금액",
+    paymentId: "testlzl4f9xe759",
+    orderName: "테스트 결제",
     totalAmount: 100,
     currency: "KRW",
     channelKey: "channel-key-0c8dda50-9f5b-4487-bdfd-b4511f8fd803",
@@ -21,6 +22,8 @@ const payment_value = {
 const url = process.env.REACT_APP_API_BASE_URL;
 
 const Payment = () => {
+  const [isModalOpen, setModalOpen] = useState(false);  // 모달 상태 관리
+  const [fridgeIdx, setFridgeIdx] = useState(null);  // fridgeIdx 상태 관리
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,19 +39,14 @@ const Payment = () => {
     try {
       console.log("Attempting to fetch cart for customerIdx:", customerIdx);
 
-      const cartResponse = await axios.get(url+ `/cart/customer/${customerIdx}`, {
+      const cartResponse = await axios.get(url + `/cart/customer/${customerIdx}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
 
-      console.log("Cart Response:", cartResponse.data);
-      console.log("Cart Response:", cartResponse.data[0]);
-      console.log("Cart Response:", cartResponse.data[0].cartItems);
-
       if (cartResponse.status === 200 && cartResponse.data.length > 0) {
         const cartIdx = cartResponse.data[0].cartIdx;
-        console.log("Cart Index:", cartIdx);
 
         // OrderDTO와 OrderItemDTO 리스트를 요청 본문에 포함
         const orderData = {
@@ -59,20 +57,16 @@ const Payment = () => {
             deliveryIdx: validDeliveryIdx,  // 유효한 deliveryIdx 값 사용
             orderTime: new Date().toISOString(),
             orderStatusIdx: 1, // 예시 값, 실제로는 다른 값을 사용 가능
-            orderPrice: cartResponse.data.reduce((total, item) => total + item.price * item.quantity, 0) // 예시로 가격 계산
           },
           orderItems: cartResponse.data[0].cartItems.map(cartItem => ({
             skuIdx: cartItem.skuIdx,
-            orderItemQty: cartItem.quantity,
-            orderItemPrice: cartItem.price,
-            // 필요시 추가 필드도 추가 가능
+            orderItemQty: cartItem.skuValue,
+            orderItemPrice: cartItem.skuCost,
           })),
           cart: cartResponse.data // 전체 카트 데이터를 포함
         };
 
-        console.log("Order Data:", orderData);
-
-        const response = await axios.post(url+'/orders/place', orderData, {
+        const response = await axios.post(url + '/orders/place', orderData, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -98,7 +92,7 @@ const Payment = () => {
     try {
       console.log("Moving items to Keep for customerIdx:", customerIdx);
 
-      const response = await fetch(url+`/cart/cart/moveToKeep/${customerIdx}`, {
+      const response = await fetch(url + `/cart/cart/moveToKeep/${customerIdx}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -108,6 +102,9 @@ const Payment = () => {
 
       if (response.ok) {
         console.log("Items moved to Keep successfully!");
+        // 여기에 fridgeIdx를 저장
+        const data = await response.json();
+        setFridgeIdx(data.fridgeIdx);  // fridgeIdx를 저장
       } else {
         console.error('Failed to move items to Keep.');
       }
@@ -157,8 +154,8 @@ const Payment = () => {
           const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
           if (userChoice) {
             moveToKeep(customerIdx).then(() => {
-              //여기서 킵하겠다고 했을때 냉장고 화면으로 넘어가는게 아니라 그 결제 페이지에서 keepModal이 뜨게 해줬으면 좋겠다.
-              navigate('/refrigerator', { state: { openModal: true } });
+              // KeepModal을 열도록 상태 업데이트
+              setModalOpen(true);
             });
           } else {
             clearCart(customerIdx).then(() => {
@@ -177,9 +174,21 @@ const Payment = () => {
       });
   };
 
+  const handleModalClose = () => {
+    setModalOpen(false); // 모달 닫기
+    navigate('/refrigerator'); // 냉장고 페이지로 이동
+  };
+
   return (
     <div>
       <button className="thema-btn-01" onClick={requestPay}>결제하기</button>
+      {isModalOpen && (
+        <KeepModal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          fridgeIdx={fridgeIdx}
+        />
+      )}
     </div>
   );
 };
