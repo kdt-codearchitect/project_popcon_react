@@ -77,22 +77,36 @@ input:focus{
     font-weight: bold;
 }
 
-.thema-btn-01{
+.thema-btn-01 {
     color: #5F5F5F;
     background-color: #FAE41C;
     border-radius: 4px;
+    transition: box-shadow 0.2s ease;
 }
+
+.thema-btn-01:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
 
 .thema-btn-02{
     color: #D9D9D9;
     background-color: #4C4C4C;
     border-radius: 4px;
+    transition: box-shadow 0.2s ease;
+}
+.thema-btn-02:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .thema-btn-03{
     color: #D9D9D9;
     background-color: #828282;
     border-radius: 4px;
+    transition: box-shadow 0.2s ease;
+}
+.thema-btn-03:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .flex-c{
