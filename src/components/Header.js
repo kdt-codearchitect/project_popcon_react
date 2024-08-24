@@ -8,7 +8,7 @@ import popcon_logo3 from '../image/store_image/popcon_logo3.png';
 
 
 function Header() {
-
+  
         // 매니저 확인
         const [isManager,setIsManager] = useState(false);
         useEffect(() => {

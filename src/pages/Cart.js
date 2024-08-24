@@ -10,24 +10,12 @@ const Cart = () => {
   const [customerIdx, setCustomerIdx] = useState(null);
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
-  const url = process.env.REACT_APP_API_BASE_URL;
 
   const handleOrder = () => {
-    // "KEEP"에서 온 상품이 있는지 확인
-    const hasKeepItems = cartItems.some(item => item.isFromKeep);
-
-    if (!hasKeepItems) {
-      // Alert를 띄우고 사용자 선택에 따라 이동
-      const userChoice = window.confirm("킵하신 상품을 가져가시겠습니까?");
-      if (userChoice) {
-        navigate('/refrigerator');
-      } else {
-        navigate('/checkout');
-      }
-    } else {
-      navigate('/checkout');
-    }
+    navigate('/checkout');
   };
+
+  const url = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     const storedCustomerIdx = localStorage.getItem('customerIdx');
@@ -36,29 +24,25 @@ const Cart = () => {
     if (storedCustomerIdx && storedToken) {
       setCustomerIdx(storedCustomerIdx);
       setToken(storedToken);
+      console.log('Stored customerIdx:', storedCustomerIdx);
+      console.log('Stored token:', storedToken);
 
-      axios.get(url+`/cart/customer/${storedCustomerIdx}`, {
+      axios.get(url+ `/cart/customer/${storedCustomerIdx}`, {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
           'Content-Type': 'application/json'
         }
       })
         .then(response => {
-          console.log('API 응답 데이터:', response.data); // 전체 응답 데이터 확인
-
-          const items = response.data.flatMap(cart => cart.cartItems.map(item => ({
+          setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
             ...item,
             cartIdx: cart.cartIdx,
             customerIdx: cart.customerIdx,
-            skuIdx: item.skuIdx,  // SKU Index를 명시적으로 설정
-            isFromKeep: item.keepCost !== null  // keepCost가 null이 아니면 Keep에서 넘어온 것으로 구분
-          })));
-
-          console.log('생성된 Cart Items:', items); // 생성된 cartItems 확인
-          setCartItems(items);
+            isFromKeep: item.keepCost !== null && item.keepCost === 0.00 // keepCost가 0.00인 경우
+          }))));
         })
         .catch(error => {
-          console.error('카트에 제품 데이터를 가져오는 데 오류가 발생했습니다', error);
+          console.error('카트에 제품데이터를 가져오는데 오류가 발생 했습니다', error);
         });
     } else {
       console.error('로그인 정보가 없습니다. customerIdx 또는 token을 찾을 수 없습니다.');
@@ -66,7 +50,7 @@ const Cart = () => {
   }, []);
 
   const removeFromCart = (cartItemIdx) => {
-    axios.delete(url+`/cart/cartitem/${cartItemIdx}`, {
+    axios.delete(url+ `/cart/cartitem/${cartItemIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -91,12 +75,12 @@ const Cart = () => {
         setCartItems(cartItems.map(item => item.cartItemIdx === cartItemIdx ? { ...item, skuValue } : item));
       })
       .catch(error => {
-        console.error('수량 설정하는 데 에러가 발생했습니다.', error);
+        console.error('수량 설정하는데 에러가 발생 했습니다.', error);
       });
   };
 
   const calculateItemCost = (item) => {
-    return item.isFromKeep ? item.keepCost : item.skuCost * item.skuValue;
+    return item.isFromKeep ? 0 : item.skuCost * item.skuValue;  // Keep에서 온 경우 0원 처리
   };
 
   const calculateTotal = () => {
@@ -115,45 +99,16 @@ const Cart = () => {
     const newQuantity = item.skuValue + 1;
     updateQuantity(cartItemIdx, newQuantity);
   };
-
+  
   const handleDecrement = (cartItemIdx) => {
     const item = cartItems.find(item => item.cartItemIdx === cartItemIdx);
     const newQuantity = item.skuValue > 1 ? item.skuValue - 1 : 1;
     updateQuantity(cartItemIdx, newQuantity);
   };
 
-  const moveToCart = (keepItemIdx, cartIdx, quantity) => {
-    axios.post(url+`/cart/moveToCart`, null, {
-      params: {
-        keepItemIdx: keepItemIdx,
-        cartIdx: cartIdx,
-        quantity: quantity
-      },
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => {
-        console.log(response.data);
-        // 필요한 경우, UI 갱신
-    })
-    .catch(error => {
-        console.error('Error moving item to cart:', error);
-    });
-  };
-
-  const handleMoveToCart = (keepItemIdx, cartIdx) => {
-    const quantity = prompt('Enter the quantity to move to cart:');
-    if (quantity > 0) {
-        moveToCart(keepItemIdx, cartIdx, quantity);
-    } else {
-        alert('Invalid quantity');
-    }
-  };
-
   return (
       <div className="cart-container flex-sb flex-d-column">
+          
           <div className="cart-list flex-c flex-d-column">
               <div className="cart-list-title flex-sa">
                   <div className="list-checkbox-box"></div>
@@ -167,7 +122,7 @@ const Cart = () => {
               </div>
 
               {cartItems.map((item) => (
-                <div className="cart-list-item flex-sa" key={item.cartItemIdx}>
+                <div className="cart-list-item flex-sa" key={`${item.cartItemIdx}-${item.isFromKeep ? 'KEEP' : 'SKU'}`}>
                     <div className="list-checkbox-box flex-c">
                         <input type="checkbox"/>
                     </div>
@@ -191,13 +146,14 @@ const Cart = () => {
                         <p>{!item.isFromKeep ? `${item.skuCost.toLocaleString()}원` : '-'}</p>
                     </div>
                     <div className="list-keep-box flex-c"> {/* Keep에서 온 상품 */}
-                        <p>{item.isFromKeep ? `${item.keepCost.toLocaleString()}원` : '-'}</p>
+                        <p>{item.isFromKeep ? '0원' : '-'}</p>
                     </div>
                     <div className="list-price-box flex-c">
                         <p>{calculateItemCost(item).toLocaleString()}원</p>
                     </div>
                 </div>
               ))}
+              
           </div>
           <div className="cart-price-top">
               <div className="cart-price-top-text flex-c">

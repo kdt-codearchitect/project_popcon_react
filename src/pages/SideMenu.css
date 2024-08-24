@@ -74,12 +74,21 @@
 }
 
 .sidebar-menu-box > a {
-    transform: skew(2deg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 180px;
     transform: skewY(2deg);
     transform-origin: top left;
     margin-bottom: 8px;
 }
 
-.sidebar-menu-box span:first-child {
+.sidebar-menu-box p:first-child {
+    width: 75px;
+    font-weight: 700;
+}
+.sidebar-menu-box p:nth-child(3) {
+    text-align: right;
+    width: 90px;
     font-weight: 700;
 }
