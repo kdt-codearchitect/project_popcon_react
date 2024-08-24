@@ -1,44 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './OrderHistoryComponent.css';
 import SideMenu from './SideMenu';
 import OrderDetailsModal from './OrderDetailsModal';
 
 const OrderHistoryComponent = () => {
-  const [orders, setOrders] = useState([]); // 초기값을 빈 배열로 설정
+  const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const elementRef = useRef(null);
   const url = process.env.REACT_APP_API_BASE_URL;
-  const CustomerIdx = localStorage.getItem('customerIdx'); // 로그인한 유저의 customerIdx를 불러옴
+  const CustomerIdx = localStorage.getItem('customerIdx');
   const imgSrc = '../image/item_image/';
 
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get(`${url}/orders/user/${CustomerIdx}?page=${page}`);
+      
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        setOrders((prevOrders) => {
+          const newOrders = response.data.filter(
+            (newOrder) => !prevOrders.some((order) => order.orderIdx === newOrder.orderIdx)
+          );
+          return [...prevOrders, ...newOrders];
+        });
+        setPage((prevPage) => prevPage + 1);
+      } else {
+        setHasMore(false);  // 더 이상 데이터가 없을 때
+      }
+    } catch (error) {
+      console.error("There was an error fetching the orders!", error);
+      setHasMore(false);  // 오류 발생 시에도 추가 요청 중단
+    }
+  };
+
   useEffect(() => {
-    // 전체 주문 목록을 가져오는 API 호출  
-    axios.get(`${url}/orders/user/${CustomerIdx}`)
-      .then(response => {
-        // 응답 데이터를 콘솔에 출력
-        console.log("API 응답 데이터:", response.data);
-        
-        // 응답 데이터가 배열인지 확인
-        if (Array.isArray(response.data)) {
-          setOrders(response.data);
-        } else {
-          console.error("Expected array but got:", response.data);
-          setOrders([]); // 비어있는 배열로 설정
-        }
-      })
-      .catch(error => {
-        console.error("There was an error fetching the orders!", error);
-      });
+    fetchOrders();  // 초기 주문 데이터 가져오기
   }, [url, CustomerIdx]);
 
-  const openModal = (order) => {
-    const orderIdx = order.orderIdx; // 선택한 주문의 orderIdx를 가져옵니다.
+  useEffect(() => {
+    // Intersection Observer 설정
+    const observer = new IntersectionObserver((entries) => {
+      const firstEntry = entries[0];
+      if (firstEntry.isIntersecting && hasMore) {
+        fetchOrders();  // 추가 주문 데이터 가져오기
+      }
+    });
 
-    // 특정 주문의 아이템 목록을 가져오는 API 호출
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, [hasMore]);
+
+  const openModal = (order) => {
+    const orderIdx = order.orderIdx;
+
     axios.get(`${url}/orders/${orderIdx}/items`)
       .then(response => {
-        console.log("Order Items API 응답 데이터:", response.data); // 응답 데이터 콘솔 출력
         setOrderItems(response.data);
         setSelectedOrder(order);
       })
@@ -75,28 +101,27 @@ const OrderHistoryComponent = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order, index) => {
-              const firstOrderItem = orderItems.length > 0 ? orderItems[0] : null; // 첫 번째 아이템 선택
-
-              return (
-                <tr key={index} onClick={() => openModal(order)}>
-                  <td>
-                    {firstOrderItem ? (
-                      <img src={`${imgSrc}${firstOrderItem.image}.jpg`} alt={firstOrderItem.name} />
-                    ) : (
-                      <p>No image</p>
-                    )}
-                  </td>
-                  <td>{order.paymentId}</td> {/* order.paymentId로 수정 */}
-                  <td>{new Date(order.orderTime).toLocaleDateString()}</td> {/* order.orderTime을 사용하여 날짜 형식으로 변환 */}
-                  <td>{order.totalSumPrice ? order.totalSumPrice.toLocaleString() + '원' : 'N/A'}</td> {/* order.price가 존재하는지 확인 */}
-                  <td>{order.orderStatus || 'N/A'}</td> {/* 주문상태가 없을 경우 'N/A' 표시 */}
-                  <td>{order.deliveryStatus || 'N/A'}</td> {/* 배송상태가 없을 경우 'N/A' 표시 */}
-                </tr>
-              );
-            })}
+            {orders.map((order, index) => (
+              <tr key={index} onClick={() => openModal(order)}>
+                <td>
+                  {order.skuImg ? (
+                    <img src={imgSrc + order.skuImg} alt={order.skuName} />
+                  ) : (
+                    <p>No image</p>
+                  )}
+                </td>
+                <td>{order.paymentId}</td>
+                <td>{new Date(order.orderTime).toLocaleDateString()}</td>
+                <td>{order.totalSumPrice ? order.totalSumPrice.toLocaleString() + '원' : 'N/A'}</td>
+                <td>{order.orderStatus || 'N/A'}</td>
+                <td>{order.deliveryStatus || 'N/A'}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
+        {hasMore && (
+          <div ref={elementRef}></div>
+        )}
       </div>
 
       {selectedOrder && (

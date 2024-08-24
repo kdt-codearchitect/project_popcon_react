@@ -204,7 +204,7 @@ function ProductComponent() {
                 {product.favorite !== 0 && <button className="product-button-click" onClick={() => handleAddToWishlist(product)}><FaStar /></button>}
                 {product.promotionIdx === 1 && <label className="opo flex-c">1+1</label>}
                 {product.promotionIdx === 2 && <label className="tpo flex-c">2+1</label>}
-                <img />
+                 <img src={imgSrc+product.skuName+'.jpg'} alt={product.skuName} />
               </div>
               <div className='product-title-box'>
                 <p>{product.skuName}</p>

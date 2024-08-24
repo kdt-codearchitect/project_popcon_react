@@ -1,6 +1,9 @@
 import React from 'react';
 
 const OrderDetailsModal = ({ order, orderItems, closeModal }) => {
+
+    const imgSrc = '../image/item_image/';
+
   return (
     <div className="modal">
       <div className="modal-content">
@@ -10,7 +13,7 @@ const OrderDetailsModal = ({ order, orderItems, closeModal }) => {
         <p>Order Time: {order.orderTime ? new Date(order.orderTime).toLocaleString() : 'N/A'}</p> {/* 조건부 렌더링 */}
         <p>Order Status: {order.orderStatus || 'N/A'}</p>
         <p>Delivery Status: {order.deliveryStatus || 'N/A'}</p>
-        <button onClick={closeModal}>Close</button>
+
 
         <h3>Order Items</h3>
         <ul>
@@ -18,16 +21,21 @@ const OrderDetailsModal = ({ order, orderItems, closeModal }) => {
           
           {orderItems.map((item, index) => (
             <li key={index}>
-              SKU: {item.skuIdx}, 수량: {item.orderItemQty}, 가격: {item.orderItemPrice.toLocaleString()}원
+
+              <img src={imgSrc + item.skuImg} alt={order.skuName} />  이름: {item.skuName}, 수량: {item.orderItemQty}, 가격: {item.orderItemPrice.toLocaleString()}원
+
             </li>
           ))}
         
 
             <li >
-               {order.totalSumPrice ? order.totalSumPrice.toLocaleString() + '원' : 'N/A'}
+
+               결제금액 :{order.totalSumPrice ? order.totalSumPrice.toLocaleString() + '원' : 'N/A'}
             </li>
           
         </ul>
+          <button onClick={closeModal}>Close</button>
+
       </div>
     </div>
   );
