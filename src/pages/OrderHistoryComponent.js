@@ -82,7 +82,7 @@ const OrderHistoryComponent = () => {
                 <tr key={index} onClick={() => openModal(order)}>
                   <td>
                     {firstOrderItem ? (
-                      <img src={`${imgSrc}${firstOrderItem.image}.jpg`} alt={firstOrderItem.name} />
+                      <img src={imgSrc+firstOrderItem.image+'.jpg'} alt={firstOrderItem.name} />
                     ) : (
                       <p>No image</p>
                     )}
