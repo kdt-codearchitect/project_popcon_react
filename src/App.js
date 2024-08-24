@@ -20,6 +20,7 @@ import FaqComponent from './pages/FaqComponent';
 import InquiryComponent from './pages/Inquiry';
 import MyInquiryComponent from './pages/MyInquiry';
 import MapComponent from './pages/MapComponent'
+import AllInquiriesComponent from './pages/AllInquiry';
 
 
 const App = () => {
@@ -143,7 +144,8 @@ const App = () => {
         { path: '/faq', element: <FaqComponent/>},
         { path: '/makeInquiry', element: <InquiryComponent/>},
         { path: '/myInquiry', element: <MyInquiryComponent/>},
-        { path: '/Maps', element: <MapComponent/>}
+        { path: '/Maps', element: <MapComponent/>},
+        { path: '/allInquiries', element: <AllInquiriesComponent/>}
       ]
     }
   ]);

@@ -98,7 +98,7 @@ export async function action({ request }) {
       {
         message: '요청에 대한 처리 불가.',
         title: '요청에러',
-        email: 'inky4832@daum.net'
+        email: 'system421@gmail.com'
       },
       { status: 500 }
     );
@@ -109,11 +109,11 @@ export async function action({ request }) {
   console.log("token",token);
   localStorage.setItem('jwtAuthToken', token);
   localStorage.setItem('userid', authData.userid);
-
+  localStorage.setItem('customerRole',resData.customerRole);
   localStorage.setItem('customerIdx', resData.customerIdx);
 
-  console.log(authData.userid);
-
+  console.log("authData userid: ", authData.userid);
+  console.log("resData: ", resData);
   
   return redirect('/');
 }
