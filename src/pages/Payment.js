@@ -86,6 +86,30 @@ const Payment = () => {
     }
   };
 
+  const clearCart = async (customerIdx) => {
+    const token = localStorage.getItem('jwtAuthToken');
+
+    try {
+      console.log("Clearing cart for customerIdx:", customerIdx);
+
+      const response = await fetch(url + `/cart/cart/clear/${customerIdx}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log("Cart cleared successfully!");
+      } else {
+        console.error('Cart clearing failed.');
+      }
+    } catch (error) {
+      console.error('Cart clearing request failed:', error);
+    }
+  };
+
   const moveToKeep = async (customerIdx) => {
     const token = localStorage.getItem('jwtAuthToken');
 
@@ -113,29 +137,7 @@ const Payment = () => {
     }
   };
 
-  const clearCart = async (customerIdx) => {
-    const token = localStorage.getItem('jwtAuthToken');
-
-    try {
-      console.log("Clearing cart for customerIdx:", customerIdx);
-
-      const response = await fetch(url + `/cart/cart/clear/${customerIdx}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        console.log("Cart cleared successfully!");
-      } else {
-        console.error('Cart clearing failed.');
-      }
-    } catch (error) {
-      console.error('Cart clearing request failed:', error);
-    }
-  };
+  
 
   const requestPay = () => {
     if (!window.PortOne) {
@@ -156,6 +158,8 @@ const Payment = () => {
             moveToKeep(customerIdx).then(() => {
               // KeepModal을 열도록 상태 업데이트
               setModalOpen(true);
+              clearCart(customerIdx).then(() => {
+              });
             });
           } else {
             clearCart(customerIdx).then(() => {
