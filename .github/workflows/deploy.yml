@@ -3,7 +3,7 @@ name: Build and Deploy to S3
 on:
   push:
     branches:
-      - main  # main 브랜치에 푸시될 때마다 작동
+      - main  # main 브랜치에 푸시될 때마다 작동 
 
 jobs:
   build-and-deploy:
