@@ -147,30 +147,31 @@ const Payment = () => {
       .then(response => {
         console.log("Payment response:", response);
 
-        const customerIdx = localStorage.getItem('customerIdx');
-        const paymentId = response.paymentId || payment_value.paymentId;
+        // 결제 상태 확인
+        if (response.status === 'SUCCESS') {
+          const customerIdx = localStorage.getItem('customerIdx');
+          const paymentId = response.paymentId || payment_value.paymentId;
 
-        placeOrder(customerIdx, paymentId).then(() => {
-          const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
-          if (userChoice) {
-            moveToKeep(customerIdx).then(() => {
-              // KeepModal을 열도록 상태 업데이트
-              setModalOpen(true);
-            });
-          } else {
-            clearCart(customerIdx).then(() => {
-              navigate('/');
-            });
-          }
-        });
+          placeOrder(customerIdx, paymentId).then(() => {
+            const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
+            if (userChoice) {
+              moveToKeep(customerIdx).then(() => {
+                setModalOpen(true);
+              });
+            } else {
+              clearCart(customerIdx).then(() => {
+                navigate('/');
+              });
+            }
+          });
+        } else {
+          console.error('결제가 실패하였습니다:', response.message);
+          alert('결제가 취소되었거나 실패하였습니다.');
+        }
       })
       .catch(error => {
         console.error('결제 요청 중 오류 발생:', error);
-
-        const customerIdx = localStorage.getItem('customerIdx');
-        clearCart(customerIdx).then(() => {
-          navigate('/');
-        });
+        alert('결제 처리 중 오류가 발생했습니다.');
       });
   };
 

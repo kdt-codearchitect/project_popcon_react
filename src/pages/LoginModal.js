@@ -15,6 +15,11 @@ const LoginModal = forwardRef((props, ref) => {
   const [userid,setUserid] = useState("");
   const [isRemember, setIsRemember] = useState(false);
   const [cookies,setCookie,removeCookie] = useCookies(['rememberId']);
+  const [prevPath, setPrevPath] = useState('/');
+
+  useEffect(() => {
+    setPrevPath(window.location.pathname);
+  }, []);
 
   useImperativeHandle(ref, () => ({
     modal_open: () => dialogRef.current.showModal(),
@@ -64,6 +69,7 @@ const LoginModal = forwardRef((props, ref) => {
             <input type="checkbox" id='id-checked' onChange={handleOnChange} checked={isRemember} placeholder='체크'/>
             <label htmlFor='id-checked'>아아디 기억하기</label>
           </div>
+          <input type="hidden" name="prevPath" value={prevPath} />
           <div className="modal-login-botton-box flex-sb">
             <button type="submit" className="login-modal-btn thema-btn-01" onClick={modal_exit} >로그인</button>
             <Link className="flex-c thema-btn-02" to="/signup" onClick={modal_exit}>회원가입</Link>
@@ -80,6 +86,7 @@ export async function action({ request }) {
     userid: data.get('userid'),
     password: data.get('password'),
   };
+  const prevPath = data.get('prevPath') || '/';
   const fetch_url = url + '/authenticate'
   const response = await fetch(fetch_url, {
     method: 'POST',
@@ -114,8 +121,9 @@ export async function action({ request }) {
 
   console.log(authData.userid);
 
-  
-  return redirect('/');
+  // 페이지 새로고침을 위한 코드 추가
+  window.location.href = prevPath;
+  return null; // redirect 대신 null 반환
 }
 
 export default LoginModal;

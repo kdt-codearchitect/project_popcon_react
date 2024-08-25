@@ -11,10 +11,10 @@ function Header() {
     const token = useRouteLoaderData('tokenRoot');
     // console.log("MainNavigation.token", token);
 
-    const xxx = useRef(null)
+    const modalRef = useRef(null)
 
     function show_modal(){
-    xxx.current.modal_open();
+        modalRef.current.modal_open();
     }
 
     return (
@@ -31,7 +31,7 @@ function Header() {
                     <div className="header-mymenu flex-sa">
 
                         { !token && 
-                            <a href="#" onClick={show_modal}>로그인</a>
+                            <button className="btn btn-success" onClick={show_modal}>로그인</button>
                         }
 
                         { token && <Form action="/logout" method="post">
@@ -42,7 +42,7 @@ function Header() {
                         }
 
                         <Link to="/faq">고객센터</Link>
-                        <LoginModal ref={xxx}/>
+                        <LoginModal ref={modalRef}/>
                     </div>
                 </div>
                 <div className="header-bottom-box">
@@ -50,7 +50,7 @@ function Header() {
                         <input type="text"/>
                     </div>
                     <nav>
-                        <ul className="flex-sa">
+                        <ul className="flex-c">
                             <li><Link to="/MyPage">마이페이지</Link></li>
                             <li><Link to="/Sku">1 + 1</Link></li>
                             <li><Link to="/product2">2 + 1</Link></li>

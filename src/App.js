@@ -19,7 +19,8 @@ import SignupComponent, { action as signUpAction } from './pages/SignupComponent
 import FaqComponent from './pages/FaqComponent';
 import InquiryComponent from './pages/Inquiry';
 import MyInquiryComponent from './pages/MyInquiry';
-import MapComponent from './pages/MapComponent'
+import MapComponent from './pages/MapComponent';
+import MapTest from './pages/DeliveryComponent';
 
 
 const App = () => {
@@ -143,7 +144,8 @@ const App = () => {
         { path: '/faq', element: <FaqComponent/>},
         { path: '/makeInquiry', element: <InquiryComponent/>},
         { path: '/myInquiry', element: <MyInquiryComponent/>},
-        { path: '/Maps', element: <MapComponent/>}
+        { path: '/Maps', element: <MapComponent/>},
+        { path: '/mapTest', element: <MapTest/>}
       ]
     }
   ]);

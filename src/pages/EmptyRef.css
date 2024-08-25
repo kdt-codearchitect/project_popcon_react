@@ -1,0 +1,19 @@
+.ErrorPage {
+  text-align: center;
+  color: #FAE41C;
+  background-color: black;
+  flex: 1;
+}
+.ErrorPage p{
+  color:rgb(255, 196, 0);
+  font-weight: 500;
+}
+.ErrorPage img{
+  margin-top: 20px;
+  border-radius: 20px;
+  width:300px;
+  height:280px;
+  /* border: 3px solid #FAE41C; */
+
+
+}

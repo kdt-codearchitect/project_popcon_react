@@ -85,7 +85,7 @@ input:focus{
 }
 
 .thema-btn-01:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px #4C4C4C;
 }
 
 
@@ -96,7 +96,7 @@ input:focus{
     transition: box-shadow 0.2s ease;
 }
 .thema-btn-02:hover{
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px #4C4C4C;
 }
 
 .thema-btn-03{
