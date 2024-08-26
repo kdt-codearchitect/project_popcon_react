@@ -96,7 +96,7 @@ function Header() {
                         
                         
                         <Link to="/allInquiries">고객문의</Link>
-                        <LoginModal ref={xxx}/>
+                        <LoginModal ref={modalRef}/>
                     </div>
                 </div>
                 <div className="header-bottom-box">
