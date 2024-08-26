@@ -18,6 +18,7 @@
             qnaText:'',
             qnaPicture:'',
             qnaImage:'',
+            qnaAns:'',
             qnaDel:'false'
         }); 
 
@@ -27,6 +28,7 @@
                          text, 
                          imgname, 
                          image, 
+                         qnaAns,
                          qnaDate)=>{
 
                     setInquiry({
@@ -37,6 +39,7 @@
                          qnaText: text,
                          qnaPicture: imgname,
                          qnaImage: image,
+                         qnaAns: qnaAns,
                          qnaDate: qnaDate,
                          qnaDel:'false'
                 });            
@@ -116,7 +119,8 @@
                                                      customer_qna.qnaTitle, 
                                                      customer_qna.qnaText, 
                                                      customer_qna.qnaPicture, 
-                                                     customer_qna.qnaImage,  
+                                                     customer_qna.qnaImage,
+                                                     customer_qna.qnaAns,  
                                                      customer_qna.qnaDate)} 
                                                      style={{ cursor: 'pointer' }}
                                                      >
@@ -149,6 +153,7 @@
                     imgname    =    {inquiry.qnaPicture} 
                     image      =    {inquiry.qnaImage} 
                     qnaDate    =    {inquiry.qnaDate}
+                    qnaAns     =    {inquiry.qnaAns}
                     onClose    =    {closeModal}        
                     />
                 )}
