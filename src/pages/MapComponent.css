@@ -134,14 +134,6 @@
   position: relative; /* 지도가 상위 요소의 크기에 맞게 채워지도록 position을 relative로 설정 */
 }
 
-#map {
-  width: 100%;
-  height: 100%;
-  position: absolute; /* 지도 요소를 부모 요소(map-api-box)에 맞게 채우기 위해 절대 위치를 설정 */
-  top: 0;
-  left: 0;
-}
-
 #pagination {
   margin-top: 10px;
   padding: 10px 0;

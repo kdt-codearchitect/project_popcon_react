@@ -34,7 +34,7 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
   return (
     <div className="page-container">
       <SideMenu/>
-      <div className="section-container">
+      <div className="myinfo-container">
         <div className="myinfo-header">
           <div className="section-font">
             <h1>MyInfo / 개인정보수정</h1>

@@ -118,27 +118,23 @@
     width: 660px;
     display: grid;
     align-items: baseline;
-    grid-template-columns: 4fr 1fr 1fr 1fr 1.5fr 1fr;
+    grid-template-columns: 4fr 1fr 1fr 1fr 1.5fr;
 }
 
 .co-delivery-item p:nth-child(2) {
-    background-color: #FAE41C;
-    border-radius: 4px;
-    width: 40px;
-    padding: 2px 0;
     text-align: center;
     font-weight: 500;
 }
 
 .co-delivery-item p:nth-child(3) {
-    text-align: right;
+    text-align: center;
 }
 
 .co-delivery-item p:nth-child(4) {
-    text-align: left;
+    text-align: center;
 }
 
-.co-delivery-item p:nth-child(6) {
+.co-delivery-item p:nth-child(5) {
     text-align: right;
 }
 

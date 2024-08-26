@@ -19,8 +19,10 @@ import SignupComponent, { action as signUpAction } from './pages/SignupComponent
 import FaqComponent from './pages/FaqComponent';
 import InquiryComponent from './pages/Inquiry';
 import MyInquiryComponent from './pages/MyInquiry';
-import MapComponent from './pages/MapComponent'
+import MapComponent from './pages/MapComponent';
+import MapTest from './pages/DeliveryComponent';
 import AllInquiriesComponent from './pages/AllInquiry';
+
 
 
 const App = () => {
@@ -145,7 +147,9 @@ const App = () => {
         { path: '/makeInquiry', element: <InquiryComponent/>},
         { path: '/myInquiry', element: <MyInquiryComponent/>},
         { path: '/Maps', element: <MapComponent/>},
+        { path: '/mapTest', element: <MapTest/>}
         { path: '/allInquiries', element: <AllInquiriesComponent/>}
+
       ]
     }
   ]);
