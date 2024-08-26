@@ -168,7 +168,7 @@ export async function action({request}){
     customerEmail: `${data.get('email')}@${data.get('emailDomain')}`,
     customerEmailDomain: 'naver.com',
     customerRate: '1',
-    customerRole: '1',
+    customerRole: false,
   };
   console.log("authData>>", authData);
 
