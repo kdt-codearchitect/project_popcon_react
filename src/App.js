@@ -147,7 +147,7 @@ const App = () => {
         { path: '/makeInquiry', element: <InquiryComponent/>},
         { path: '/myInquiry', element: <MyInquiryComponent/>},
         { path: '/Maps', element: <MapComponent/>},
-        { path: '/mapTest', element: <MapTest/>}
+        { path: '/mapTest', element: <MapTest/>},
         { path: '/allInquiries', element: <AllInquiriesComponent/>}
 
       ]
