@@ -1,12 +1,12 @@
     import React,{useState,useEffect} from 'react';
     import './MyInquiry.css';
     import { Link } from 'react-router-dom';
-    import MyInquiryModalComponent from './MyInquiryModal';
+    import AllInquiryModalComponent from './AllInquiryModal';
 
     const url = process.env.REACT_APP_API_BASE_URL
     var CustomerIdx = localStorage.getItem('customerIdx');
 
-    const MyInquiryComponent=()=>{
+    const AllInquiriesComponent=()=>{
         
         // 모달창 상태 확인 / props 
         const [isModalOpen,setIsModalOpen]=useState(false);
@@ -27,6 +27,7 @@
                          text, 
                          imgname, 
                          image, 
+                         qnaAns,
                          qnaDate)=>{
 
                     setInquiry({
@@ -38,6 +39,7 @@
                          qnaPicture: imgname,
                          qnaImage: image,
                          qnaDate: qnaDate,
+                         qnaAns: qnaAns,
                          qnaDel:'false'
                 });            
 
@@ -73,10 +75,9 @@
 
         useEffect(() => {
             const fetchMyinquiry = async () =>{
-                const sub_url = `/myinquiry/${CustomerIdx}`;
+                const sub_url = `/allinquiries`;
                 try{
                     // DB에 비동기 데이터 요청
-                    // const MyinquiryResponse = await fetch(url+`/myinquiry/${CustomerIdx}`);
                     const MyinquiryResponse = await fetch(url+sub_url);
                         if(!MyinquiryResponse.ok){
                         throw new Error('네트워크 상태가 불안정합니다.') //응답이 성공이 아닐 경우
@@ -94,7 +95,7 @@
     
         return(
             <div className="myinquiry-page">
-                <div className="inquiry-h1"><h1> 나의 문의내역 </h1></div>
+                <div className="inquiry-h1"><h1> 문의내역 </h1></div>
                 <div className="myinquiry-list">
                     <div className="myinquiry-list-headers margintop15">
                         <div className="myinquiry-list-short m-right"><p>순번</p></div>
@@ -109,14 +110,15 @@
                     {currentItems.map((customer_qna,idx)=>(
                     <div className="myinquiry-list-headers margintop10" key={idx}>
                         <div className="myinquiry-list-short m-right"><p>{myInquiry.length-idx}</p></div>
-                        <div className="myinquiry-list-long ta-left"><p>
+                        <div className="myinquiry-list-long ta-left margintop10"><p>
                             <Link 
                             onClick={() => openModal(customer_qna.qnaIdx,
-                                                     customer_qna.faqtypeIdx,
+                                                     customer_qna.faqtypeIdx, 
                                                      customer_qna.qnaTitle, 
                                                      customer_qna.qnaText, 
                                                      customer_qna.qnaPicture, 
-                                                     customer_qna.qnaImage,  
+                                                     customer_qna.qnaImage,
+                                                     customer_qna.qnaAns,  
                                                      customer_qna.qnaDate)} 
                                                      style={{ cursor: 'pointer' }}
                                                      >
@@ -141,13 +143,14 @@
                 </div>
                 {/* 모달 컴포넌트 렌더링 */}
                 {isModalOpen && (
-                    <MyInquiryModalComponent 
+                    <AllInquiryModalComponent 
                     qnaIdx     =    {inquiry.qnaIdx}
                     faqtypeIdx =    {inquiry.faqtypeIdx} 
                     title      =    {inquiry.qnaTitle} 
                     text       =    {inquiry.qnaText} 
                     imgname    =    {inquiry.qnaPicture} 
                     image      =    {inquiry.qnaImage} 
+                    qnaAns     =    {inquiry.qnaAns}
                     qnaDate    =    {inquiry.qnaDate}
                     onClose    =    {closeModal}        
                     />
@@ -156,4 +159,4 @@
         )
     }
 
-    export default MyInquiryComponent;
+    export default AllInquiriesComponent;

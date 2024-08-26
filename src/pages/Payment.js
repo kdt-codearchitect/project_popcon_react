@@ -86,6 +86,30 @@ const Payment = () => {
     }
   };
 
+  const clearCart = async (customerIdx) => {
+    const token = localStorage.getItem('jwtAuthToken');
+
+    try {
+      console.log("Clearing cart for customerIdx:", customerIdx);
+
+      const response = await fetch(url + `/cart/cart/clear/${customerIdx}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log("Cart cleared successfully!");
+      } else {
+        console.error('Cart clearing failed.');
+      }
+    } catch (error) {
+      console.error('Cart clearing request failed:', error);
+    }
+  };
+
   const moveToKeep = async (customerIdx) => {
     const token = localStorage.getItem('jwtAuthToken');
 
@@ -113,29 +137,7 @@ const Payment = () => {
     }
   };
 
-  const clearCart = async (customerIdx) => {
-    const token = localStorage.getItem('jwtAuthToken');
-
-    try {
-      console.log("Clearing cart for customerIdx:", customerIdx);
-
-      const response = await fetch(url + `/cart/cart/clear/${customerIdx}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        console.log("Cart cleared successfully!");
-      } else {
-        console.error('Cart clearing failed.');
-      }
-    } catch (error) {
-      console.error('Cart clearing request failed:', error);
-    }
-  };
+  
 
   const requestPay = () => {
     if (!window.PortOne) {
@@ -147,27 +149,26 @@ const Payment = () => {
       .then(response => {
         console.log("Payment response:", response);
 
-        // 결제 상태 확인
-        if (response.status === 'SUCCESS') {
-          const customerIdx = localStorage.getItem('customerIdx');
-          const paymentId = response.paymentId || payment_value.paymentId;
 
-          placeOrder(customerIdx, paymentId).then(() => {
-            const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
-            if (userChoice) {
-              moveToKeep(customerIdx).then(() => {
-                setModalOpen(true);
-              });
-            } else {
+        const customerIdx = localStorage.getItem('customerIdx');
+        const paymentId = response.paymentId || payment_value.paymentId;
+
+        placeOrder(customerIdx, paymentId).then(() => {
+          const userChoice = window.confirm("결제에 성공하였습니다, 구매하신 상품을 keep하시겠습니까?");
+          if (userChoice) {
+            moveToKeep(customerIdx).then(() => {
+              // KeepModal을 열도록 상태 업데이트
+              setModalOpen(true);
               clearCart(customerIdx).then(() => {
-                navigate('/');
               });
-            }
-          });
-        } else {
-          console.error('결제가 실패하였습니다:', response.message);
-          alert('결제가 취소되었거나 실패하였습니다.');
-        }
+            });
+          } else {
+            clearCart(customerIdx).then(() => {
+              navigate('/');
+            });
+          }
+        });
+
       })
       .catch(error => {
         console.error('결제 요청 중 오류 발생:', error);

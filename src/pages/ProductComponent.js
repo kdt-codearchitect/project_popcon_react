@@ -237,6 +237,7 @@ function ProductComponent() {
 
   return (
     <div className="productList-container">
+
       {isLoading ? (
         <Loading /> // 로딩 중일 때 Loading 컴포넌트를 표시합니다.
       ) : (
@@ -292,6 +293,7 @@ function ProductComponent() {
                     바로구매
                   </button>
                 </div>
+
               </div>
             ))}
             {hasMore && (

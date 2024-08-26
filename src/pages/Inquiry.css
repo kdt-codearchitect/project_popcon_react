@@ -31,14 +31,25 @@
     width:30%;
     display:flex;
     justify-content: flex-end;
+
+}
+.my-inquiry-button:hover{
+    background-color: black; 
+    color:#FAE41C;
 }
 .my-inquiry-button{
+    width:30%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
     height: 35px;
     width: 100px;
+    border-radius: 4px;
+    background-color: #FAE41C;
+    border: 1px solid #FAE41C;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
 }
-.my-inquiry-button a{
-    color: black; 
-}
+
 
 /* 문의내역 폼 헤드 */
 .inquiry-form-head{

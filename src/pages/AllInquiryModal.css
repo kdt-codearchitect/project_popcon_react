@@ -1,0 +1,160 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+   
+.modal-sample-bg{
+    background-color: none;
+    display:flex;
+    justify-content: center;
+}
+
+.modal-form-inquiry{
+    background-color: white;
+    height: auto;
+    max-height: 700px;
+    width: 550px;
+    border: 1px solid #9d9d9d;
+    border-radius: 16px;
+}
+.modal-faqedit-header h1{
+    color:black;
+    margin-top:5px;
+}
+.inquiry-category{
+    width: 300px;
+    padding-right:20px;
+}
+.modal-faqedit-title{
+    display:flex;
+    margin-bottom:10px;
+}
+
+.faqedit-title-txt{
+    width:256px;
+    height:30px;
+    padding-left:10px;
+    border-radius:4px;
+    border:1px solid #9d9d9d;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
+}
+
+.faqedit-manager-title{
+    width:279px;
+    height:30px;
+    padding-left:10px;
+    border-radius:4px;
+    border:1px solid #9d9d9d;
+    background-color: #ececec;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
+    padding-top:3px;
+}
+
+.faqedit-title-txt:focus{
+    border-color: #FAE41C;
+}
+
+.modal-faqedit-txtara{
+    width:400px;
+    height:150px;
+    resize:none;
+    outline:none;
+    padding:10px;
+    border: 1px solid #9d9d9d;
+    border-radius:4px;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
+}
+
+.modal-manager-txtara{
+    width:400px;
+    max-height:150px;
+    outline:none;
+    padding:20px;
+    border: 1px solid #9d9d9d;
+    background-color: #ececec;
+    margin-left:44px;
+    margin-bottom:20px;
+    border-radius:4px;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
+}
+
+.modal-manager-reply{
+    width:400px;
+    max-height:150px;
+    outline:none;
+    padding:20px;
+    border: 1px solid #9d9d9d;
+    background-color: white;
+    margin-left:44px;
+    margin-bottom:20px;
+    border-radius:4px;
+    font-family: "Inter", "Noto Sans KR", sans-serif;
+}
+
+.modal-faqedit-txtara:focus{
+    border-color:#FAE41C;
+}
+.faqedit-m-left{
+    margin-left: 10px
+}
+
+.gap{
+    gap:10px;
+}
+.myIq-q-logo{
+    background-color: black;
+    font-weight: 900;
+    margin-top:2px;
+    margin-right:12px;
+    padding-top:6px;
+    height: 26px;
+    width: 32px;
+    text-align: center;
+    color:#FAE41C;
+    margin-left:0;
+    border-radius: 30px;
+}
+.myIq-a-logo{
+    background-color: black;
+    font-weight: 900;
+    margin-top:4px;
+    padding-top:6px;
+    height: 26px;
+    width: 32px;
+    text-align: center;
+    color:#FAE41C;
+    margin-left:1px;
+    border-radius: 30px;
+}
+
+/* 이미지입력칸 */
+.inquiry-picture{
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    margin-top: 5px;   
+    padding-top: 5px;
+}
+
+.inquiry-imgupload{
+    opacity: 0.5;
+    height: 50px;
+    width: 50px;    
+}
+
+.inquiry-imguploaded{
+    opacity: 1;    
+    max-height: 300px; 
+    max-width: 300px;
+    object-fit: contain;
+    margin-left: 28px;
+    border-radius: 5px;
+}
+
+.inquiry-delete-button{
+    color: white;
+    text-align: center;
+    justify-content: center;   
+    align-items: center;
+    background-color: red;
+}

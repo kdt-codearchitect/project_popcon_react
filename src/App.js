@@ -21,6 +21,8 @@ import InquiryComponent from './pages/Inquiry';
 import MyInquiryComponent from './pages/MyInquiry';
 import MapComponent from './pages/MapComponent';
 import MapTest from './pages/DeliveryComponent';
+import AllInquiriesComponent from './pages/AllInquiry';
+
 
 
 const App = () => {
@@ -146,6 +148,8 @@ const App = () => {
         { path: '/myInquiry', element: <MyInquiryComponent/>},
         { path: '/Maps', element: <MapComponent/>},
         { path: '/mapTest', element: <MapTest/>}
+        { path: '/allInquiries', element: <AllInquiriesComponent/>}
+
       ]
     }
   ]);

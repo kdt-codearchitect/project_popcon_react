@@ -110,9 +110,7 @@ const InquiryComponent = () => {
                 <div className="inquiry-header">
                     <div className="inquiry-h1"><h1> 문의신청 </h1></div>
                     <div className="inquiry-button">
-                    <button type="submit" className="thema-btn-01 my-inquiry-button">
-                        <Link to="/myinquiry">문의내역</Link>
-                    </button>
+                        <Link to="/myinquiry" className="my-inquiry-button">문의내역</Link>
                     </div>
                 </div>
                 <div className="inquiry-form">

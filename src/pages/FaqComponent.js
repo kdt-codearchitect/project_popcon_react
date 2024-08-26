@@ -11,7 +11,7 @@ import ErrorPage from './Error';
 const FaqComponent=()=> {
     const url = process.env.REACT_APP_API_BASE_URL;
     const sub_url=`/faq`;
-    console.log("url 내용 확인 : ",url);
+
     const[faqs, setFaqs] = useState([]);                 //FAQ데이터
     const[loading, setLoading] = useState(true);         //로딩 
     const[error, setError] = useState(null);             //에러 상태확인
@@ -19,7 +19,13 @@ const FaqComponent=()=> {
     const[visibles, setVisibles] = useState(5)           //로딩할 항목 수
     const[divMore, setDiveMore] = useState(true);        //추가 로딩 항목 여부 확인
     const[selectedFaq, setSelectedFaq] = useState(0);    //항목별 FAQ 출력
-
+    const [isManager,setIsManager] = useState(false);    // 매니저 확인
+    
+    // 매니저 검출
+    useEffect(() => {
+        const role = localStorage.getItem('customerRole');
+        setIsManager(role === 'true'); 
+    }, []);
 
     //추가 항목 로딩하기
     const loadMore =()=>{
@@ -74,10 +80,6 @@ const FaqComponent=()=> {
     if(loading) return <div> 로딩중</div>;
     if(error) return <ErrorPage/>;
 
-    //토글 더보기 여부 확인
-
-
-
     //토글 열기-닫기
     const toggleAccordion =(idx)=>{
         setOpenidx(openIdx===idx?null:idx)
@@ -87,10 +89,14 @@ const FaqComponent=()=> {
         <div className="customer-service-page flex-d-column flex-sb">
             <div className="inquiry-header">
                 <div className="inquiry-h1"><h1>자주 묻는 질문</h1></div>
+                {isManager && 
+                <div className="inquiry-button">                       
+                </div>}
+                {!isManager && 
                 <div className="inquiry-button">
                     <button type="button" className="thema-btn-01 my-inquiry-button">
                         <Link to="/makeInquiry">문의하기</Link></button>
-                </div>
+                </div>}
             </div>
             <nav>
                 <ul className="nav-list">

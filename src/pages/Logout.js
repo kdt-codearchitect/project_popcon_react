@@ -5,5 +5,6 @@ export function action() {
   // localStorage.clear()
   localStorage.removeItem('jwtAuthToken');
   localStorage.removeItem('userid');
+  localStorage.removeItem('customerIdx');
   return redirect('/');
 }
