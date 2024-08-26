@@ -144,7 +144,7 @@ const InquiryComponent = () => {
             </div>
             <div className="inquiry-submit-buttons">
                 <button type="submit" className="thema-btn-01 inquiry-register" onClick={handleSubmit}>등록</button>
-                <button type="submit" className="thema-btn-02 inquiry-tempsave"><Link to="/faq">취소</Link></button>
+                <Link to="/faq" className="inquiry-cancel">취소</Link>
             </div>
         </div>
         </div>

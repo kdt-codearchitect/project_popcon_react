@@ -87,15 +87,14 @@ const FaqComponent=()=> {
 
     return (
         <div className="customer-service-page flex-d-column flex-sb">
-            <div className="inquiry-header">
+            <div className="inquiry-header-faq">
                 <div className="inquiry-h1"><h1>자주 묻는 질문</h1></div>
                 {isManager && 
                 <div className="inquiry-button">                       
                 </div>}
                 {!isManager && 
                 <div className="inquiry-button">
-                    <button type="button" className="thema-btn-01 my-inquiry-button">
-                        <Link to="/makeInquiry">문의하기</Link></button>
+                        <Link className="my-inquiry-button"to="/makeInquiry">문의하기</Link>
                 </div>}
             </div>
             <nav>

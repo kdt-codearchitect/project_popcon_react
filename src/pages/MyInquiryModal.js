@@ -16,6 +16,7 @@ const MyInquiryModalComponent=({qnaIdx,
                                 text,
                                 imgname,
                                 image,
+                                qnaAns,
                                 onClose})=>{
                                     
     
@@ -43,6 +44,7 @@ const MyInquiryModalComponent=({qnaIdx,
         qnaPicture: imgname,
         qnaImage: image,
         qnaState:'대기중',
+        qnaAns:qnaAns,
         qnaDel:'false'
     });
 
@@ -56,7 +58,7 @@ const MyInquiryModalComponent=({qnaIdx,
         }));
         }
 
-            // 업로드 이미지 파일명 저장
+    // 업로드 이미지 파일명 저장
     const handleImgChange = (event) => {
         const file = event.target.files[0];
         if(file){
@@ -165,8 +167,7 @@ const MyInquiryModalComponent=({qnaIdx,
                                className="faqedit-title-txt faqedit-m-left"
                                value={inquiry.qnaTitle}/>
                     </div>
-                    <div className="modal-faqedit-title">
-                        <p className="myIq-a-logo">A</p>
+                    <div className="modal-faqedit-title margin-txtbx">
                         <textarea onChange={handleChange} 
                                   name="qnaText" 
                                   className="modal-faqedit-txtara faqedit-m-left"
@@ -186,6 +187,13 @@ const MyInquiryModalComponent=({qnaIdx,
                             {imageFile  && <img src={imageFile} className='inquiry-imguploaded' alt="미리보기" />}
                         </label>
             </div>
+            {inquiry.qnaAns &&
+            <div className="modal-faqedit-title">
+                        <p className="myIq-a-logo">A</p>
+                        <div      name="qnaText" 
+                                  className="modal-faqedit-txtara faqedit-m-left"
+                                  >{inquiry.qnaAns}</div>
+                    </div>}
                     <div className="modal-login-botton-box flex-c gap">
                         <button onClick={handleSubmit} className="thema-btn-01">수정</button>
                         <button onClick={onClose} className="thema-btn-02">취소</button>
