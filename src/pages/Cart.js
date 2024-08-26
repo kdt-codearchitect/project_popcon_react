@@ -198,8 +198,7 @@ const Cart = () => {
                   />
                 </div>
                 <div className="list-img-box flex-c">
-                  {/* <img src={imgSrc+item.skuName+'.jpg'} alt={item.skuName} /> */}
-                  <img/>
+                  <img src={imgSrc+item.skuName+'.jpg'} alt={item.skuName} />
                 </div>
                 <div className="list-title-box">
                   <p>{item.skuName}</p>

@@ -27,6 +27,8 @@ const HomeComponent = () => {
 
     const [isFirstRender, setIsFirstRender] = useState(true); // 최초 렌더링 여부 상태
 
+    const imgSrc = '../image/store_image/'
+
     function show_modal() {
         if (xxx.current) {
             xxx.current.modal_open(); // 모달 열기
@@ -201,7 +203,7 @@ const HomeComponent = () => {
                         {events.map((event, idx) => (
                             <img
                                 className="card-clone-img card-clone-frame"
-                                src={event.eventsImg}
+                                src={imgSrc+event.eventsImg}
                                 key={idx}
                                 style={{ zIndex: `${idx}` }}
                                 ref={(el) => (firstCardImgRef.current[idx] = el)}
@@ -223,7 +225,7 @@ const HomeComponent = () => {
                 <div className="event-card-container" ref={containerRef}>
                     {repeatedEvents.map((event, idx) => (
                         <div className="event-card" key={idx} ref={(el) => (cardRefs.current[idx] = el)}>
-                            <img src={event.eventsImg} alt={`Slide ${idx + 1}`} />
+                            <img src={imgSrc+event.eventsImg} alt={`Slide ${idx + 1}`} />
                             <div className="event-card-text">
                                 <p>{event.eventsName}</p>
                                 <p>{event.eventsInfo}</p>
