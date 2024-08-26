@@ -1,13 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './MapComponent.css';
 import label02 from '../image/store_image/checkout_label02.png';
+import { debounce } from 'lodash';
 
 const MapComponent = () => {
   const [places, setPlaces] = useState([]);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [customerAddress, setCustomerAddress] = useState(null); // 고객 주소를 저장할 상태
+  const customerIdx = localStorage.getItem('customerIdx');
+  const token = localStorage.getItem('jwtAuthToken');
+  const url = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
+    // 서버에서 customer_add 값을 가져오는 함수
+    const fetchCustomerAddress = async () => {
+      try {
+        const response = await axios.get(url + `/getCustomerIdx/${customerIdx}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const customerAddress = response.data.customerAdd;
+        setCustomerAddress(customerAddress); // 주소 상태에 저장
+      } catch (error) {
+        console.error('고객 주소를 가져오는 중 오류 발생:', error);
+      }
+    };
+
+    fetchCustomerAddress();
+
     const script = document.createElement('script');
     script.src = '//dapi.kakao.com/v2/maps/sdk.js?appkey=b4eddb50f424d370591b88b62aeb79f5&libraries=services,clusterer,drawing&autoload=false';
     script.async = true;
@@ -17,43 +40,44 @@ const MapComponent = () => {
       window.kakao.maps.load(() => {
         const mapContainer = document.getElementById('map');
         const mapOption = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 임시 기본 위치
           level: 3,
         };
         const mapInstance = new window.kakao.maps.Map(mapContainer, mapOption);
         setMap(mapInstance);
 
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition((position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const locPosition = new window.kakao.maps.LatLng(lat, lon);
-            const message = '<div style="padding:5px;">현재 위치</div>';
-
-            displayMarker(mapInstance, locPosition, message);
-            searchConvenienceStores(mapInstance, locPosition);
-
-            window.kakao.maps.event.addListener(mapInstance, 'center_changed', () => {
-              const center = mapInstance.getCenter();
-              searchConvenienceStores(mapInstance, center);
-            });
-
-          }, (error) => {
-            console.error('Error occurred. Error code: ' + error.code);
-            const locPosition = new window.kakao.maps.LatLng(33.450701, 126.570667);
-            const message = 'geolocation을 사용할 수 없어요..';
-            displayMarker(mapInstance, locPosition, message);
-            searchConvenienceStores(mapInstance, locPosition);
-          });
-        } else {
-          const locPosition = new window.kakao.maps.LatLng(33.450701, 126.570667);
-          const message = 'geolocation을 사용할 수 없어요..';
-          displayMarker(mapInstance, locPosition, message);
-          searchConvenienceStores(mapInstance, locPosition);
-        }
+        const debouncedSearch = debounce((center) => searchConvenienceStores(mapInstance, center), 300);
+        window.kakao.maps.event.addListener(mapInstance, 'center_changed', () => {
+          const center = mapInstance.getCenter();
+          debouncedSearch(center);
+        });
       });
     };
-  }, []);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customerIdx, token, url]);
+
+  useEffect(() => {
+    if (map && customerAddress) {
+      moveToAddress(customerAddress);
+    }
+  }, [map, customerAddress]);
+
+  // Geocoder를 사용하여 주소로 지도 이동
+  const moveToAddress = (address) => {
+    const geocoder = new window.kakao.maps.services.Geocoder();
+
+    geocoder.addressSearch(address, (result, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+        map.setCenter(coords);
+        displayMarker(map, coords, `<div style="padding:5px;">${address}</div>`);
+        searchConvenienceStores(map, coords);
+      } else {
+        console.error('주소를 찾을 수 없습니다.');
+      }
+    });
+  };
 
   const displayMarker = (mapInstance, locPosition, message) => {
     const marker = new window.kakao.maps.Marker({
@@ -67,7 +91,6 @@ const MapComponent = () => {
     });
 
     infowindow.open(mapInstance, marker);
-    mapInstance.setCenter(locPosition);
   };
 
   const searchConvenienceStores = (mapInstance, center) => {
@@ -113,23 +136,7 @@ const MapComponent = () => {
       alert('검색어를 입력하세요!');
       return;
     }
-
-    const ps = new window.kakao.maps.services.Places();
-    ps.keywordSearch(keyword, (data, status) => {
-      if (status === window.kakao.maps.services.Status.OK) {
-        const limitedData = data.slice(0, 8); // 최대 8개로 제한
-        setPlaces(limitedData);
-        const firstPlace = limitedData[0];
-        const center = new window.kakao.maps.LatLng(firstPlace.y, firstPlace.x);
-        map.setCenter(center);
-
-        removeMarkers();
-        const newMarkers = limitedData.map((place, i) => displaySearchMarker(map, place, i));
-        setMarkers(newMarkers);
-      } else {
-        alert('검색 결과가 없습니다.');
-      }
-    });
+    moveToAddress(keyword); // 검색된 주소로 이동
   };
 
   const handleCurrentLocation = () => {
@@ -142,12 +149,21 @@ const MapComponent = () => {
 
         const message = '<div style="padding:5px;">현재 위치</div>';
         displayMarker(map, locPosition, message);
+        searchConvenienceStores(map, locPosition);
       }, (error) => {
         console.error('Error occurred. Error code: ' + error.code);
         alert('현재 위치를 가져올 수 없습니다.');
       });
     } else {
       alert('Geolocation을 지원하지 않는 브라우저입니다.');
+    }
+  };
+
+  const handleGoToMyAddress = () => {
+    if (customerAddress) {
+      moveToAddress(customerAddress); // 내 주소로 이동
+    } else {
+      alert('고객 주소를 불러오지 못했습니다.');
     }
   };
 
@@ -173,6 +189,7 @@ const MapComponent = () => {
               <button type="submit">검색하기</button>
             </form>
             <button onClick={handleCurrentLocation}>현재 위치로 이동</button>
+            <button onClick={handleGoToMyAddress}>내 주소로 이동</button>
           </div>
         </div>
         <div className="map-sidemenu-bot flex-sb flex-d-column">
