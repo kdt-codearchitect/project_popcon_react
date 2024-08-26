@@ -4,16 +4,18 @@
   align-items: center;
   justify-content: center;
   width: 500px;
-  height: 500px;
-  background-size: cover;
+  height: 350px;
+  background-size: auto;
   background-position: center;
   background-image: url('../image/store_image/loading_popcorn.gif');
+  background-repeat: no-repeat;
+  background-size: 250px 250px;
+  padding-top: 150px;
 }
 
 .loading-spinner {
-  border: 7px solid #D9D9D9;
+  border: 7px solid #4b4b4b;
   border-top: 7px solid #FAE41C;
-  box-shadow: 0 0 10px black;
   border-radius: 50%;
   width: 60px;
   height: 60px;

@@ -127,18 +127,26 @@ const Cart = () => {
       });
   };
 
-  const calculateItemCost = (item) => {
-    return item.isFromKeep ? 0 : item.skuCost * item.skuValue;  // Keep에서 온 경우 0원 처리
+  const calculateItemPrice = (item) => {
+    let price = item.skuCost * item.skuValue;
+    
+    if (item.promotionIdx === 1 && item.skuValue >= 2) {
+      price = item.skuCost * ((parseInt(item.skuValue/2))+(item.skuValue%2));
+    } else if (item.promotionIdx === 2 && item.skuValue >= 3) {
+      price = item.skuCost * ((parseInt((item.skuValue/3)*2))+(item.skuValue%3));
+    }
+    
+    return price;
   };
 
   const calculateTotal = () => {
     return cartItems
       .filter(item => selectedItems.includes(item.cartItemIdx))
-      .reduce((total, item) => total + calculateItemCost(item), 0);
+      .reduce((total, item) => total + calculateItemPrice(item), 0);
   };
 
   const calculateTotalAll = () => {
-    return cartItems.reduce((total, item) => total + calculateItemCost(item), 0);
+    return cartItems.reduce((total, item) => total + calculateItemPrice(item), 0);
   };
 
   const handleQuantityChange = (cartItemIdx, event) => {
@@ -214,7 +222,7 @@ const Cart = () => {
                   <button onClick={() => removeFromCart(item.cartItemIdx)}><FontAwesomeIcon icon={faXmark}/></button>
                 </div>
                 <div className="list-price-box flex-c">
-                  <p>{calculateItemCost(item).toLocaleString()}원</p>
+                  <p>{calculateItemPrice(item).toLocaleString()}원</p>
                 </div>
               </div>
             ))}
