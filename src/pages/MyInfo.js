@@ -4,6 +4,8 @@ import './MyInfo.css';
 import SideMenu from './SideMenu';
 
 const url = process.env.REACT_APP_API_BASE_URL;
+const customerIdx_org = localStorage.getItem('customerIdx');
+
 
 const MyInfo = ({ userInfo, updateUserInfo }) => {
   const [localUserInfo, setLocalUserInfo] = useState(userInfo);
@@ -14,6 +16,7 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
     jibunAddress: '',
     guide: ''
   });
+  
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
@@ -23,6 +26,38 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
     };
     document.body.appendChild(script);
   }, []);
+  
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const response = await fetch(`${url}/getCustomerIdx/${customerIdx_org}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const json = await response.json();
+        setLocalUserInfo({
+          password: '',
+          confirmPassword: '',
+          phone: {
+            part1: json.customerPhone.split('-')[0],
+            part2: json.customerPhone.split('-')[1],
+            part3: json.customerPhone.split('-')[2],
+          },
+          email: json.customerEmail.split('@')[0],
+          addressMore: json.customerAddMore || '',
+        });
+        setAddress((prevAddress) => ({
+          ...prevAddress,
+          roadAddress: json.customerAdd || '',
+        }));
+      } catch (error) {
+        console.error('There was an error fetching the members!', error);
+      }
+    };
+    fetchMembers();
+  }, []);
+
 
   const handleAddressChange = (e) => {
     e.preventDefault();
@@ -51,6 +86,7 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
         });
       }
     }).open();
+    
   };
 
   const handleChange = (e) => {
