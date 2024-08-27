@@ -1,8 +1,13 @@
 import React,{useState, useEffect} from 'react';
+import { useNavigate } from "react-router-dom";
 import './MyInquiryModal.css';
 import image_icon from '../image/image_icon.png';
 import DeleteCheckModal from './DeleteCheckModal';
 import Error from './Error';
+
+const url = process.env.REACT_APP_API_BASE_URL;
+var customerIdx = localStorage.getItem('customerIdx'); // 유저 idx 불러오기
+const sub_url=`/asks/${customerIdx}`;
 
 
 const MyInquiryModalComponent=({qnaIdx,
@@ -12,18 +17,13 @@ const MyInquiryModalComponent=({qnaIdx,
                                 imgname,
                                 image,
                                 qnaAns,
-                                onClose,
-                                navigate})=>{
-        
-        const url = process.env.REACT_APP_API_BASE_URL;
-        var customerIdx = localStorage.getItem('customerIdx'); // 유저 idx 불러오기
-        const sub_url=`/asks/${customerIdx}`;
-        
+                                onClose})=>{
+                                    
     
 
     console.log("qnaIdx: ", qnaIdx);
     // 링크 이동을 위한 네비게이션
-    
+    const navigate = useNavigate();
 
     const [isDelModalOpen, setIsDelModalOpen] = useState(false)
     const openDelModal = () => {
@@ -109,17 +109,13 @@ const MyInquiryModalComponent=({qnaIdx,
             })
             .then (data =>{
                 console.log('Response:',data);
-                console.log('inquiry', inquiry); 
-                onClose();
-
-                //navigate(`/myinquiry`); //요청 성공시 이동
-
-                
+                console.log('inquiry', inquiry);
+                navigate('/myinquiry'); //요청 성공시 이동
             })
             .catch(error=>{
                 console.log('Error', error);
             })
-           
+
             console.log(inquiry);
         }
 
@@ -138,9 +134,6 @@ const MyInquiryModalComponent=({qnaIdx,
                     console.log("항목이 삭제되었습니다.");
                     closeDelModal();
                     onClose();
-
-                    // navigate('/myinquiry');
-
                 })
                 .catch(error => {
                     <Error/>

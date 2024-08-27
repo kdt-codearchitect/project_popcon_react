@@ -5,8 +5,11 @@ import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import LoginModal from './LoginModal';
 import Loading from './Loading'; // Loading 컴포넌트를 import 
+import { useNavigate } from 'react-router-dom';
 
-function ProductComponent() {
+const ProductComponent = ({place, updateCheckedskuIdx}) => {
+  console.log("place : ", place)
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
@@ -241,9 +244,57 @@ function ProductComponent() {
 
   const [floatingTexts, setFloatingTexts] = useState({});
 
+  const handleBuyNow = async (product) => {
+    if (!customerIdx) {
+      console.log('로그인이 필요합니다');
+      show_modal();
+      return;
+    }
+
+    let promotionValue = 1;
+
+    if (product.promotionIdx === 2) {
+      promotionValue = 2;
+    } else if (product.promotionIdx === 3) {
+      promotionValue = 3;
+    }
+
+    const cartItem = {
+      skuIdx: product.skuIdx,
+      skuValue: promotionValue,
+      customerIdx: customerIdx,
+      cartIdx: customerIdx
+    };
+
+    try {
+      const response = await fetch(url + '/cart/sku/addToCart', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cartItem)
+      });
+
+      if (response.ok) {
+        console.log('상품이 장바구니에 성공적으로 담겼습니다');
+        updateCheckedskuIdx(product.skuIdx);
+        navigate('/cart');
+      } else {
+        console.error('상품을 장바구니에 담는 중 문제가 발생했습니다!');
+      }
+    } catch (error) {
+      console.error('상품을 장바구니에 담는 중 오류가 발생했습니다!', error);
+    }
+  };
+
   return (
     <div className="productList-container">
-
+      <div class="con-title-box">
+        <div class="con-title-text flex-c">
+          <p>{place.place_name}</p>
+        </div>
+      </div>
       {isLoading ? (
         <Loading /> // 로딩 중일 때 Loading 컴포넌트를 표시
       ) : (
@@ -294,7 +345,7 @@ function ProductComponent() {
                   </button>
                   <button 
                     className="thema-btn-02" 
-                    onClick={() => customerIdx ? handleAddToCart(product) : show_modal()}
+                    onClick={() => handleBuyNow(product)}
                   >
                     바로구매
                   </button>

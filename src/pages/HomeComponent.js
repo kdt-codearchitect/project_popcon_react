@@ -4,13 +4,15 @@ import LoginModal from "../pages/LoginModal";
 import Popcon from '../image/store_image/Popcon.png';
 import popcon_logo from '../image/store_image/popcon_logo.png';
 import "./HomeComponent.css"; // External CSS file for styling
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faPhone, faStore, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import { IoStorefrontSharp } from "react-icons/io5";
+import { BiLogOutCircle } from "react-icons/bi";
+import { FaPhone } from "react-icons/fa6";
+import { AiOutlineLogin } from "react-icons/ai";
 
 const HomeComponent = () => {
 
     const token = useRouteLoaderData('tokenRoot'); // 인증 토큰 가져오기
-    const xxx = useRef(null); // LoginModal의 참조
+    const modalRef = useRef(null); // LoginModal의 참조
     const [events, setEvents] = useState([]); // 이벤트 데이터 상태
     const [error, setError] = useState(null); // 에러 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
@@ -30,8 +32,8 @@ const HomeComponent = () => {
     const imgSrc = '../image/store_image/'
 
     function show_modal() {
-        if (xxx.current) {
-            xxx.current.modal_open(); // 모달 열기
+        if (modalRef.current) {
+            modalRef.current.modal_open(); // 모달 열기
         }
     }
 
@@ -171,17 +173,17 @@ const HomeComponent = () => {
                     <div className="main-header-mymenu flex-sa">
                         <nav>
                             <ul className="flex-sa">
-                                <li><Link to="/Sku" className="main-header-icon"><FontAwesomeIcon icon={faStore} /></Link></li>
+                                <li><Link to="/maps" className="main-header-icon"><IoStorefrontSharp /><span>편의점 찾기</span></Link></li>
                                 {!token &&
-                                    <li><FontAwesomeIcon icon={faUser} onClick={show_modal} /></li>
+                                    <li onClick={show_modal}><AiOutlineLogin/><span>로그인</span></li>
                                 }
                                 {token && <Form action="/logout" method="post">
-                                    <button id="logout-btn"><FontAwesomeIcon icon={faDoorOpen} /></button>
+                                    <button id="logout-btn"><BiLogOutCircle /><span>로그아웃</span></button>
                                 </Form>}
-                                <li><Link to="/faq" className="main-header-icon"><FontAwesomeIcon icon={faPhone} /></Link></li>
+                                <li><Link to="/faq" className="main-header-icon"><FaPhone /><span>고객센터</span></Link></li>
                             </ul>
                         </nav>
-                        <LoginModal ref={xxx} />
+                        <LoginModal ref={modalRef} />
                     </div>
                 </div>
             </div>

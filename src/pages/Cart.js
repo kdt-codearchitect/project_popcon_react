@@ -8,7 +8,7 @@ import EmptyCart from './EmptyCart';
 import Loading from './Loading'; // 로딩 컴포넌트 import
 import { getAuthToken } from '../util/auth'; // 이 줄을 파일 상단에 추가하세요
 
-const Cart = () => {
+const Cart = ({checkedskuIdx}) => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [customerIdx, setCustomerIdx] = useState(null);
@@ -16,6 +16,7 @@ const Cart = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const imgSrc = '../image/item_image/'
+  const [initialCheckedItems, setInitialCheckedItems] = useState([]);
 
   const handleOrder = () => {
     const itemsToOrder = cartItems.filter(item => selectedItems.includes(item.cartItemIdx));
@@ -36,6 +37,7 @@ const Cart = () => {
   useEffect(() => {
     const storedCustomerIdx = localStorage.getItem('customerIdx');
     const token = getAuthToken(); // getAuthToken 함수를 사용하여 토큰 가져오기
+    setToken(token);
 
     if (storedCustomerIdx && token) {
       setCustomerIdx(storedCustomerIdx);
@@ -51,12 +53,20 @@ const Cart = () => {
         }
       })
         .then(response => {
-          setCartItems(response.data.flatMap(cart => cart.cartItems.map(item => ({
+          const items = response.data.flatMap(cart => cart.cartItems.map(item => ({
             ...item,
             cartIdx: cart.cartIdx,
             customerIdx: cart.customerIdx,
             isFromKeep: item.keepCost !== null && item.keepCost === 0.00
-          }))));
+          })));
+          setCartItems(items);
+
+          // checkedskuIdx와 일치하는 항목을 초기에 선택된 상태로 설정
+          const initialSelected = items
+            .filter(item => item.skuIdx === checkedskuIdx)
+            .map(item => item.cartItemIdx);
+          setSelectedItems(initialSelected);
+          setInitialCheckedItems(initialSelected);
 
           console.log("cartItems : ", cartItems); // cartItems 출력
 
@@ -83,20 +93,26 @@ const Cart = () => {
         setIsLoading(false);
       }, 1000);
     }
-  }, []);
+  }, [checkedskuIdx]);
 
-  const removeFromCart = (cartItemIdx) => {
-    axios.delete(url+ `/cart/cartitem/${cartItemIdx}`, {
+  const removeFromCart = (cartIdx, skuIdx) => {
+    
+    axios.delete(url + `/cartitem/${cartIdx}/${skuIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     })
       .then(response => {
-        setCartItems(cartItems.filter(item => item.cartItemIdx !== cartItemIdx));
+        setCartItems(prevItems => prevItems.filter(item => item.skuIdx !== skuIdx));
       })
       .catch(error => {
-        console.error('제품 데이터를 삭제하는 데 오류가 발생했습니다.', error);
+        if (error.response && error.response.status === 401) {
+          console.error('인증 오류가 발생했습니다. 다시 로그인해주세요.');
+          // 로그인 페이지로 리다이렉트하거나 사용자에게 알림을 표시할 수 있습니다
+        } else {
+          console.error('제품 데이터를 삭제하는 데 오류가 발생했습니다.', error);
+        }
       });
   };
 
@@ -176,6 +192,8 @@ const Cart = () => {
         return [...prevSelected, cartItemIdx];
       }
     });
+    // 초기 체크된 항목에서 제거
+    setInitialCheckedItems(prev => prev.filter(id => id !== cartItemIdx));
   };
 
   return (
@@ -203,6 +221,7 @@ const Cart = () => {
                     type="checkbox"
                     checked={selectedItems.includes(item.cartItemIdx)}
                     onChange={() => handleCheckboxChange(item.cartItemIdx)}
+                    disabled={false} // disabled 속성 제거
                   />
                 </div>
                 <div className="list-img-box flex-c">
@@ -212,6 +231,14 @@ const Cart = () => {
                   <p>{item.skuName}</p>
                 </div>
                 <div className="list-stack-box flex-c"> 
+                  {((item.promotionIdx === 1 && item.skuValue % 2 !== 0) || 
+                    (item.promotionIdx === 2 && item.skuValue % 3 !== 0)) && (
+                    <div className={`promotion-bubble ${item.promotionIdx === 1 ? 'opo-color' : 'tpo-color'}`}>
+                      <p>
+                        {item.promotionIdx === 1 ? '1+1' : '2+1'}
+                      </p>
+                    </div>
+                  )}
                   <input type="text" value={item.skuValue} onChange={(event) => handleQuantityChange(item.cartItemIdx, event)}/>
                   <div className="list-stack-btn flex-sb flex-d-culumn">
                     <button onClick={() => handleIncrement(item.cartItemIdx)}><FontAwesomeIcon icon={faCaretUp}/></button>
@@ -219,7 +246,7 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="list-cancel-box flex-c">
-                  <button onClick={() => removeFromCart(item.cartItemIdx)}><FontAwesomeIcon icon={faXmark}/></button>
+                  <button onClick={() => removeFromCart(item.cartIdx, item.skuIdx)}><FontAwesomeIcon icon={faXmark}/></button>
                 </div>
                 <div className="list-price-box flex-c">
                   <p>{calculateItemPrice(item).toLocaleString()}원</p>

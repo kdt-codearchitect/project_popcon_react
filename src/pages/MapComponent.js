@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './MapComponent.css';
 import label02 from '../image/store_image/checkout_label02.png';
 import { debounce } from 'lodash';
+import { FaSearch } from "react-icons/fa";
+import { FaStore } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
-const MapComponent = () => {
+const MapComponent = ({addToPlace}) => {
+  const navigate = useNavigate();
   const [places, setPlaces] = useState([]);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]); // 모든 마커를 추적
-  const [selectedMarker, setSelectedMarker] = useState(null); // 선택된 노란색 마커
   const [selectedInfowindow, setSelectedInfowindow] = useState(null); // 선택된 인포윈도우 추적
   const [circle, setCircle] = useState(null); // 지도에 그릴 원(circle)을 추적
   const [customerAddress, setCustomerAddress] = useState(null);
@@ -16,6 +20,7 @@ const MapComponent = () => {
   const customerIdx = localStorage.getItem('customerIdx');
   const token = localStorage.getItem('jwtAuthToken');
   const url = process.env.REACT_APP_API_BASE_URL;
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
 
   useEffect(() => {
     const fetchCustomerAddress = async () => {
@@ -45,7 +50,8 @@ const MapComponent = () => {
         const mapOption = {
           center: new window.kakao.maps.LatLng(33.450701, 126.570667),
           level: 3,
-          draggable: false,
+          draggable: true,
+          zoomable: true
         };
         const mapInstance = new window.kakao.maps.Map(mapContainer, mapOption);
         setMap(mapInstance);
@@ -55,6 +61,10 @@ const MapComponent = () => {
           const center = mapInstance.getCenter();
           debouncedSearch(center);
         });
+
+        // 줌 컨트롤 추가
+        const zoomControl = new window.kakao.maps.ZoomControl();
+        mapInstance.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
       });
     };
 
@@ -67,7 +77,7 @@ const MapComponent = () => {
     }
   }, [map, customerAddress]);
 
-  const moveToAddress = (address) => {
+  const moveToAddress = (address, isCustomerAddress = false) => {
     const geocoder = new window.kakao.maps.services.Geocoder();
 
     geocoder.addressSearch(address, (result, status) => {
@@ -75,7 +85,8 @@ const MapComponent = () => {
         const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
         setCurrentLocation(coords); // 현재 위치로 설정
         map.setCenter(coords);
-        displayLargeMarker(map, coords, `<div style="padding:5px;">${address}</div>`);
+        const markerMessage = '<div style="padding:5px">배송지</div>';
+        displayMarker(map, coords, 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', markerMessage);
         drawCircle(map, coords); // 현재 위치에 원을 그림
         searchConvenienceStores(map, coords);
       } else {
@@ -110,28 +121,6 @@ const MapComponent = () => {
     }
 
     return { marker };
-  };
-
-  const displayLargeMarker = (mapInstance, locPosition, message) => {
-    const markerOptions = {
-      map: mapInstance,
-      position: locPosition,
-      image: new window.kakao.maps.MarkerImage(
-        'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-        new window.kakao.maps.Size(36, 50), // 큰 마커
-        { offset: new window.kakao.maps.Point(18, 50) }
-      ),
-    };
-
-    const marker = new window.kakao.maps.Marker(markerOptions);
-
-    const infowindow = new window.kakao.maps.InfoWindow({
-      content: message,
-      removable: true,
-    });
-
-    infowindow.open(mapInstance, marker);
-    return { marker, infowindow };
   };
 
   const searchConvenienceStores = (mapInstance, center) => {
@@ -206,8 +195,8 @@ const MapComponent = () => {
         const locPosition = new window.kakao.maps.LatLng(lat, lon);
         setCurrentLocation(locPosition); // 현재 위치로 설정
         map.setCenter(locPosition);
-
-        displayLargeMarker(map, locPosition, '<div style="padding:5px;">현재 위치</div>');
+        
+        displayMarker(map, locPosition, 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', '<div style="padding:3px;font-size:11px;">배송지</div>');
         drawCircle(map, locPosition); // 현재 위치에 원을 그림
         searchConvenienceStores(map, locPosition);
       }, (error) => {
@@ -221,7 +210,7 @@ const MapComponent = () => {
 
   const handleGoToMyAddress = () => {
     if (customerAddress) {
-      moveToAddress(customerAddress);
+      moveToAddress(customerAddress, true);
     } else {
       alert('고객 주소를 불러오지 못했습니다.');
     }
@@ -230,38 +219,24 @@ const MapComponent = () => {
   const handleItemClick = (index) => {
     const selectedPlace = places[index];
     const { marker } = markers[index];
-
-    // 기존 마커를 유지하고, 노란색 마커를 추가로 표시
-    if (selectedMarker) {
-      selectedMarker.setMap(null); // 이전에 선택된 노란색 마커 제거
-      if (selectedInfowindow) {
-        selectedInfowindow.close(); // 이전 인포윈도우 닫기
-      }
+    console.log(selectedPlace)
+    addToPlace(selectedPlace);
+    // 이전에 선택된 인포윈도우가 있다면 닫기
+    if (selectedInfowindow) {
+      selectedInfowindow.close();
     }
 
-    // 선택된 마커를 노란색 마커로 변경 및 크기 조정
-    const yellowMarker = new window.kakao.maps.Marker({
-      map,
-      position: marker.getPosition(),
-      image: new window.kakao.maps.MarkerImage(
-        'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 노란색 마커 이미지
-        new window.kakao.maps.Size(36, 50), // 크기를 키움
-        { offset: new window.kakao.maps.Point(18, 45) }
-      ),
-    });
-
-    // 노란색 마커일 때만 인포윈도우 열기
+    // 새로운 인포윈도우 생성 및 열기
     const infowindow = new window.kakao.maps.InfoWindow({
       content: `<div style="padding:5px;font-size:12px;">${selectedPlace.place_name}</div>`,
     });
-    infowindow.open(map, yellowMarker);
+    infowindow.open(map, marker);
 
-    // 선택된 마커와 인포윈도우 상태로 저장
-    setSelectedMarker(yellowMarker);
+    // 선택된 인포윈도우 상태로 저장
     setSelectedInfowindow(infowindow);
 
-    // 마커 클릭 이벤트 발생
-    window.kakao.maps.event.trigger(yellowMarker, 'click');
+    // 지도 중심을 선택된 마커 위치로 이동
+    map.setCenter(marker.getPosition());
   };
 
   const drawCircle = (mapInstance, center) => {
@@ -273,7 +248,7 @@ const MapComponent = () => {
     // 새로운 원을 생성
     const newCircle = new window.kakao.maps.Circle({
       center: center, // 원의 중심 좌표
-      radius: 500, // 원의 반지름 (미터 단위)
+      radius: 250, // 원의 반지름 (미터 단위)
       strokeWeight: 3.8, // 선의 두께
       strokeColor: '#75B8FA', // 선의 색깔
       strokeOpacity: 1, // 선의 불투명도
@@ -287,8 +262,32 @@ const MapComponent = () => {
     setCircle(newCircle); // 상태에 원을 저장
   };
 
+  const handleSkuNavigation = () => {
+    navigate('/Sku');
+  };
+
+  function selectCard(cardElement) {
+    // 이전에 선택된 카드에서 'selected' 클래스 제거
+    const previousSelected = document.querySelector('.sidebar-card.selected');
+    if (previousSelected) {
+      previousSelected.classList.remove('selected');
+    }
+  
+    // 새로 선택된 카드에 'selected' 클래스 추가
+    cardElement.classList.add('selected');
+  }
+
+  // 카드 클릭 이벤트 리스너 예시
+  document.querySelectorAll('.sidebar-card').forEach(card => {
+    card.addEventListener('click', () => selectCard(card));
+  });
+
   return (
     <div className="map-container flex-sb">
+      <div className="floating-circle flex-c flex-d-column" onClick={handleSkuNavigation}>
+        <FaStore />
+        <span>매장선택</span>
+      </div>  
       <div className="map-sidemenu">
         <div className="map-sidemenu-top flex-sb flex-d-column">
           <div className="flex-sb w-100">
@@ -299,7 +298,7 @@ const MapComponent = () => {
           <div className="search-container">
             <form className="search-form" onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
               <input type="text" id="keyword" placeholder="검색어를 입력하세요." />
-              <button type="submit">검색하기</button>
+              <button type="submit"><FaSearch /></button>
             </form>
             
             <div className="location-buttons">

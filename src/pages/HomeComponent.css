@@ -47,7 +47,10 @@
 }
 
 .main-header-mymenu > nav > ul{
-  width: 200px;
+  width: 300px;
+}
+.main-header-mymenu > nav > ul li:last-child svg{
+  font-size: 1rem;
 }
 
 @keyframes popIn {
@@ -57,7 +60,7 @@
   }
   60% {
     opacity: 1;
-    transform: scale(1.3);
+    transform: scale(1.2);
   }
   80% {
     transform: scale(0.9);
@@ -68,8 +71,28 @@
 }
 
 .main-header-mymenu li{
+  height: 50px;
   list-style: none;
-  font-size: 1.2rem;  
+  font-size: 1.2rem; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-direction: row;
+}
+
+.main-header-mymenu span{
+  font-size: 0.9rem;
+  margin-left: 3px;
+  padding-bottom: 2px;
+}
+
+.main-header-mymenu li a{
+  display: flex;
+  align-items: center;
+}
+.main-header-mymenu ul button{
+  display: flex;
+  align-items: center;
 }
 
 .main-header-mymenu li:hover{

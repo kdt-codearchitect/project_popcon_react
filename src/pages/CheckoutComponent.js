@@ -274,7 +274,7 @@ const CheckoutComponent = () => {
               <p>{customer.customerAddMore}</p>
             )}
             <p>배송 요청사항</p>
-            <p>문 앞에 두고 가세요</p>
+            <input type='text'placeholder=' 요청사항을 작성해주세요.'/>
           </div>
         </div>
       </div>
@@ -314,13 +314,13 @@ const CheckoutComponent = () => {
             <p>{formatNumber(totalSumCost)}원</p>
             <p>포인트 할인</p>
             <div className="co-point-box">
-              <p>1,750,000</p>
-              <button className="thema-btn-01">사용</button>
+              <p>0</p>
+              {/* <button className="thema-btn-01">사용</button> */}
             </div>
             <p>배송비</p>
             <p>3,000원</p>
-            <p>팝콘 캐시</p>
-            <p>팝콘 캐시</p>
+            {/* <p>팝콘 캐시</p>
+            <p>팝콘 캐시</p> */}
           </div>
         </div>
       </div>
