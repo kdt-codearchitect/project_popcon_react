@@ -113,19 +113,10 @@
 .mypage-icon{
   height: 100px;
   width: 100px;
-  border: 4px solid white;
+  border: 2px solid white;
   border-radius: 8px;
   background-color: white;
   margin: 100px 10px 0px 10px;
-}
-
-.mypage-icon:hover{
-  border: 4px solid #FAE41C;
-  height: 200px;
-  width: 200px;
-  border: 2px solid white;
-  border-radius: 8px;
-  margin: 10px;
 }
 
 .mypage-icon:hover{
