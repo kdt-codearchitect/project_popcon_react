@@ -11,6 +11,18 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';  // uuid import 추가
 
+const calculateItemPrice = (item) => {
+  let price = item.skuCost * item.skuValue;
+  
+  if (item.promotionIdx === 1 && item.skuValue >= 2) {
+    price = item.skuCost * ((parseInt(item.skuValue/2))+(item.skuValue%2));
+  } else if (item.promotionIdx === 2 && item.skuValue >= 3) {
+    price = item.skuCost * ((parseInt((item.skuValue/3)*2))+(item.skuValue%3));
+  }
+  
+  return price;
+};
+
 const CheckoutComponent = () => {
   const location = useLocation();
   const [customer, setCustomer] = useState({
@@ -35,7 +47,7 @@ const CheckoutComponent = () => {
   const navigate = useNavigate();
   
   // 총 상품 가격 불러오기 위한 변수 
-  const totalSumCost = cartItems.length > 0 ? cartItems.reduce((sum, item) => sum + item.skuCost * item.skuValue, 0) : 0; 
+  const totalSumCost = cartItems.length > 0 ? cartItems.reduce((sum, item) => sum + calculateItemPrice(item), 0) : 0; 
   const CustomerIdx = localStorage.getItem('customerIdx'); // 로그인한 유저의 customerIdx를 불러옴
   console.log("정보 부르기" + CustomerIdx);
   payment_value.customer.fullName = customer.customerName;
@@ -105,6 +117,7 @@ const CheckoutComponent = () => {
             'Content-Type': 'application/json',
           },
         });
+        console.log('가져온 장바구니 항목:', response.data);
 
         // if (response.status === 200) {
         //   const data = response.data.flatMap(cart =>
@@ -203,7 +216,6 @@ const CheckoutComponent = () => {
           <h1>주문결제</h1>
         </div>
       </div>
-
       <div className="checkOut-contents flex-d-column">
         <div className="checkOut-contents-box flex-c flex-d-column">
           <div className="co-contents-title">
@@ -281,7 +293,7 @@ const CheckoutComponent = () => {
                   <p>수량</p>
                   <p>{item.skuValue}</p>
                   <p>무료배송</p>
-                  <p>{formatNumber(item.skuCost*item.skuValue)}원</p>
+                  <p>{formatNumber(calculateItemPrice(item))}원</p>
                 </div>
               ))
             ) : (

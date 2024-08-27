@@ -30,7 +30,7 @@
   font-weight: bold;
   color: #4b4b4b;
 }
-.header-mymenu button:hover{
+.header-mymenu > button:hover{
   color: #FAE41C;
 }
 

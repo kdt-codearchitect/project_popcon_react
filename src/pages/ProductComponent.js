@@ -4,7 +4,7 @@ import axios from 'axios';
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import LoginModal from './LoginModal';
-import Loading from './Loading'; // Loading 컴포넌트를 import 합니다.
+import Loading from './Loading'; // Loading 컴포넌트를 import 
 
 function ProductComponent() {
   const [products, setProducts] = useState([]);
@@ -104,7 +104,7 @@ function ProductComponent() {
 
   const handleAddToCart = async (product) => {
     if (!customerIdx) {
-      console.log('로그인이 필요합니다.');
+      console.log('로그인이 필요');
       show_modal(); // 로그인 모달을 띄웁니다.
       return;
     }
@@ -139,6 +139,11 @@ function ProductComponent() {
 
       if (response.ok) {
         console.log('상품이 장바구니에 성공적으로 담겼습니다');
+        // 플로팅 텍스트 표시
+        setFloatingTexts(prev => ({...prev, [product.skuIdx]: true}));
+        setTimeout(() => {
+          setFloatingTexts(prev => ({...prev, [product.skuIdx]: false}));
+        }, 500);
       } else {
         console.log("cartItem : ", cartItem)
         console.error('상품이 장바구니에 담기면서 문제가 발생했습니다!');
@@ -150,7 +155,7 @@ function ProductComponent() {
 
   const handleAddToWishlist = async (product) => {
     if (!customerIdx) {
-      console.log('로그인이 필요합니다.');
+      console.log('로그인이 필요');
       show_modal(); // 로그인 모달을 띄웁니다.
       return;
     }
@@ -176,7 +181,7 @@ function ProductComponent() {
       if (response.ok) {
         console.log('상품이 찜 목록에 성공적으로 담겼습니다.');
 
-        // 제품 리스트 상태를 업데이트하여 UI에 반영합니다.
+        // 제품 리스트 상태를 업데이트하여 UI에 반영
         setProducts((prevProducts) =>
           prevProducts.map((prod) =>
             prod.skuIdx === product.skuIdx
@@ -206,7 +211,7 @@ function ProductComponent() {
       if (response.status === 204) {
         console.log('상품이 찜 목록에서 성공적으로 삭제되었습니다.');
 
-        // 제품 리스트 상태를 업데이트하여 UI에 반영합니다.
+        // 제품 리스트 상태를 업데이트하여 UI에 반영
         setProducts((prevProducts) =>
           prevProducts.map((prod) =>
             prod.skuIdx === product.skuIdx
@@ -223,23 +228,24 @@ function ProductComponent() {
   };
 
   useEffect(() => {
-    // 페이지 로드 시 1초 동안 로딩 상태를 유지합니다.
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // 로딩이 끝난 후 제품을 가져옵니다.
+      // 로딩이 끝난 후 제품조회
       fetchMoreItems();
     }, 1000);
 
-    // 컴포넌트가 언마운트될 때 타이머를 정리합니다.
+    // 컴포넌트가 언마운트될 때 타이머를 정리
     return () => clearTimeout(timer);
   }, []);
+
+  const [floatingTexts, setFloatingTexts] = useState({});
 
   return (
     <div className="productList-container">
 
       {isLoading ? (
-        <Loading /> // 로딩 중일 때 Loading 컴포넌트를 표시합니다.
+        <Loading /> // 로딩 중일 때 Loading 컴포넌트를 표시
       ) : (
         <div className="productList-contents flex-c flex-d-column">
           <nav>
@@ -284,6 +290,7 @@ function ProductComponent() {
                     onClick={() => customerIdx ? handleAddToCart(product) : show_modal()}
                   >
                     장바구니
+                    {floatingTexts[product.skuIdx] && <span className="float-text">+1</span>}
                   </button>
                   <button 
                     className="thema-btn-02" 

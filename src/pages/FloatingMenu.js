@@ -45,12 +45,18 @@ const FloatingMenu = () =>{
         }
     }
     
-    
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
     return(
         <div className="floating-menu flex-sa flex-d-column">
-            <div className="floating-menu-top flex-c flex-d-column">
+            <div className="floating-menu-top flex-c flex-d-column" onClick={scrollToTop}>
                 <i className="fas fa-caret-up"></i>
-                <p href="#" className="font-w-b">TOP</p>
+                <p className="font-w-b">TOP</p>
             </div>
             <Link to="/maps">매장찾기</Link>
             <p onClick={show_cartModal}>장바구니</p>
