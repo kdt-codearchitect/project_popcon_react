@@ -111,7 +111,9 @@ const MyInquiryModalComponent=({qnaIdx,
                 console.log('Response:',data);
                 console.log('inquiry', inquiry); 
                 onClose();
-                navigate(`/myinquiry`); //요청 성공시 이동
+
+                //navigate(`/myinquiry`); //요청 성공시 이동
+
                 
             })
             .catch(error=>{
@@ -136,7 +138,9 @@ const MyInquiryModalComponent=({qnaIdx,
                     console.log("항목이 삭제되었습니다.");
                     closeDelModal();
                     onClose();
-                    navigate('/myinquiry');
+
+                    // navigate('/myinquiry');
+
                 })
                 .catch(error => {
                     <Error/>
