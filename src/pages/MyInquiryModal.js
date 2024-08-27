@@ -5,10 +5,6 @@ import image_icon from '../image/image_icon.png';
 import DeleteCheckModal from './DeleteCheckModal';
 import Error from './Error';
 
-const url = process.env.REACT_APP_API_BASE_URL;
-var customerIdx = localStorage.getItem('customerIdx'); // 유저 idx 불러오기
-const sub_url=`/asks/${customerIdx}`;
-
 
 const MyInquiryModalComponent=({qnaIdx,
                                 faqtypeIdx,
@@ -18,7 +14,11 @@ const MyInquiryModalComponent=({qnaIdx,
                                 image,
                                 qnaAns,
                                 onClose})=>{
-                                    
+        
+        const url = process.env.REACT_APP_API_BASE_URL;
+        var customerIdx = localStorage.getItem('customerIdx'); // 유저 idx 불러오기
+        const sub_url=`/asks/${customerIdx}`;
+        
     
 
     console.log("qnaIdx: ", qnaIdx);

@@ -91,3 +91,20 @@
   border-radius: 5px;
   margin-top: 20px;
 }
+
+.mypage-icon{
+  height: 200px;
+  width: 200px;
+  border: 2px solid white;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+.mypage-icon:hover{
+  border: 2px solid #FAE41C;
+}
+
+.black-bg{
+  background-color: black;
+
+}
