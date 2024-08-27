@@ -22,6 +22,8 @@ import MyInquiryComponent from './pages/MyInquiry';
 import MapComponent from './pages/MapComponent';
 import MapTest from './pages/DeliveryComponent';
 import AllInquiriesComponent from './pages/AllInquiry';
+import ProductComponentOnePlus from "./pages/ProductComponentOnePlus";
+import ProductComponentTwoPlus from "./pages/ProductComponentTwoPlus";
 
 
 
@@ -148,7 +150,9 @@ const App = () => {
         { path: '/myInquiry', element: <MyInquiryComponent/>},
         { path: '/Maps', element: <MapComponent/>},
         { path: '/mapTest', element: <MapTest/>},
-        { path: '/allInquiries', element: <AllInquiriesComponent/>}
+        { path: '/allInquiries', element: <AllInquiriesComponent /> },
+        { path: '/sku1', element: <ProductComponentOnePlus/>},
+        { path: '/sku2', element: <ProductComponentTwoPlus/>},
 
       ]
     }
