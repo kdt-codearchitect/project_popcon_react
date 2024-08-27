@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, redirect } from "react-router-dom";
 import './MyInquiryModal.css';
 import image_icon from '../image/image_icon.png';
 import DeleteCheckModal from './DeleteCheckModal';
@@ -109,8 +109,9 @@ const MyInquiryModalComponent=({qnaIdx,
             })
             .then (data =>{
                 console.log('Response:',data);
-                console.log('inquiry', inquiry);
-                navigate(`/myinquiry/${customerIdx}`); //요청 성공시 이동
+                console.log('inquiry', inquiry); 
+                // navigate(`/myinquiry`); //요청 성공시 이동
+                return redirect("/myinquiry")
             })
             .catch(error=>{
                 console.log('Error', error);
