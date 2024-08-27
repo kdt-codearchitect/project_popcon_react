@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import KeepModal from './KeepModal';
+import EmptyRef from './EmptyRef'; // EmptyRef component imported
 import axios from 'axios';
 import './RefrigeratorComponent.css';
+import SideMenu from './SideMenu';
 
 const RefrigeratorComponent = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [keepItems, setKeepItems] = useState([]);
-  const [cartIdx, setCartIdx] = useState(null); // cartIdx 상태 추가
+  const [cartIdx, setCartIdx] = useState(null); // cartIdx state added
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  // customerIdx와 token을 localStorage에서 가져옴
+  // customerIdx and token retrieved from localStorage
   const customerIdx = localStorage.getItem('customerIdx');
   const token = localStorage.getItem('jwtAuthToken');
 
   const url = process.env.REACT_APP_API_BASE_URL;
-  // fetchKeeps 함수를 RefrigeratorComponent 내부에서 정의
+  // fetchKeeps function defined inside RefrigeratorComponent
   const fetchKeeps = async () => {
     try {
       const response = await axios.get(url+`/keep/${customerIdx}`, {
@@ -30,7 +32,7 @@ const RefrigeratorComponent = () => {
       if (response.status === 200 && response.data.length > 0) {
         const firstKeep = response.data[0];
   
-        // 동일한 SKU를 가진 항목들을 그룹화하고 수량을 합산
+        // Group items with the same SKU and sum quantities
         const groupedItems = firstKeep.keepItems.reduce((acc, item) => {
           const existingItem = acc.find(i => i.skuIdx === item.skuIdx);
           if (existingItem) {
@@ -40,9 +42,9 @@ const RefrigeratorComponent = () => {
               skuIdx: item.skuIdx,
               quantity: item.qty,
               name: `SKU ${item.skuIdx}`,
-              image: 'https://via.placeholder.com/50', // 이미지 URL이 없을 때 placeholder 사용
+              image: 'https://via.placeholder.com/50', // placeholder used if no image URL
               fridgeIdx: firstKeep.fridgeIdx,
-              keepItemIdx: item.keepItemIdx, // 이 필드 추가
+              keepItemIdx: item.keepItemIdx, // this field added
             });
           }
           return acc;
@@ -73,7 +75,7 @@ const RefrigeratorComponent = () => {
 
         if (response.status === 200 && response.data.length > 0) {
           const cartData = response.data[0];
-          setCartIdx(cartData.cartIdx); // cartIdx 설정
+          setCartIdx(cartData.cartIdx); // cartIdx set
         }
 
       } catch (error) {
@@ -81,10 +83,10 @@ const RefrigeratorComponent = () => {
       }
     };
 
-    fetchCartIdx(); // cartIdx를 가져오는 함수 호출
-    fetchKeeps(); // Keep Items를 가져오는 함수 호출
+    fetchCartIdx(); // fetch cartIdx function called
+    fetchKeeps(); // fetch Keep Items function called
 
-    // 결제 후 리디렉션되어 온 경우, 모달을 자동으로 열기
+    // If redirected after payment, open modal automatically
     if (location.state?.openModal) {
       setModalOpen(true);
     }
@@ -98,19 +100,19 @@ const RefrigeratorComponent = () => {
   const handleModalClose = () => {
     setModalOpen(false);
     setSelectedItem(null);
-    // 모달이 닫힌 후 Keep Items를 다시 불러옵니다.
+    // Fetch Keep Items again after modal closes.
     fetchKeeps();
   };
 
   const handlePickup = async (item) => {
     if (!cartIdx) {
-      console.error('cartIdx가 설정되지 않았습니다.');
+      console.error('cartIdx is not set.');
       return;
     }
   
-    // 수량이 0 이하인 경우 처리하지 않음
+    // Do not handle if quantity is 0 or less
     if (item.quantity <= 0) {
-      alert('더 이상 픽업할 수 있는 수량이 없습니다.');
+      alert('There is no more quantity available for pickup.');
       return;
     }
   
@@ -119,7 +121,7 @@ const RefrigeratorComponent = () => {
         params: {
           keepItemIdx: item.keepItemIdx,
           cartIdx: cartIdx,
-          quantity: 1 // 한 번에 하나씩 픽업
+          quantity: 1 // Pick up one at a time
         },
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -128,38 +130,26 @@ const RefrigeratorComponent = () => {
       });
   
       if (response.status === 200) {
-        alert('아이템이 장바구니로 이동되었습니다.');
+        alert('Item moved to cart.');
   
-        // 수량 하나를 픽업했으므로, 남은 수량을 1 줄임
+        // Since one quantity was picked up, subtract one from the remaining quantity
         setKeepItems(prevItems => 
           prevItems.map(i => 
             i.keepItemIdx === item.keepItemIdx 
               ? { ...i, quantity: i.quantity - 1 } 
               : i
-          ).filter(i => i.quantity > 0) // 수량이 0이 되면 목록에서 제거
+          ).filter(i => i.quantity > 0) // Remove from list if quantity is 0
         );
       }
     } catch (error) {
-      console.error('아이템을 장바구니로 이동하는 중 오류가 발생했습니다.', error);
-      alert('아이템을 장바구니로 이동하는 중 오류가 발생했습니다.');
+      console.error('Error moving item to cart.', error);
+      alert('Error moving item to cart.');
     }
   };
 
   return (
     <div className="page-container">
-      <div className="mypage-container">
-        <div className="mypage-content">
-          <h2 className="mypage-title">마이페이지</h2>
-          <ul className="nav-links-side">
-            <li><Link to="/MyInfo">MyInfo / 개인정보수정</Link></li>
-            <li><Link to="/Wish">Favorites / 나의 찜 목록</Link></li>
-            <li><Link to="/MyDelivery">Delivery / 배송 상황</Link></li>
-            <li><Link to="/refrigerator">Fridge / 나의 냉장고</Link></li>
-            <li><Link to="/Payment">Payment / 결제수단</Link></li>
-            <li><Link to="/orderhistory">History / 주문 내역</Link></li>
-          </ul>
-        </div>
-      </div>
+      <SideMenu/>
       <div className="refrigerator-container">
         <div className="refrigerator-header">
           <div className="refrigerator-font">
@@ -167,29 +157,33 @@ const RefrigeratorComponent = () => {
           </div>
         </div>
         <div className="refrigerator-content">
-          <table className="refrigerator-table">
-            <thead>
-              <tr>
-                <th>상품</th>
-                <th>상품명</th>
-                <th>수량</th>
-                <th>액션</th>
-              </tr>
-            </thead>
-            <tbody>
-              {keepItems.map((item, index) => (
-                <tr key={index}>
-                  <td><img src={item.image} alt={item.name} /></td>
-                  <td>{item.name}</td>
-                  <td>{item.quantity}</td>
-                  <td>
-                    <button className="action-button" onClick={() => handleModalOpen(item)}>Manage</button>
-                    <button className="action-button" onClick={() => handlePickup(item)}>PICKUP</button>
-                  </td>
+          {keepItems.length === 0 ? (
+            <EmptyRef />
+          ) : (
+            <table className="refrigerator-table">
+              <thead>
+                <tr>
+                  <th>상품</th>
+                  <th>상품명</th>
+                  <th>수량</th>
+                  <th>액션</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {keepItems.map((item, index) => (
+                  <tr key={index}>
+                    <td><img src={item.image} alt={item.name} /></td>
+                    <td>{item.name}</td>
+                    <td>{item.quantity}</td>
+                    <td>
+                      <button className="action-button" onClick={() => handleModalOpen(item)}>Manage</button>
+                      <button className="action-button" onClick={() => handlePickup(item)}>PICKUP</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
 

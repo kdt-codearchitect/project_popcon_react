@@ -37,21 +37,22 @@ const FavoriteComponent = () => {
     }
   }, []); // useEffect 내부 블록 닫힘 추가
 
-  const handleRemove = (wishItemIdx) => {
-    console.log('Removing wish item with ID:', wishItemIdx);
-    axios.delete(url+`/Wish/delete/${wishItemIdx}`, {
+  const handleRemove = (wishIdx, skuIdx) => {
+    console.log('Removing wish item with wishIdx:', wishIdx, 'and skuIdx:', skuIdx);
+    axios.delete(`${url}/wish/delete/${wishIdx}/${skuIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     })
     .then(() => {
-      setFavoriteItems(prevItems => prevItems.filter(item => item.wishItemIdx !== wishItemIdx));
+      setFavoriteItems(prevItems => prevItems.filter(item => item.wishIdx !== wishIdx || item.skuIdx !== skuIdx));
     })
     .catch(error => {
       console.error('제품 데이터를 삭제하는 데 오류가 발생했습니다.', error);
     });
-  };
+};
+
 
   const handleMoveToCart = (wishItemIdx) => {
     axios.post(url+'/Wish/moveToCart', null, {

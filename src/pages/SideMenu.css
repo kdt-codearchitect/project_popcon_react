@@ -92,3 +92,10 @@
     width: 90px;
     font-weight: 700;
 }
+
+.side-menu-active{
+    background-color: black;
+}
+.side-menu-active > a{
+    color: #FAE41C;
+}
