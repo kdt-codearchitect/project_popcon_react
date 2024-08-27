@@ -1,12 +1,13 @@
+/* 컨테이너 기본 스타일 */
 .map-container {
   width: 100%;
   height: calc(100vh - 100px);
-  /* 전체 화면 높이에서 헤더를 제외한 크기 */
   display: flex;
   justify-content: space-between;
   align-items: stretch;
 }
 
+/* 사이드 메뉴 스타일 */
 .map-sidemenu {
   min-width: 350px;
   max-width: 350px;
@@ -14,15 +15,12 @@
   overflow: hidden;
 }
 
+/* 상단 영역 스타일 */
 .map-sidemenu-top {
   width: 100%;
-  /* 부모 요소의 너비를 100% 차지하도록 설정 */
   box-sizing: border-box;
-  /* 패딩과 테두리를 포함하여 너비 계산 */
-  padding: 20px 20px;
-  /* 패딩 조정 */
+  padding: 20px;
   background-color: #FAE41C;
-  /* 배경색이 시각적으로 묻히지 않도록 설정 */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,41 +29,81 @@
 
 .map-sidemenu-top .flex-sb.w-100 {
   width: 100%;
-  /* 부모 요소에 맞게 너비 설정 */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
+  /* 제목과 검색 영역 사이의 간격 추가 */
 }
 
 .map-sidemenu-top p {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-left: 5px;
+  margin: 0;
 }
 
 .map-sidemenu-top img {
   width: 50px;
   height: 25px;
-  margin-right: 5px;
 }
 
-.map-sidemenu-top form {
+/* 검색 폼 및 버튼들을 가로로 배치 */
+.search-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* 전체 검색 영역을 세로로 배치 */
+  gap: 10px;
+  /* 각 요소 사이의 간격 */
+}
+
+.search-form {
   display: flex;
   align-items: center;
-  width: 100%;
-  /* 폼 요소가 전체 너비를 차지하도록 설정 */
-  margin-top: 10px;
+  gap: 10px;
+  /* 입력창과 버튼 사이의 간격 */
 }
 
-.map-sidemenu-top input {
+.search-form label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.search-form input {
   flex: 1;
-  padding: 6px 20px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  margin-right: 10px;
 }
 
-.map-sidemenu-top button {
-  padding: 6px 12px;
+.search-form button {
+  padding: 8px 16px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  /* 버튼 텍스트가 줄바꿈되지 않도록 */
+}
+
+.search-form button:hover {
+  background-color: chartreuse;
+  color: black;
+}
+
+/* 위치 이동 버튼들을 가로로 배치 */
+.location-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  /* 버튼 사이의 간격 */
+}
+
+.location-buttons button {
+  flex: 1;
+  padding: 8px 16px;
   background-color: black;
   color: white;
   border: none;
@@ -73,16 +111,16 @@
   cursor: pointer;
 }
 
-.map-sidemenu-top button:hover {
+.location-buttons button:hover {
   background-color: chartreuse;
   color: black;
 }
 
+/* 하단 영역 스타일 */
 .map-sidemenu-bot {
   transform: skewY(-3deg);
   background-color: black;
   height: calc(100% - 80px);
-  /* 상단 영역을 제외한 나머지 높이 */
   padding-right: 20px;
   display: flex;
   flex-direction: column;
@@ -92,13 +130,11 @@
   transform: skewY(3deg);
   width: 100%;
   flex: 1;
-  /* 높이를 유연하게 조정하여 공간을 채우도록 설정 */
   padding-top: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
-  /* y축 스크롤만 활성화 */
 }
 
 .sidebar-card {
@@ -137,25 +173,23 @@
   object-fit: cover;
 }
 
+/* 지도 영역 스타일 */
 .map-api-box {
   flex: 1;
   height: 100%;
-  /* 이 부분을 추가하여 map-api-box의 높이를 checkOut-container의 높이와 같게 설정 */
   overflow: hidden;
-  /* auto에서 hidden으로 변경하여 스크롤 바를 숨깁니다 */
   position: relative;
-  /* 지도가 상위 요소의 크기에 맞게 채워지도록 position을 relative로 설정 */
 }
 
 #map {
   width: 100%;
   height: 100%;
   position: absolute;
-  /* 지도 요소를 부모 요소(map-api-box)에 맞게 채우기 위해 절대 위치를 설정 */
   top: 0;
   left: 0;
 }
 
+/* 페이지 네이션 스타일 */
 #pagination {
   margin-top: 10px;
   padding: 10px 0;
@@ -165,7 +199,6 @@
   bottom: 0;
   width: 100%;
   z-index: 1000;
-  /* 다른 요소 위에 위치하도록 z-index 설정 */
 }
 
 #pagination button {
