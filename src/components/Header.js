@@ -64,9 +64,9 @@ function Header() {
                     <nav>
                         <ul className="flex-c">
                             <li><Link to="/MyPage">마이페이지</Link></li>
-                            <li><Link to="/Sku">1 + 1</Link></li>
-                            <li><Link to="/product2">2 + 1</Link></li>
-                            <li><Link to="/usersAdd">이벤트</Link></li>
+                            <li><Link to="/Sku">제품보기</Link></li>
+                            <li><Link to="/sku1">1 + 1</Link></li>
+                            <li><Link to="/sku2">2 + 1</Link></li>
                         </ul>
                     </nav>
                 </div>
