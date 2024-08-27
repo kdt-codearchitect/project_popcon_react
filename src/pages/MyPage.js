@@ -2,6 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './MyPage.css';
 import { Link, useNavigate } from "react-router-dom";
 import SideMenu from './SideMenu';
+import cart from '../image/mypage_cart.png';
+import checkouts from '../image/mypage_checkouts.png';
+import delivery from '../image/mypage_delivery.png';
+import fridge from '../image/mypage_fridge.png';
+import profile from '../image/mypage_profile.png';
+
+
+
+
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -28,7 +37,7 @@ const MyPage = () => {
   console.log(localStorage.getItem('customerIdx'));
   console.log(localStorage.getItem('userid'));
   return (
-    <div className="page-container">
+    <div className="page-container black-bg">
       {/* <div className="mypage-container">
         <div className="mypage-content">
           <h2 className="mypage-title" onClick={() => navigate('/MyPage')}>마이페이지</h2>
@@ -46,13 +55,19 @@ const MyPage = () => {
       <div className="section-container">
         <div className="section-header">
           <div className="section-font">
-            <h1>My Page / 나의 정보</h1>
+            <h1>My Page</h1>
           </div>
         </div>
         <div className="section-content">
-          <div className="mypage-info">
+          <div className="">
             
-            <h2>All Members</h2>
+          <div>
+            <img src={profile} className='mypage-icon'/>
+            <img src={cart} className='mypage-icon'/>
+            <img src={delivery} className='mypage-icon'/>
+            <img src={fridge} className='mypage-icon'/>
+            <img src={checkouts} className='mypage-icon'/>
+          </div>
             <ul>
               {userList.map(member => (
                 <li key={member.id}>
