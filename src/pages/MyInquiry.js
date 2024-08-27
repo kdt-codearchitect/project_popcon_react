@@ -1,13 +1,13 @@
     import React,{useState,useEffect} from 'react';
     import './MyInquiry.css';
-    import { Link } from 'react-router-dom';
+    import { Link,useNavigate } from 'react-router-dom';
     import MyInquiryModalComponent from './MyInquiryModal';
 
     const url = process.env.REACT_APP_API_BASE_URL
     var CustomerIdx = localStorage.getItem('customerIdx');
 
     const MyInquiryComponent=()=>{
-        
+        const navigate = useNavigate(); // navigate 함수 정의
         // 모달창 상태 확인 / props 
         const [isModalOpen,setIsModalOpen]=useState(false);
         const[inquiry, setInquiry] = useState({
@@ -154,7 +154,8 @@
                     image      =    {inquiry.qnaImage} 
                     qnaDate    =    {inquiry.qnaDate}
                     qnaAns     =    {inquiry.qnaAns}
-                    onClose    =    {closeModal}        
+                    onClose    =    {closeModal} 
+                    navigate   =    {navigate}       
                     />
                 )}
         </div>
