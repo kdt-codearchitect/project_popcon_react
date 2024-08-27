@@ -1,0 +1,241 @@
+/* 모달 배경 및 위치 설정 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 배경 색을 반투명하게 설정 */
+  z-index: 1000;
+  /* 모달이 다른 요소들보다 위에 오도록 설정 */
+}
+
+/* 모달 내용 스타일링 */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  /* 모달에 그림자 추가 */
+}
+
+/* 전체 페이지 스타일 */
+.productList-container {
+  width: 100%;
+  display: flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.productList-contents {
+  width: 100%;
+}
+
+.productList-contents nav {
+  margin-top: 30px;
+  width: 900px;
+}
+
+.productList-contents ul {
+  padding: 0;
+  margin: 0;
+}
+
+.productList-contents li {
+  width: 115px;
+  padding: 15px 5px;
+  text-align: center;
+  font-weight: bold;
+  list-style: none;
+}
+
+.product-nav-uderbar {
+  border-bottom: 3px solid #FAE41C;
+}
+
+.productList-contents li:hover {
+  cursor: pointer;
+}
+
+.productList-box {
+  width: 1160px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.product-card {
+  width: 250px;
+  height: 360px;
+  margin: 20px;
+}
+
+.product-img-box {
+  width: 250px;
+  height: 250px;
+  border: 1px solid #8282826f;
+  border-radius: 10px;
+  position: relative;
+}
+
+.product-img-box svg {
+  transition: transform 0.3s ease;
+}
+
+.product-img-box svg:hover {
+  transform: scale(1.3);
+}
+
+.product-img-box label {
+  position: absolute;
+  font-size: 1.5rem;
+  text-align: left;
+  padding-right: 20px;
+}
+
+.opo {
+  width: 80px;
+  height: 35px;
+  left: -1px;
+  bottom: 20px;
+  font-weight: 900;
+  background-image: url("../image/store_image/opo_bg.png");
+  background-size: cover;
+  font-style: oblique;
+}
+
+.tpo {
+  display: none;
+  width: 80px;
+  height: 35px;
+  left: -1px;
+  bottom: 20px;
+  font-weight: 900;
+  background-image: url("../image/store_image/tpo_bg.png");
+  background-size: cover;
+  font-style: oblique;
+  color: white;
+}
+
+.product-img-box>img {
+  width: 150px;
+  object-fit: cover;
+}
+
+.product-title-box {
+  width: 100%;
+  text-align: left;
+}
+
+.product-title-box>p {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #4b4b4b;
+  margin-left: 5px;
+}
+
+.product-price-box {
+  width: 100%;
+}
+
+.product-original-price {
+  font-size: 1rem;
+  color: #828282;
+  font-weight: bold;
+  text-decoration: line-through;
+}
+
+.product-event-price {
+  font-size: 1.2rem;
+  color: #4b4b4b;
+  font-weight: bold;
+}
+
+/* 버튼의 기본 스타일 */
+.product-button {
+  color: #FAE41C;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 1.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: transform 0.2s ease;
+}
+
+/* 클릭 시 버튼에 탄력 있는 애니메이션을 추가하는 스타일 */
+.product-button-click {
+  color: #FAE41C;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 1.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  animation: bounce 0.2s ease;
+}
+
+/* 애니메이션 정의 */
+@keyframes bounce {
+  0% {
+    transform: rotate(0deg);
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: rotate(360deg);
+    transform: scale(1);
+  }
+}
+
+.product-button-box {
+  width: 100%;
+}
+
+.product-button-box button {
+  width: 122px;
+  height: 35px;
+  font-weight: bold;
+}
+
+/* 추가된 애니메이션 */
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.float-text {
+  position: absolute;
+  bottom: 100%;  /* 버튼 바로 위에 위치 */
+  left: 50%;
+  transform: translateX(-50%);
+  color: #4b4b4b;
+  animation: floatUp 0.5s ease-out forwards;
+}
+
+.product-button-box {
+  position: relative;  /* 자식 요소의 위치 기준점 */
+}
+
+.thema-btn-01 {
+  position: relative;  /* 플로팅 텍스트의 위치 기준점 */
+}
