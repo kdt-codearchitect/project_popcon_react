@@ -72,9 +72,9 @@
 
 .section-header {
   background-color: #000;
-  background: linear-gradient(115deg, #000000 65%, #00000000 65%, #ffffff 65%, #ffffff 65%);
+  background: linear-gradient(115deg, #000000 52.75%, #00000000 52.75%, #ffffff 52.75%, #ffffff 52.75%);
   color: #fff;
-  padding: 20px;
+  padding: 23px;
   text-align: left;
   flex: 0 0 auto; /* 고정 위치 설정 */
 }
@@ -120,17 +120,36 @@
 }
 
 .mypage-icon{
-  height: 200px;
-  width: 200px;
-  border: 2px solid white;
+  height: 100px;
+  width: 100px;
+  border: 4px solid white;
   border-radius: 8px;
-  margin: 10px;
+  background-color: white;
+  margin: 100px 10px 0px 10px;
 }
 
 .mypage-icon:hover{
-  border: 2px solid #FAE41C;
+  /* height:125px;
+  width:125px; */
+  border: 4px solid #FAE41C;
+  /* background-color: black; */
 }
 
 .black-bg{
   background-color: black;
+}
+
+.mypage-text{
+  color:gray;
+}
+.mypage-text:hover{
+  font-weight: 800;
+}
+.flex-width{
+  width:700px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 100px;
+
 }
