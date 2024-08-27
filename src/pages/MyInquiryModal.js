@@ -110,7 +110,7 @@ const MyInquiryModalComponent=({qnaIdx,
             .then (data =>{
                 console.log('Response:',data);
                 console.log('inquiry', inquiry);
-                navigate('/myinquiry'); //요청 성공시 이동
+                navigate(`/myinquiry/${customerIdx}`); //요청 성공시 이동
             })
             .catch(error=>{
                 console.log('Error', error);
