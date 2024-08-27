@@ -210,3 +210,32 @@
   height: 35px;
   font-weight: bold;
 }
+
+/* 추가된 애니메이션 */
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.float-text {
+  position: absolute;
+  bottom: 100%;  /* 버튼 바로 위에 위치 */
+  left: 50%;
+  transform: translateX(-50%);
+  color: #4b4b4b;
+  animation: floatUp 0.5s ease-out forwards;
+}
+
+.product-button-box {
+  position: relative;  /* 자식 요소의 위치 기준점 */
+}
+
+.thema-btn-01 {
+  position: relative;  /* 플로팅 텍스트의 위치 기준점 */
+}

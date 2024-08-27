@@ -149,6 +149,7 @@ const Payment = () => {
       .then(response => {
         console.log("Payment response:", response);
 
+
         const customerIdx = localStorage.getItem('customerIdx');
         const paymentId = response.paymentId || payment_value.paymentId;
 
@@ -167,14 +168,11 @@ const Payment = () => {
             });
           }
         });
+
       })
       .catch(error => {
         console.error('결제 요청 중 오류 발생:', error);
-
-        const customerIdx = localStorage.getItem('customerIdx');
-        clearCart(customerIdx).then(() => {
-          navigate('/');
-        });
+        alert('결제 처리 중 오류가 발생했습니다.');
       });
   };
 
