@@ -1,8 +1,8 @@
 
-a{
+.myinquiry-page a{
     color:black;
 }
-a:hover{
+.myinquiry-page a:hover{
     color:#FAE41C;
 }
 /* 나의문의 전체페이지 */

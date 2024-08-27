@@ -58,7 +58,7 @@ const FloatingMenu = () =>{
                 <i className="fas fa-caret-up"></i>
                 <p className="font-w-b">TOP</p>
             </div>
-            <Link to="/maps">매장찾기</Link>
+            <Link to="/maps">매장변경</Link>
             <p onClick={show_cartModal}>장바구니</p>
             <p onClick={show_mypageModal}>마이페이지</p>
             <Link to="/faq">문의하기</Link>

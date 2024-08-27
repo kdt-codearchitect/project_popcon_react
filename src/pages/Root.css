@@ -88,8 +88,8 @@ input:focus{
 }
 
 .thema-btn-01:active {
-    transform: scale(0.95);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
+        transform: scale(0.95);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
 }
 
 .thema-btn-02{

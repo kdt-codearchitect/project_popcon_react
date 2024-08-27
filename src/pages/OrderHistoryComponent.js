@@ -78,6 +78,8 @@ const OrderHistoryComponent = () => {
     setOrderItems([]);
   };
 
+  const firstOrderItem = orderItems.length > 0 ? orderItems[0] : null; // 첫 번째 아이템 선택
+  console.log('이미지 이름 테스트:', firstOrderItem ? imgSrc + firstOrderItem.skuName : 'No image');
   return (
     <div className="page-container">
       <SideMenu />
@@ -104,7 +106,14 @@ const OrderHistoryComponent = () => {
             
             {orders.map((order, index) => (
               <tr key={index} onClick={() => openModal(order)}>
-                <td><img src={imgSrc + order.skuName+'.jpg'} alt="order.skuName"/></td>
+                <td>
+                  {order.skuImg ? (
+                    <img src={imgSrc + firstOrderItem.skuName+'.jpg'} alt={firstOrderItem.skuName} />
+                  ) : (
+                      <p>No image</p>
+                      
+                  )}
+                </td>
                 <td>{order.paymentId}</td>
                 <td>{new Date(order.orderTime).toLocaleDateString()}</td>
                 <td>{order.totalSumPrice ? order.totalSumPrice.toLocaleString() + '원' : 'N/A'}</td>

@@ -36,6 +36,39 @@
   position: relative;
 }
 
+.con-title-box{
+  width: 200px;
+  height: 70px;
+  position: absolute;
+  top: 0;
+  left: -25px;
+  overflow: hidden;
+  padding-right: 125px;
+}
+
+.con-title-text {
+  width: 300px;
+  height: 70px;
+  position: absolute;
+  background-color: #FAE41C;
+  transform: skewX(-35deg);
+  border-bottom-right-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.con-title-text p {
+  width: 170px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-left: 5px;
+  transform: skewX(35deg);
+  padding-left: 20px;
+  max-width: 100%;
+  text-align: left;
+}
+
 .productList-contents {
   width: 100%;
 }
@@ -239,3 +272,4 @@
 .thema-btn-01 {
   position: relative;  /* 플로팅 텍스트의 위치 기준점 */
 }
+

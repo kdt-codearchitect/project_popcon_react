@@ -22,8 +22,6 @@ import MyInquiryComponent from './pages/MyInquiry';
 import MapComponent from './pages/MapComponent';
 import MapTest from './pages/DeliveryComponent';
 import AllInquiriesComponent from './pages/AllInquiry';
-import ProductComponentOnePlus from "./pages/ProductComponentOnePlus";
-import ProductComponentTwoPlus from "./pages/ProductComponentTwoPlus";
 
 
 
@@ -40,6 +38,16 @@ const App = () => {
     email: '',
     address: ''
   });
+
+  const [place, setPlace] = useState(null);
+  const [checkedskuIdx, setCheckedskuIdx] = useState(null);
+
+  const updatePlace = (newPlace) => {
+    setPlace(newPlace);
+  };
+  const updateCheckedskuIdx = (newCheckedskuIdx) => {
+    setCheckedskuIdx(newCheckedskuIdx);
+  };
 
   const updateUserInfo = (newInfo) => {
     setUserInfo(newInfo);
@@ -137,22 +145,20 @@ const App = () => {
         { path: '/signup', element: <SignupComponent />, action: signUpAction},
         { path: '/login', element: <LoginModal />, action: authAction },
         { path: '/logout', action: logoutAction },
-        { path: '/Sku', element: <ProductComponent addToCart={addToCart} addToFavorites={addToFavorites} /> },
+        { path: '/Sku', element: <ProductComponent addToCart={addToCart} addToFavorites={addToFavorites} place={place} updateCheckedskuIdx={updateCheckedskuIdx}/> },
         { path: '/refrigerator', element: <RefrigeratorComponent products={refrigeratorItems} /> },
         { path: '/CheckOut', element: <CheckoutComponent /> },
         { path: '/MyInfo', element: <MyInfo userInfo={userInfo} updateUserInfo={updateUserInfo} /> },
         { path: '/MyPage', element: <MyPage userInfo={userInfo} setUserInfo={setUserInfo} /> },
         { path: '/orderhistory', element: <OrderHistoryComponent /> },
         { path: '/Wish', element: <FavoriteComponent favoriteItems={favoriteItems} removeFromFavorites={removeFromFavorites} /> },
-        { path: '/Cart', element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} handleCheckout={handleCheckout} /> },
+        { path: '/Cart', element: <Cart cartItems={cartItems} removeFromCart={removeFromCart} updateQuantity={updateQuantity} handleCheckout={handleCheckout} checkedskuIdx={checkedskuIdx}/> },
         { path: '/faq', element: <FaqComponent/>},
         { path: '/makeInquiry', element: <InquiryComponent/>},
         { path: '/myInquiry', element: <MyInquiryComponent/>},
-        { path: '/Maps', element: <MapComponent/>},
+        { path: '/Maps', element: <MapComponent addToPlace={updatePlace} />},
         { path: '/mapTest', element: <MapTest/>},
-        { path: '/allInquiries', element: <AllInquiriesComponent /> },
-        { path: '/sku1', element: <ProductComponentOnePlus/>},
-        { path: '/sku2', element: <ProductComponentTwoPlus/>},
+        { path: '/allInquiries', element: <AllInquiriesComponent/>}
 
       ]
     }
