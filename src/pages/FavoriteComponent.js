@@ -7,26 +7,19 @@ import SideMenu from './SideMenu';
 
 const FavoriteComponent = () => {
   const [favoriteItems, setFavoriteItems] = useState([]);
-  const [customerIdx, setCustomerIdx] = useState(null); // 초기화 추가
-  const [token, setToken] = useState(null); // 초기화 추가
+  const [customerIdx, setCustomerIdx] = useState(null);
+  const [token, setToken] = useState(null);
   const navigate = useNavigate();
   const url = process.env.REACT_APP_API_BASE_URL;
 
-  useEffect(() => {
-    const storedCustomerIdx = localStorage.getItem('customerIdx');
-    const storedToken = localStorage.getItem('jwtAuthToken');
-
-    if (storedCustomerIdx && storedToken) {
-      setCustomerIdx(storedCustomerIdx);
-      setToken(storedToken);
-      console.log('Stored customerIdx:', storedCustomerIdx);
-      console.log('Stored token:', storedToken);
-
-      axios.get(url+`/Wish/${storedCustomerIdx}`, {
+  // 데이터 조회 함수
+  const fetchFavoriteItems = () => {
+    if (customerIdx && token) {
+      axios.get(`${url}/wish/${customerIdx}`, {
         headers: {
-          'Authorization': `Bearer ${storedToken}`,
-          'Content-Type': 'application/json'
-        }
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       })
       .then(response => {
         setFavoriteItems(response.data);
@@ -35,39 +28,52 @@ const FavoriteComponent = () => {
         console.error('상품 정보를 불러오는 중에 오류가 발생 했습니다!', error);
       });
     }
-  }, []); // useEffect 내부 블록 닫힘 추가
+  };
 
-  const handleRemove = (wishIdx, skuIdx) => {
-    console.log('Removing wish item with wishIdx:', wishIdx, 'and skuIdx:', skuIdx);
-    axios.delete(`${url}/wish/delete/${wishIdx}/${skuIdx}`, {
+  useEffect(() => {
+    const storedCustomerIdx = localStorage.getItem('customerIdx');
+    const storedToken = localStorage.getItem('jwtAuthToken');
+
+    if (storedCustomerIdx && storedToken) {
+      setCustomerIdx(storedCustomerIdx);
+      setToken(storedToken);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchFavoriteItems();
+  }, [customerIdx, token]); // customerIdx와 token이 설정된 후 데이터 조회
+
+  const handleRemove = (wishItemIdx) => {
+    axios.delete(`${url}/wish/delete/${wishItemIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
     .then(() => {
-      setFavoriteItems(prevItems => prevItems.filter(item => item.wishIdx !== wishIdx || item.skuIdx !== skuIdx));
+      console.log("즐겨찾기에서 제품이 지워졌습니다!");
+      fetchFavoriteItems(); // 최신 데이터를 다시 조회하여 반영
     })
     .catch(error => {
       console.error('제품 데이터를 삭제하는 데 오류가 발생했습니다.', error);
     });
-};
-
+  };
 
   const handleMoveToCart = (wishItemIdx) => {
-    axios.post(url+'/Wish/moveToCart', null, {
+    axios.post(`${url}/wish/moveToCart`, null, {
       params: {
         wishItemIdx: wishItemIdx,
-        cartIdx: customerIdx, // 실제 사용 중인 cartIdx 값으로 대체하세요
+        cartIdx: customerIdx,
       },
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      }
+      },
     })
     .then(() => {
       alert('상품이 장바구니로 이동되었습니다.');
-      handleRemove(wishItemIdx); // 장바구니로 이동 후 찜 목록에서 제거
+      console.log("즐겨찾기 제품이 장바구니로 옮겨졌습니다!");
+      fetchFavoriteItems(); // 최신 데이터를 다시 조회하여 반영
     })
     .catch(error => {
       console.error('장바구니로 상품을 이동하는 중에 오류가 발생했습니다.', error);
@@ -100,7 +106,7 @@ const FavoriteComponent = () => {
             <tbody>
               {favoriteItems.map((item, index) => (
                 <tr key={index}>
-                  <td><img src={item.skuBarcode || ''} alt={item.skuName || '상품 이미지'} className="favorites-item-image" /></td>
+                  <td><img src={`${item.skuName}.jpg`} alt={item.skuName || '상품 이미지'} className="favorites-item-image" /></td>
                   <td>{item.skuName || '상품명 없음'}</td>
                   <td>할인없음</td>
                   <td>{(item.skuCost ? item.skuCost.toLocaleString() : '0')}원</td>
