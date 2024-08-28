@@ -201,7 +201,7 @@ const HomeComponent = () => {
             <div className="first-card-clone" ref={firstCardRef}>
                 {events.length > 0 && (
                     <>
-                        <img className="card-clone-img" style={{ zIndex: '0' }} src={events[4]?.eventsImg} alt="Event Image" />
+                        <img className="card-clone-img" style={{ zIndex: '0' }} src={imgSrc+events[4]?.eventsImg} alt="Event Image" />
                         {events.map((event, idx) => (
                             <img
                                 className="card-clone-img card-clone-frame"
