@@ -95,16 +95,16 @@ const Cart = ({checkedskuIdx}) => {
     }
   }, [checkedskuIdx]);
 
-  const removeFromCart = (cartIdx, skuIdx) => {
+  const removeFromCart = (cartItemIdx) => {
     
-    axios.delete(url + `/cartitem/${cartIdx}/${skuIdx}`, {
+    axios.delete(url + `/cart/cartitem/${cartItemIdx}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     })
       .then(response => {
-        setCartItems(prevItems => prevItems.filter(item => item.skuIdx !== skuIdx));
+        setCartItems(prevItems => prevItems.filter(item => item.cartItemIdx !== cartItemIdx));
       })
       .catch(error => {
         if (error.response && error.response.status === 401) {
@@ -246,7 +246,7 @@ const Cart = ({checkedskuIdx}) => {
                   </div>
                 </div>
                 <div className="list-cancel-box flex-c">
-                  <button onClick={() => removeFromCart(item.cartIdx, item.skuIdx)}><FontAwesomeIcon icon={faXmark}/></button>
+                  <button onClick={() => removeFromCart(item.cartItemIdx)}><FontAwesomeIcon icon={faXmark}/></button>
                 </div>
                 <div className="list-price-box flex-c">
                   <p>{calculateItemPrice(item).toLocaleString()}원</p>
