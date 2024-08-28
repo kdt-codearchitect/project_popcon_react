@@ -5,7 +5,7 @@
 }
 
 /* 마이페이지 컨테이너 */
-.mypage-container {
+.ref-container {
   width: 250px;
   background-color: yellow;
   padding: 20px;
@@ -15,7 +15,7 @@
 }
 
 /* 상단 사선 검은색 배경 */
-.mypage-container::before {
+.ref-container::before {
   content: '';
   position: absolute;
   top: 0;
@@ -27,13 +27,13 @@
   z-index: 1;
 }
 
-.mypage-content {
+.ref-content {
   position: relative;
   z-index: 2; /* 사선 배경 위에 표시되도록 설정 */
   padding-top: 60px; /* 사선 배경 높이만큼 내리기 */
 }
 
-.mypage-title {
+.ref-title {
   color: yellow;
   transform: rotate(-10deg); /* 텍스트 기울이기 */
   transform-origin: bottom left; /* 회전 기준점을 왼쪽 아래로 설정 */
@@ -41,20 +41,20 @@
   font-weight: bold;
 }
 
-.mypage-content ul {
+.ref-content ul {
   list-style: none;
   padding: 0;
   margin-top: 20px; /* 리스트를 아래로 내리기 */
 }
 
-.mypage-content ul li {
+.ref-content ul li {
   margin: 10px 0;
   color: black;
   font-size: 14px;
   display: block; /* 리스트 아이템을 블록 요소로 설정 */
 }
 
-.mypage-content ul li a {
+.ref-content ul li a {
   color: black;
   text-decoration: none;
   display: block; /* 링크를 블록 요소로 설정 */

@@ -150,13 +150,13 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
   return (
     <div className="page-container">
     <SideMenu/>
-    <div className="section-container">
+    <div className="myinfo-container">
       <div className="myinfo-header">
-        <div className="section-font">
+        <div className="myinfo-font">
           <h1>MyInfo / 개인정보수정</h1>
         </div>
       </div>
-      <div className="section-content">
+      <div className="myinfo-content">
         <div className="myinfo-container">
           <form className="myinfo-form" onSubmit={handleSubmit}>
             <div className="myinfo-name">
@@ -217,14 +217,14 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
                 <option value="@daum.net">@daum.net</option>
               </select>
             </div>
-            <div className=" flex-sb">
-            <input
-              type="text"
-              name="address"
-              placeholder="주소"
-              value={address.roadAddress}
-              onChange={handleChange}
-            />
+            <div className="myinfo-address flex-sb">
+              <input
+                type="text"
+                name="address"
+                placeholder="주소"
+                value={address.roadAddress}
+                onChange={handleChange}
+              />
                <button className="thema-btn-01" onClick={handleAddressChange}>주소찾기</button>
                </div>
             <input
@@ -236,8 +236,8 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
             />
           
             <div className="myinfo-buttons">
-              <button type="button" className="save-button" onClick={handleSubmit}>수정</button>
-              <button type="button" className="cancel-button" onClick={() => navigate('/MyPage')}>취소</button>
+              <button type="button" className="save-button thema-btn-01" onClick={handleSubmit}>수정</button>
+              <button type="button" className="cancel-button thema-btn-02" onClick={() => navigate('/MyPage')}>취소</button>
             </div>
           </form>
         </div>

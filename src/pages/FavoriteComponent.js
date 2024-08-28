@@ -77,13 +77,10 @@ const FavoriteComponent = () => {
   return (
     <div className="page-container">
       <SideMenu/>
-      <div className="refrigerator-container">
-        <div className="refrigerator-header">
-          <div className="refrigerator-font">
-            <div>
-              <h1>Favorites</h1>
-              <h2> / 나의 찜 목록</h2>
-            </div>
+      <div className="favorite-container">
+        <div className="favorite-header">
+          <div className="favorite-font">
+            <h1>Favorites / 나의 찜 목록</h1>
           </div>
         </div>
         <div className="refrigerator-content">

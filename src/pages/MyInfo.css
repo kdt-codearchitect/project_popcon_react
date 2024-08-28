@@ -1,14 +1,33 @@
 /* MyInfo 컴포넌트 스타일 */
 .myinfo-container {
-  padding: 20px;
+  flex: 1;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.myinfo-header h2 {
-  margin-bottom: 20px;
+.myinfo-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 86px;
+  background: linear-gradient(115deg, #000000 56.5%, #00000000 56.5%, #ffffff 65.5%, #ffffff 65.5%);
+}
+
+.myinfo-font{
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+}
+
+.myinfo-header h1{
+  color: #FAE41C;
+  margin: 0;
+  padding-left: 20px;
 }
 
 .myinfo-name {
@@ -52,6 +71,20 @@
 
 .myinfo-email select {
   width: 38%;
+}
+.myinfo-address{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.myinfo-address input{
+  width: 300px;
+}
+
+.myinfo-address button{
+  width: 90px;
+  height: 37px;
+  margin-bottom: 10px;
 }
 
 .myinfo-buttons {

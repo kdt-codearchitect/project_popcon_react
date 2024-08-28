@@ -182,6 +182,21 @@
   overflow-x: hidden;
 }
 
+.sidebar-card-box::-webkit-scrollbar {
+  width: 8px;  /* 스크롤바의 너비 */
+}
+
+.sidebar-card-box::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: #FAE41C; /* 스크롤바의 색상 */
+  
+  border-radius: 10px;
+}
+
+.sidebar-card-box::-webkit-scrollbar-track {
+  background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+}
+
 .sidebar-card {
   width: 270px;
   height: 90px;
@@ -236,7 +251,7 @@
   position: relative;
 }
 
-#map {
+#map {  
   width: 100%;
   height: 100%;
   position: absolute;

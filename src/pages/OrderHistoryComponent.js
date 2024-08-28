@@ -18,7 +18,7 @@ const OrderHistoryComponent = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(`${url}/orders/user/${CustomerIdx}?page=${page}`);
-      
+
       if (Array.isArray(response.data) && response.data.length > 0) {
         setOrders((prevOrders) => {
           const newOrders = response.data.filter(
@@ -81,44 +81,44 @@ const OrderHistoryComponent = () => {
   return (
     <div className="page-container">
       <SideMenu />
-
       <div className="order-history">
         <div className="order-history-header">
-          <div>
-            <h1>History</h1>
-            <h2>/ 주문내역</h2>
+          <div className="order-history-font">
+            <h1>History/ 주문내역</h1>
           </div>
         </div>
-        <table className="order-history-table">
-          <thead>
-            <tr>
-              <th>주문</th>
-              <th>주문번호</th>
-              <th>주문일</th>
-              <th>주문액</th>
-              <th>주문상태</th>
-              <th>배송상태</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-            {orders.map((order, index) => (
-              <tr key={index} onClick={() => openModal(order)}>
-                <td><img src={imgSrc + order.skuName+'.jpg'} alt="order.skuName"/></td>
-                <td>{order.paymentId}</td>
-                <td>{new Date(order.orderTime).toLocaleDateString()}</td>
-                <td>{order.totalSumPrice ? order.totalSumPrice.toLocaleString() + '원' : 'N/A'}</td>
-                <td>{order.orderStatus || 'N/A'}</td>
-                <td>{order.deliveryStatus || 'N/A'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {hasMore && (
-          <div ref={elementRef}></div>
-        )}
-      </div>
+        <div className="order-list-title flex-sa">
+          <div className="list-checkbox-box"></div>
+          <p className="list-title-img">상품이미지</p>
+          <p className="oder-code-box">주문번호</p>
+          <p className="oder-dage-box">주문일</p>
+          <p className="list-cancel-box">주문액</p>
+          <p className="list-state-box">상태</p>
+        </div>
 
+        {orders.map((order, index) => (
+          <div className="order-list-item flex-sa" key={index} onClick={() => openModal(order)}>
+            <div className="list-checkbox-box flex-c">
+
+            </div>
+            <div className="list-img-box flex-c">
+              <img src={imgSrc + order.skuName + '.jpg'} alt="order.skuName" />
+            </div>
+            <div className="oder-code-box">
+              <p>{order.paymentId}</p>
+            </div>
+            <div className="oder-dage-box flex-c">
+              <p>{new Date(order.orderTime).toLocaleDateString()}</p>
+            </div>
+            <div className="list-cancel-box flex-c">
+              <p>{order.totalSumPrice ? order.totalSumPrice.toLocaleString() + '원' : 'N/A'}</p>
+            </div>
+            <div className="list-state-box flex-c">
+              <p>{order.orderStatus || 'N/A'}</p>
+            </div>
+          </div>
+        ))}
+      </div>
       {selectedOrder && (
         <OrderDetailsModal order={selectedOrder} orderItems={orderItems} closeModal={closeModal} />
       )}

@@ -37,9 +37,9 @@ const SideMenu = () => {
                 <div className={`sidebar-menu-box ${isActive('/Wish')}`}>
                     <Link to="/Wish"><p>Favorites</p><p> / </p><p>나의 찜 목록</p></Link>
                 </div>
-                <div className={`sidebar-menu-box ${isActive('/refrigerator')}`}>
+                {/* <div className={`sidebar-menu-box ${isActive('/refrigerator')}`}>
                     <Link to="/refrigerator"><p>Fridge</p><p> / </p><p>나의 냉장고</p></Link>
-                </div>
+                </div> */}
                 <div className={`sidebar-menu-box ${isActive('/orderhistory')}`}>
                     <Link to="/orderhistory"><p>History</p><p> / </p><p>주문 내역</p></Link>
                 </div>
