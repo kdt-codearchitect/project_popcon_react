@@ -1,10 +1,12 @@
 .signUp-container{
   width: 100%;
-  background-image: url("../image/store_image/signup_bg2.png");
+  /* background-image: url("../image/store_image/signup_bg2.png"); */
   background-repeat: no-repeat;
   background-size: cover;
   flex: 1;
   flex-direction: column;
+  /* background-color: #4d4d4d; */
+  background-color: black;
 }
 
 .signUp-container input, select{
@@ -12,14 +14,14 @@
 }
 .signUp-box{
   width: 600px;
-  height: 450px;
+  height: 530px;
   padding: 35px 0;
-  background-image: url("../image/store_image/signup_bg.png");
+  /* background-image: url("../image/store_image/signup_bg.png"); */
   background-size: cover;
 }
 
 .signUp-box > img{
-  height: 25px;
+  width: 310px;
   object-fit: cover;
   margin-bottom: 20px;
 }
@@ -115,4 +117,17 @@
   height: 30px;
   border-radius: 4px;
   font-weight: bold;
+}
+
+.signUp-img-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.signUp-img-box > img{
+  width: 280px;
+  object-fit: cover;
+  margin-top: 10px;
 }
