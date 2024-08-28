@@ -5,8 +5,10 @@ import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import LoginModal from "./LoginModal";
 import Loading from "./Loading"; // Loading 컴포넌트를 import
+import { useNavigate } from "react-router-dom";
 
-function ProductComponent() {
+const ProductComponentTwoPlus = ({place, updateCheckedskuIdx}) => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
@@ -248,146 +250,119 @@ function ProductComponent() {
 
   const [floatingTexts, setFloatingTexts] = useState({});
 
+  const handleBuyNow = async (product) => {
+    if (!customerIdx) {
+      console.log('로그인이 필요합니다');
+      show_modal();
+      return;
+    }
+
+    let promotionValue = 1;
+
+    if (product.promotionIdx === 2) {
+      promotionValue = 2;
+    } else if (product.promotionIdx === 3) {
+      promotionValue = 3;
+    }
+
+    const cartItem = {
+      skuIdx: product.skuIdx,
+      skuValue: promotionValue,
+      customerIdx: customerIdx,
+      cartIdx: customerIdx
+    };
+
+    try {
+      const response = await fetch(url + '/cart/sku/addToCart', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cartItem)
+      });
+
+      if (response.ok) {
+        console.log('상품이 장바구니에 성공적으로 담겼습니다');
+        updateCheckedskuIdx(product.skuIdx);
+        navigate('/cart');
+      } else {
+        console.error('상품을 장바구니에 담는 중 문제가 발생했습니다!');
+      }
+    } catch (error) {
+      console.error('상품을 장바구니에 담는 중 오류가 발생했습니다!', error);
+    }
+  };
+
   return (
     <div className="productList-container">
+      <div class="con-title-box">
+        <div class="con-title-text flex-c">
+          <p>{place.place_name}</p>
+        </div>
+      </div>
       {isLoading ? (
         <Loading /> // 로딩 중일 때 Loading 컴포넌트를 표시
       ) : (
         <div className="productList-contents flex-c flex-d-column">
           <nav>
             <ul className="flex-sb">
-              <li
-                className={
-                  activeTab === 0 ? "product-nav-uderbar thema-font-01" : ""
-                }
-                onClick={() => handleTabClick(0, 1000)}
-              >
-                전체목록
-              </li>
-              <li
-                className={
-                  activeTab === 1 ? "product-nav-uderbar thema-font-01" : ""
-                }
-                onClick={() => handleTabClick(1, 2000)}
-              >
-                즉석요리
-              </li>
-              <li
-                className={
-                  activeTab === 2 ? "product-nav-uderbar thema-font-01" : ""
-                }
-                onClick={() => handleTabClick(2, 3000)}
-              >
-                과자류
-              </li>
-              <li
-                className={
-                  activeTab === 3 ? "product-nav-uderbar thema-font-01" : ""
-                }
-                onClick={() => handleTabClick(3, 4000)}
-              >
-                아이스크림
-              </li>
-              <li
-                className={
-                  activeTab === 4 ? "product-nav-uderbar thema-font-01" : ""
-                }
-                onClick={() => handleTabClick(4, 5000)}
-              >
-                식품
-              </li>
-              <li
-                className={
-                  activeTab === 5 ? "product-nav-uderbar thema-font-01" : ""
-                }
-                onClick={() => handleTabClick(5, 6000)}
-              >
-                음료
-              </li>
-              <li
-                className={
-                  activeTab === 6 ? "product-nav-uderbar thema-font-01" : ""
-                }
-                onClick={() => handleTabClick(6, 7000)}
-              >
-                생활용품
-              </li>
+              <li className={activeTab === 0 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(0, 1000)}>전체목록</li>
+              <li className={activeTab === 1 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(1, 2000)}>즉석요리</li>
+              <li className={activeTab === 2 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(2, 3000)}>과자류</li>
+              <li className={activeTab === 3 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(3, 4000)}>아이스크림</li>
+              <li className={activeTab === 4 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(4, 5000)}>식품</li>
+              <li className={activeTab === 5 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(5, 6000)}>음료</li>
+              <li className={activeTab === 6 ? 'product-nav-uderbar thema-font-01' : ''} onClick={() => handleTabClick(6, 7000)}>생활용품</li>
             </ul>
           </nav>
           <div className="productList-box">
-            {products.map((product) => (
-              <div
-                key={product.skuIdx}
-                className="product-card flex-sb flex-d-column"
-              >
+            {products.map(product => (
+              <div key={product.skuIdx} className="product-card flex-sb flex-d-column">
                 <div className="product-img-box flex-c">
                   {product.favorite === 0 && (
-                    <button
-                      className="product-button"
-                      onClick={() =>
-                        customerIdx
-                          ? handleAddToWishlist(product)
-                          : show_modal()
-                      }
+                    <button 
+                      className="product-button" 
+                      onClick={() => customerIdx ? handleAddToWishlist(product) : show_modal()}
                     >
                       <FaRegStar />
                     </button>
                   )}
-                  {product.favorite !== 0 && (
-                    <button
-                      className="product-button-click"
-                      onClick={() => handleRemove(product)}
-                    >
-                      <FaStar />
-                    </button>
-                  )}
-                  {product.promotionIdx === 1 && (
-                    <label className="opo flex-c">1+1</label>
-                  )}
-                  {product.promotionIdx === 2 && (
-                    <label className="tpo flex-c">2+1</label>
-                  )}
-                  <img
-                    src={imgSrc + product.skuName + ".jpg"}
-                    alt={product.skuName}
-                  />
+                  {product.favorite !== 0 && <button className="product-button-click" onClick={() => handleRemove(product)}><FaStar /></button>}
+                  {product.promotionIdx === 1 && <label className="opo flex-c">1+1</label>}
+                  {product.promotionIdx === 2 && <label className="tpo flex-c">2+1</label>}
+                  <img src={imgSrc+product.skuName+'.jpg'} alt={product.skuName} />
                 </div>
-                <div className="product-title-box">
+                <div className='product-title-box'>
                   <p>{product.skuName}</p>
                 </div>
                 <div className="product-price-box flex-sb">
                   {/* <p className="product-original-price">{product.skuCost.toLocaleString()}<span>원</span></p> */}
                   <p className="product-original-price"></p>
-                  <p className="product-event-price">
-                    {product.skuCost.toLocaleString()}
-                    <span>원</span>
-                  </p>
+                  <p className="product-event-price">{product.skuCost.toLocaleString()}<span>원</span></p>
                 </div>
                 <div className="product-button-box flex-sb">
-                  <button
-                    className="thema-btn-01"
-                    onClick={() =>
-                      customerIdx ? handleAddToCart(product) : show_modal()
-                    }
+                  <button 
+                    className="thema-btn-01" 
+                    onClick={() => customerIdx ? handleAddToCart(product) : show_modal()}
                   >
                     장바구니
-                    {floatingTexts[product.skuIdx] && (
-                      <span className="float-text">+1</span>
-                    )}
+                    {floatingTexts[product.skuIdx] && <span className="float-text">+1</span>}
                   </button>
-                  <button
-                    className="thema-btn-02"
-                    onClick={() =>
-                      customerIdx ? handleAddToCart(product) : show_modal()
-                    }
+                  <button 
+                    className="thema-btn-02" 
+                    onClick={() => handleBuyNow(product)}
                   >
                     바로구매
                   </button>
                 </div>
+
               </div>
             ))}
-            {hasMore && <div ref={elementRef}></div>}
-            <LoginModal ref={modalRef} />
+            {hasMore && (
+              <div ref={elementRef}></div>
+            )}
+            <LoginModal ref={modalRef}/>
           </div>
         </div>
       )}
@@ -395,4 +370,4 @@ function ProductComponent() {
   );
 }
 
-export default ProductComponent;
+export default ProductComponentTwoPlus;
