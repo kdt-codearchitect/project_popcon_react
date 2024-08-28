@@ -32,6 +32,8 @@ const MyInquiryModalComponent=({qnaIdx,
 
     const closeDelModal = () => {
         setIsDelModalOpen(false);
+     
+       
     };
 
     const [imageFile,setImageFile] = useState(image); // 이미지 업로드 상태 확인
@@ -110,14 +112,15 @@ const MyInquiryModalComponent=({qnaIdx,
             .then (data =>{
                 console.log('Response:',data);
                 console.log('inquiry', inquiry);
-                //navigate('/myinquiry'); //요청 성공시 이동
-                window.location.hash = '/myinquiry'; // 요청 성공시 이동
+
+                closeDelModal();
             })
             .catch(error=>{
                 console.log('Error', error);
             })
 
             console.log(inquiry);
+            navigate('/');
         }
 
         const handleDelete =()=>{
@@ -134,13 +137,14 @@ const MyInquiryModalComponent=({qnaIdx,
                     }
                     console.log("항목이 삭제되었습니다.");
                     closeDelModal();
-                    onClose();
-                    window.location.hash = '/myinquiry'; // 삭제 성공시 이동
+                  
+
                 })
                 .catch(error => {
                     <Error/>
                     console.log("Error: ", error);
                 })      
+                navigate('/');
             }
 
     return(
