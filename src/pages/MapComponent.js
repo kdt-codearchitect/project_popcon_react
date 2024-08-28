@@ -7,6 +7,7 @@ import { debounce } from 'lodash';
 import { FaSearch } from "react-icons/fa";
 import { FaStore } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { TbTruckDelivery } from "react-icons/tb";
 
 const MapComponent = ({addToPlace}) => {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const MapComponent = ({addToPlace}) => {
         const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
         setCurrentLocation(coords); // 현재 위치로 설정
         map.setCenter(coords);
-        const markerMessage = '<div style="padding:5px">배송지</div>';
+        const markerMessage = '<div style="padding:5px; z-index: 1000;">배송지</div>';
         displayMarker(map, coords, 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', markerMessage);
         drawCircle(map, coords); // 현재 위치에 원을 그림
         searchConvenienceStores(map, coords);
@@ -313,7 +314,7 @@ const MapComponent = ({addToPlace}) => {
               <div key={index} className="sidebar-card flex-sb" onClick={() => handleItemClick(index)}>
                 <div>
                   <p>{place.place_name}</p>
-                  <p><i className="fas fa-box"></i>배달기능</p>
+                  <div className="map-sidemenu-delivery"><TbTruckDelivery/><p>배달가능</p></div>
                   <p>{place.address_name}</p>
                   <p>거리: {place.distance} m</p> {/* 거리 정보 표시 */}
                 </div>

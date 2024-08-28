@@ -31,7 +31,7 @@
 }
 
 .close-button:hover {
-  color: red;
+  color: #FAE41C;
 }
 
 h2 {
@@ -39,9 +39,21 @@ h2 {
 }
 
 .order-items-list {
+  width: 100%;
+  height: 300px;
   list-style-type: none;
   padding: 0;
   margin: 20px 0;
+  overflow-y: scroll;
+}
+.order-items-list > li {
+  padding: 10px;
+  
+}
+.order-items-list > li > img {
+  border: 1px solid #FAE41C;
+  border-radius: 4px;
+  
 }
 
 .order-item {

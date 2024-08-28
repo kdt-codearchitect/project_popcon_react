@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './FavoriteComponent.css'; 
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import deleteIcon from "../image/Delete.png"; 
 import SideMenu from './SideMenu';
+import { FaTrashAlt, FaCartPlus } from "react-icons/fa";
 
 const FavoriteComponent = () => {
   const [favoriteItems, setFavoriteItems] = useState([]);
@@ -111,15 +111,11 @@ const FavoriteComponent = () => {
             <div className="oder-dage-box flex-c">
               <p>{(item.skuCost ? item.skuCost.toLocaleString() : '0')}원</p>
             </div>
-            <div className="list-cancel-box flex-c">
-              <button className="remove-button" onClick={() => handleRemove(item.wishItemIdx)}>
-                <img src={deleteIcon} alt="Delete" className="delete-icon" />
-              </button>
+            <div className="favorite-cancel-box flex-c">
+                <FaTrashAlt onClick={() => handleRemove(item.wishItemIdx)}/>
             </div>
-            <div className="list-state-box flex-c">
-              <button className="move-to-cart-button" onClick={() => handleMoveToCart(item.wishItemIdx)}>
-                장바구니로 이동
-              </button>
+            <div className="favorite-cart-box flex-c">
+                <FaCartPlus onClick={() => handleMoveToCart(item.wishItemIdx)}/>
             </div>
           </div>
         ))}

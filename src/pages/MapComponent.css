@@ -224,11 +224,6 @@
   font-weight: 500;
 }
 
-.sidebar-card p:nth-child(2) {
-  font-size: 0.8rem;
-  color: chartreuse;
-}
-
 .sidebar-card p:nth-child(3) {
   font-size: 0.9rem;
 }
@@ -257,4 +252,21 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.map-sidemenu-delivery{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #FAE41C;
+}
+
+.map-sidemenu-delivery span{
+  height: 20px;
+}
+
+.map-sidemenu-delivery svg{
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
 }
