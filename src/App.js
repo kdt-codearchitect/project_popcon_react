@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomeComponent from "./pages/HomeComponent";
 import ProductComponent from "./pages/ProductComponent";
+import ProductComponentOnePlus from "./pages/ProductComponentOnePlus";
+import ProductComponentTwoPlus from "./pages/ProductComponentTwoPlus";
 import RefrigeratorComponent from "./pages/RefrigeratorComponent";
 import OrderHistoryComponent from "./pages/OrderHistoryComponent";
 import MyInfo from "./pages/MyInfo";
@@ -146,6 +148,8 @@ const App = () => {
         { path: '/login', element: <LoginModal />, action: authAction },
         { path: '/logout', action: logoutAction },
         { path: '/Sku', element: <ProductComponent addToCart={addToCart} addToFavorites={addToFavorites} place={place} updateCheckedskuIdx={updateCheckedskuIdx}/> },
+        { path: '/sku1', element: <ProductComponentOnePlus place={place} updateCheckedskuIdx={updateCheckedskuIdx}/>},
+        { path: '/sku2', element: <ProductComponentTwoPlus place={place} updateCheckedskuIdx={updateCheckedskuIdx} />},
         { path: '/refrigerator', element: <RefrigeratorComponent products={refrigeratorItems} /> },
         { path: '/CheckOut', element: <CheckoutComponent /> },
         { path: '/MyInfo', element: <MyInfo userInfo={userInfo} updateUserInfo={updateUserInfo} /> },
@@ -159,7 +163,6 @@ const App = () => {
         { path: '/Maps', element: <MapComponent addToPlace={updatePlace} />},
         { path: '/mapTest', element: <MapTest/>},
         { path: '/allInquiries', element: <AllInquiriesComponent/>}
-
       ]
     }
   ]);
