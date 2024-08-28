@@ -32,10 +32,6 @@ const MyInquiryModalComponent=({qnaIdx,
 
     const closeDelModal = () => {
         setIsDelModalOpen(false);
-        window.location.hash = '/myinquiry'; // 요청 성공시 이동
-        const currentUrl = window.location.href;
-        const baseUrl = currentUrl.split('?')[0] ;             
-        window.location.href = baseUrl;
      
        
     };
@@ -124,6 +120,7 @@ const MyInquiryModalComponent=({qnaIdx,
             })
 
             console.log(inquiry);
+            navigate('/');
         }
 
         const handleDelete =()=>{
@@ -147,6 +144,7 @@ const MyInquiryModalComponent=({qnaIdx,
                     <Error/>
                     console.log("Error: ", error);
                 })      
+                navigate('/');
             }
 
     return(
