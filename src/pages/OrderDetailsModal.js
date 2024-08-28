@@ -22,7 +22,10 @@ const OrderDetailsModal = ({ order, orderItems, closeModal }) => {
           {orderItems.map((item, index) => (
             <li key={index}>
 
-              <img src={imgSrc + orderItems.skuName} alt={orderItems.skuName} />  이름: {item.skuName}, 수량: {item.orderItemQty}, 가격: {item.orderItemPrice.toLocaleString()}원
+              <img src={imgSrc + item.skuName+'.jpg'} alt={orderItems.skuName} />
+              이름: {item.skuName},
+              수량: {item.orderItemQty},
+              가격: {item.orderItemPrice.toLocaleString()}원
 
             </li>
           ))}
