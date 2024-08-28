@@ -13,18 +13,17 @@ body {
     justify-content: space-between;
 }
 
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
     height: 80%;
     width: 4px;  /* 스크롤바의 너비 */
 }
   
-body::-webkit-scrollbar-thumb {
-    height: 10; /* 스크롤바의 길이 */
+*::-webkit-scrollbar-thumb { /* 스크롤바의 길이 */
     background: #FAE41C; /* 스크롤바의 색상 */
     border-radius: 10px;
 }
 
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     border-radius: 10px;
     background: #4d4d4d;
 }

@@ -275,15 +275,17 @@
   height: 20px;
 }
 
-.list-cancel-box{
+.favorite-cancel-box{
   width: 70px;
+  cursor: pointer;
 }
-.list-cancel-box button{
-  width: 30px;
-  height: 30px;
-  border-radius: 3px;
-  color: white;
-  background-color: #4d4d4d;
+.favorite-cancel-box svg{
+  width: 25px;
+  height: 25px;
+  color: #4d4d4d;
+}
+.favorite-cancel-box svg:hover{
+  color: #FAE41C;
 }
 
 .list-cancel-box i{
@@ -295,8 +297,19 @@
   width: 80px;
 }
 
-.list-state-box{
+.favorite-cart-box{
   width: 160px;
+}
+
+.favorite-cart-box svg{
+  width: 30px;
+  height: 30px;
+  color: #4d4d4d;
+  cursor: pointer;
+}
+
+.favorite-cart-box svg:hover{
+  color: #FAE41C;
 }
 
 
