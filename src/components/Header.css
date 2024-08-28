@@ -5,6 +5,12 @@
 .header-container a{
   text-decoration: none;
 }
+.header-container a:hover{
+  color: #FAE41C;
+}
+.header-container button:hover{
+  color: #FAE41C;
+}
 
 .header-logo{
   margin: 0 30px;

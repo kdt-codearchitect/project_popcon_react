@@ -3,6 +3,9 @@
     overflow: hidden;
     background-color: #FAE41C;
 }
+.mypage-sidebar a{
+    color: #4d4d4d;
+}
 .sidebar-top {
     width: 250px;
     height: 130px;
