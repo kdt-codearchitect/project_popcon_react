@@ -1,4 +1,4 @@
-import { Link, useRouteLoaderData, Form, useContext } from "react-router-dom";
+import { Link, useRouteLoaderData, Form, useContext, useNavigate } from "react-router-dom";
 import './Header.css';
 import {React, useState, useEffect} from "react";
 import LoginModal from "../pages/LoginModal";
@@ -6,27 +6,37 @@ import {useRef} from 'react';
 import PopconB from '../image/store_image/PopconB.png';
 import popcon_logo3 from '../image/store_image/popcon_logo3.png';
 
-
 function Header() {
-  
-        // 매니저 확인
-        const [isManager,setIsManager] = useState(false);
-        useEffect(() => {
-            const role = localStorage.getItem('customerRole');
-            setIsManager(role === 'true'); 
-        }, []);
-        
-        const token = useRouteLoaderData('tokenRoot');
-        console.log("MainNavigation.token", token);
 
-    const modalRef = useRef(null)
+    const navigate = useNavigate();  // useNavigate 훅 사용
+    const [isManager, setIsManager] = useState(false);
+    
+    useEffect(() => {
+        const role = localStorage.getItem('customerRole');
+        setIsManager(role === 'true'); 
+    }, []);
+    
+    const token = useRouteLoaderData('tokenRoot');
+    console.log("MainNavigation.token", token);
+
+    const modalRef = useRef(null);
 
     function show_modal(){
         modalRef.current.modal_open();
     }
 
-    return (
+    // MyPage 모달을 보여주는 함수
+    function show_mypageModal() {
+        const customerIdx = localStorage.getItem('customerIdx'); // customerIdx를 가져옵니다.
+        if (!customerIdx) {
+            console.log('로그인이 필요합니다.');
+            show_modal(); // 로그인 모달을 띄웁니다.
+        } else {
+            navigate('/MyPage');
+        }
+    }
 
+    return (
         <header>
             <div className="header-container">
 
@@ -46,10 +56,8 @@ function Header() {
                         }
 
                         { token && <Form action="/logout" method="post">
-
                                 <button className='btn btn-success' >로그아웃</button>
-
-                                </Form>
+                            </Form>
                         }
                         
                         
@@ -66,7 +74,7 @@ function Header() {
                             <li><Link to="/Sku">제품조회</Link></li>
                             <li><Link to="/sku1">1 + 1</Link></li>
                             <li><Link to="/sku2">2 + 1</Link></li>
-                            <li><Link to="/MyPage">마이페이지</Link></li>
+                            <li><a href="#" onClick={show_mypageModal}>마이페이지</a></li> {/* MyPage로 이동 또는 로그인 모달 표시 */}
                         </ul>
                     </nav>
                 </div>
@@ -88,10 +96,8 @@ function Header() {
                         }
 
                         { token && <Form action="/logout" method="post">
-
                                 <button className='btn btn-success' >로그아웃</button>
-
-                                </Form>
+                            </Form>
                         }
                         
                         

@@ -48,6 +48,7 @@ const CheckoutComponent = () => {
   
   // 총 상품 가격 불러오기 위한 변수 
   const totalSumCost = cartItems.length > 0 ? cartItems.reduce((sum, item) => sum + calculateItemPrice(item), 0) : 0; 
+  const totalCost = totalSumCost+3000;
   const CustomerIdx = localStorage.getItem('customerIdx'); // 로그인한 유저의 customerIdx를 불러옴
   console.log("정보 부르기" + CustomerIdx);
   payment_value.customer.fullName = customer.customerName;
@@ -180,7 +181,7 @@ const CheckoutComponent = () => {
     }).open();
   };
 
-  payment_value.totalAmount = totalSumCost;
+  payment_value.totalAmount = totalCost;
 
   const handleEditPhoneClick = () => {
     setIsEditingPhone(true);
