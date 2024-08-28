@@ -5,6 +5,7 @@
 
     const url = process.env.REACT_APP_API_BASE_URL
     var CustomerIdx = localStorage.getItem('customerIdx');
+    const faq_types = ["취소/교환/반품","배송 문의","주문/결제","회원 서비스","환불"];
 
     const MyInquiryComponent=()=>{
         
@@ -124,7 +125,7 @@
                                                      customer_qna.qnaDate)} 
                                                      style={{ cursor: 'pointer' }}
                                                      >
-                                    [{customer_qna.faqType}] {customer_qna.qnaTitle}</Link></p></div>
+                                    [{faq_types[customer_qna.faqtypeIdx-1]}] {customer_qna.qnaTitle}</Link></p></div>
                         <div className="myinquiry-list-head"><p>{customer_qna.qnaDate}</p></div>   
                         <div className="myinquiry-list-head"><p>{customer_qna.qnaState}</p></div>    
                         <div className="myinquiry-list-head"><p>{customer_qna.qnaClearDate}</p></div>    
