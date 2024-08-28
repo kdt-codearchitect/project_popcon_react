@@ -1,44 +1,40 @@
 import React from 'react';
+import './OrderDetailsModal.css';  // CSS 파일을 import
 
 const OrderDetailsModal = ({ order, orderItems, closeModal }) => {
 
     const imgSrc = '../image/item_image/';
 
   return (
-    <div className="modal">
+    <div className="modal-overlay">
       <div className="modal-content">
+        <span className="close-button" onClick={closeModal}>&times;</span>
         <h2>Order Details</h2>
-        <p>Order ID: {order.orderIdx}</p>
-        <p>Payment ID: {order.paymentId}</p>
-        <p>Order Time: {order.orderTime ? new Date(order.orderTime).toLocaleString() : 'N/A'}</p> {/* 조건부 렌더링 */}
-        <p>Order Status: {order.orderStatus || 'N/A'}</p>
-        <p>Delivery Status: {order.deliveryStatus || 'N/A'}</p>
-
+        <p><strong>Order ID:</strong> {order.orderIdx}</p>
+        <p><strong>Payment ID:</strong> {order.paymentId}</p>
+        <p><strong>Order Time:</strong> {order.orderTime ? new Date(order.orderTime).toLocaleString() : 'N/A'}</p>
+        <p><strong>Order Status:</strong> {order.orderStatus || 'N/A'}</p>
+        <p><strong>Delivery Status:</strong> {order.deliveryStatus || 'N/A'}</p>
 
         <h3>Order Items</h3>
-        <ul>
-          
-          
+        <ul className="order-items-list">
           {orderItems.map((item, index) => (
-            <li key={index}>
-
-              <img src={imgSrc + item.skuName+'.jpg'} alt={orderItems.skuName} />
-              이름: {item.skuName},
-              수량: {item.orderItemQty},
-              가격: {item.orderItemPrice.toLocaleString()}원
-
+            <li key={index} className="order-item">
+              <img className="order-item-image" src={imgSrc + item.skuName + '.jpg'} alt={item.skuName} />
+              <div className="order-item-details">
+                <p><strong>이름:</strong> {item.skuName}</p>
+                <p><strong>수량:</strong> {item.orderItemQty}</p>
+                <p><strong>가격:</strong> {item.orderItemPrice.toLocaleString()}원</p>
+              </div>
             </li>
           ))}
-        
-
-            <li >
-
-               결제금액 :{order.totalSumPrice ? order.totalSumPrice.toLocaleString() + '원' : 'N/A'}
-            </li>
-          
         </ul>
-          <button onClick={closeModal}>Close</button>
 
+        <div className="total-price">
+          <strong>결제금액:</strong> {order.totalSumPrice ? order.totalSumPrice.toLocaleString() + '원' : 'N/A'}
+        </div>
+        
+        <button className="close-button" onClick={closeModal}>Close</button>
       </div>
     </div>
   );
