@@ -11,6 +11,7 @@ const FavoriteComponent = () => {
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
   const url = process.env.REACT_APP_API_BASE_URL;
+  const imgSrc = '../image/item_image/';
 
   // 데이터 조회 함수
   const fetchFavoriteItems = () => {
@@ -82,44 +83,46 @@ const FavoriteComponent = () => {
 
   return (
     <div className="page-container">
-      <SideMenu/>
+      <SideMenu />
       <div className="favorite-container">
         <div className="favorite-header">
           <div className="favorite-font">
             <h1>Favorites / 나의 찜 목록</h1>
           </div>
         </div>
-        <div className="refrigerator-content">
-          <table className="refrigerator-table">
-            <thead>
-              <tr>
-                <th>상품</th>
-                <th>상품명</th>
-                <th>할인여부</th>
-                <th>주문액</th>
-                <th>삭제</th>
-              </tr>
-            </thead>
-            <tbody>
-              {favoriteItems.map((item, index) => (
-                <tr key={index}>
-                  <td><img src={`${item.skuName}.jpg`} alt={item.skuName || '상품 이미지'} className="favorites-item-image" /></td>
-                  <td>{item.skuName || '상품명 없음'}</td>
-                  <td>할인없음</td>
-                  <td>{(item.skuCost ? item.skuCost.toLocaleString() : '0')}원</td>
-                  <td>
-                    <button className="remove-button" onClick={() => handleRemove(item.wishItemIdx)}>
-                      <img src={deleteIcon} alt="Delete" className="delete-icon" />
-                    </button>
-                    <button className="move-to-cart-button" onClick={() => handleMoveToCart(item.wishItemIdx)}>
-                      장바구니로 이동
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="order-list-title flex-sa">
+          <div className="list-checkbox-box"></div>
+          <p className="list-title-img">상품이미지</p>
+          <p className="oder-code-box">상품명</p>
+          <p className="oder-dage-box">주문액</p>
+          <p className="list-cancel-box">삭제</p>
+          <p className="list-state-box">장바구니</p>
         </div>
+        {favoriteItems.map((item, index) => (
+          <div className="order-list-item flex-sa" key={index}>
+            <div className="list-checkbox-box flex-c">
+            </div>
+            <div className="list-img-box flex-c">
+              <img src={`${imgSrc+item.skuName}.jpg`} alt={item.skuName || '상품 이미지'} className="favorites-item-image" />
+            </div>
+            <div className="oder-code-box">
+              <p>{item.skuName || '상품명 없음'}</p>
+            </div>
+            <div className="oder-dage-box flex-c">
+              <p>{(item.skuCost ? item.skuCost.toLocaleString() : '0')}원</p>
+            </div>
+            <div className="list-cancel-box flex-c">
+              <button className="remove-button" onClick={() => handleRemove(item.wishItemIdx)}>
+                <img src={deleteIcon} alt="Delete" className="delete-icon" />
+              </button>
+            </div>
+            <div className="list-state-box flex-c">
+              <button className="move-to-cart-button" onClick={() => handleMoveToCart(item.wishItemIdx)}>
+                장바구니로 이동
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

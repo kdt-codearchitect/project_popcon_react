@@ -7,6 +7,11 @@
   align-items: center;
 }
 
+.myinfo-content{
+  height: 400px;
+  margin-top: 50px;
+}
+
 .myinfo-header {
   width: 100%;
   display: flex;
