@@ -132,16 +132,17 @@ const MyInfo = ({ userInfo, updateUserInfo }) => {
 
       if (response.ok) {
         updateUserInfo(localUserInfo);
-        navigate('/');
+        alert('회원정보가 수정되었습니다.'); // 알림창 추가
+        navigate('/MyPage');
       } else {
         // 에러 처리
         const errorData = await response.json();
         console.error('Update failed:', errorData);
-        // 여기에 사용자에게 에러 메시지를 보여주는 로직을 추가할 수 있습니다.
+        alert('회원정보 수정에 실패했습니다.'); // 실패 시 알림창 추가
       }
     } catch (error) {
       console.error('Error during update:', error);
-      // 네트워크 오류 등의 처리
+      alert('네트워크 오류가 발생했습니다.'); // 네트워크 오류 시 알림창 추가
     }
   };
 

@@ -71,7 +71,7 @@ function Header() {
                     </div>
                     <nav>
                         <ul className="flex-c">
-                            <li><Link to="/Sku">제품조회</Link></li>
+                            <li><Link to="/Sku">상품보기</Link></li>
                             <li><Link to="/sku1">1 + 1</Link></li>
                             <li><Link to="/sku2">2 + 1</Link></li>
                             <li><a href="#" onClick={show_mypageModal}>마이페이지</a></li> {/* MyPage로 이동 또는 로그인 모달 표시 */}
