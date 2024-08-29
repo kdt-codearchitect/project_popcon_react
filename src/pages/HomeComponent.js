@@ -41,7 +41,7 @@ const HomeComponent = () => {
         const fetchEvent = async () => {
             try {
                 // DB에 비동기 데이터 요청
-                const eventResponse = await fetch(url+'/');
+                const eventResponse = await fetch(url + '/');
                 if (!eventResponse.ok) {
                     throw new Error('네트워크 상태가 원활하지 않습니다.'); // 응답이 성공이 아닐 경우
                 }
@@ -58,10 +58,10 @@ const HomeComponent = () => {
 
     useEffect(() => {
         if (index === 0) {
-            slideDuration = 4500; 
-        } else if(index === 5){
+            slideDuration = 4500;
+        } else if (index === 5) {
             slideDuration = 510;    // 마지막 인덱스에서 슬라이드 시간 변경
-        }else {
+        } else {
             slideDuration = 5000;
         }
         const interval = setInterval(() => {
@@ -74,14 +74,14 @@ const HomeComponent = () => {
 
     useEffect(() => {
         const enlargeDuration = 500; // 애니매이션 시간
-    
+
         if (containerRef.current) {
             if (index === 0) {
                 containerRef.current.style.transition = 'none'; // 초기 상태에서 애니메이션 제거
-    
+
                 // 초기 상태에서 슬라이드 위치를 0으로 설정
                 containerRef.current.style.transform = `translateX(0px)`;
-    
+
                 for (let i = 1; i < (events.length * 2); i++) {
                     if (cardRefs.current[i]) {
                         cardRefs.current[i].style.opacity = 1; // 나머지 카드의 불투명도 조정
@@ -90,13 +90,13 @@ const HomeComponent = () => {
                         firstCardImgRef.current[i].style.opacity = 0; // 첫 번째 카드 이미지의 불투명도 조정
                     }
                 }
-    
+
                 events.forEach((event, index) => {
                     if (firstCardImgRef.current[index]) {
                         firstCardImgRef.current[index].classList.remove('enlarge-animation'); // 애니매션 제거
                     }
                 });
-    
+
                 setTimeout(() => {
                     if (containerRef.current) {
                         containerRef.current.style.transition = 'transform 0.5s ease-out'; // 리셋될 때 애니매이션 복구
@@ -111,12 +111,12 @@ const HomeComponent = () => {
                         firstCardImgRef.current[index].style.opacity = 1; // 다음 카드 이미지 불투명화
                     }
                 }, enlargeDuration);
-    
+
                 const offset = -220 * index;
                 if (containerRef.current) {
                     containerRef.current.style.transform = `translateX(${offset}px)`; // 슬라이드 이동
                 }
-    
+
                 if (firstCardImgRef.current[index - 1]) {
                     firstCardImgRef.current[index - 1].classList.add('enlarge-animation'); // 애니매션 추가
                 }
@@ -127,7 +127,7 @@ const HomeComponent = () => {
                     if (firstCardTextRef.current) {
                         firstCardTextRef.current.classList.add('fade-out-move-down'); // 카드 텍스트 애니메이션 추가
                     }
-    
+
                     setTimeout(() => {
                         if (firstCardTextRef.current) {
                             firstCardTextRef.current.classList.remove('fade-out-move-down'); // 카드 텍스트 애니메이션 제거
@@ -142,7 +142,7 @@ const HomeComponent = () => {
             }
         }
     }, [index, events]);
-    
+
     useEffect(() => {
         if (isFirstRender) {
             setIsFirstRender(false); // 최초 렌더링이 끝났음을 표시
@@ -175,7 +175,7 @@ const HomeComponent = () => {
                             <ul className="flex-sa">
                                 <li><Link to="/maps" className="main-header-icon"><IoStorefrontSharp /><span>편의점 찾기</span></Link></li>
                                 {!token &&
-                                    <li onClick={show_modal}><AiOutlineLogin/><span>로그인</span></li>
+                                    <li onClick={show_modal}><AiOutlineLogin /><span>로그인</span></li>
                                 }
                                 {token && <Form action="/logout" method="post">
                                     <button id="logout-btn"><BiLogOutCircle /><span>로그아웃</span></button>
@@ -190,10 +190,12 @@ const HomeComponent = () => {
 
             <div className="main-title-box">
                 <div className="main-title-text" ref={mainRef}>
-                    {events.length > 0 && events[index - 1] && (
+                    {events.length > 0 && (
                         <>
-                            <p>{events[isFirstRender ? 4 : (index-1)]?.eventsName}</p>
-                            <p>{events[isFirstRender ? 4 : (index-1)]?.eventsInfo}</p>
+                            {events[index === 0 ? 4 : index - 1]?.eventsName.split('(줄바꿈)').map((line, i) => (
+                                <p className="main-title-maintext" key={`name-${i}`}>{line}</p>
+                            ))}
+                            <p className="main-title-subtext">{events[index === 0 ? 4 : index - 1]?.eventsInfo}</p>
                         </>
                     )}
                 </div>
@@ -201,11 +203,11 @@ const HomeComponent = () => {
             <div className="first-card-clone" ref={firstCardRef}>
                 {events.length > 0 && (
                     <>
-                        <img className="card-clone-img" style={{ zIndex: '0' }} src={imgSrc+events[4]?.eventsImg} alt="Event Image" />
+                        <img className="card-clone-img" style={{ zIndex: '0' }} src={imgSrc + events[4]?.eventsImg} alt="Event Image" />
                         {events.map((event, idx) => (
                             <img
                                 className="card-clone-img card-clone-frame"
-                                src={imgSrc+event.eventsImg}
+                                src={imgSrc + event.eventsImg}
                                 key={idx}
                                 style={{ zIndex: `${idx}` }}
                                 ref={(el) => (firstCardImgRef.current[idx] = el)}
@@ -227,7 +229,7 @@ const HomeComponent = () => {
                 <div className="event-card-container" ref={containerRef}>
                     {repeatedEvents.map((event, idx) => (
                         <div className="event-card" key={idx} ref={(el) => (cardRefs.current[idx] = el)}>
-                            <img src={imgSrc+event.eventsImg} alt={`Slide ${idx + 1}`} />
+                            <img src={imgSrc + event.eventsImg} alt={`Slide ${idx + 1}`} />
                             <div className="event-card-text">
                                 <p>{event.eventsName}</p>
                                 <p>{event.eventsInfo}</p>

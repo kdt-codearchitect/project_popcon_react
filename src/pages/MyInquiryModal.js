@@ -144,7 +144,7 @@ const MyInquiryModalComponent=({qnaIdx,
                     <Error/>
                     console.log("Error: ", error);
                 })      
-                navigate('/');
+                navigate('/myInquiry');
             }
 
     return(
